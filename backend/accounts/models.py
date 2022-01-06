@@ -1,37 +1,41 @@
-
-from django.contrib.auth.models import AbstractUser
-from django.core.validators import RegexValidator
+# https://medium.com/chanjongs-programming-diary/django-rest-framework로-소셜-로그인-api-구현해보기-google-kakao-github-2ccc4d49a781
+# https://wisdom-990629.tistory.com/44
 from django.db import models
-from django.shortcuts import resolve_url
+from django.contrib.auth.models import AbstractUser, AbstractBaseUser
+from django.utils.translation import gettext as _
+from accounts.managers import CustomUserManager
 
 
-class User(AbstractUser):
-    class GenderChoices(models.TextChoices):
-        MALE = "M", "Mail"
-        FEMAIL = "F", "Femail"
+class CustomUser(AbstractBaseUser):
+    ADMIN = 'admin'
+    STAFF = 'staff'
+    STATUS = [
+        (ADMIN, _('Admin User')),
+        (STAFF, _('Staff User')),
+    ]
+    email = models.EmailField(_('이메일 주소'), unique=True)
+    username = models.CharField(_('실명'), max_length=30)
+    nickname = models.CharField(_('닉네임'), max_length=30, unique=True)
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)  # a admin user; non super-user
+    is_admin = models.BooleanField(default=False)
 
-    follower_set = models.ManyToManyField("self", blank=True)
-    following_set = models.ManyToManyField("self", blank=True)
+    USERNAME_FIELD = 'nickname'
+    REQUIRED_FIELDS = ['email','username']
 
-    website_url = models.URLField(blank=True)
-    bio = models.TextField(blank=True)
-    phone_number = models.CharField(
-        blank=True,
-        max_length=14,
-        validators=[RegexValidator(r"^010-?[1-9]\d{4}-?\d{4}")],
-    )
-    gender = models.CharField(blank=True, max_length=1, choices=GenderChoices.choices)
-    avatar = models.ImageField(
-        blank=True, upload_to="accounts/avatar/%Y/%m/%d", help_text="본인을 표현할 수 있는 사진으로 올려주세요"
-    )
+    objects = CustomUserManager()
 
-    @property
-    def name(self):
-        return f"{self.first_name} {self.last_name}".strip()
+    @staticmethod
+    def has_perm(perm, obj=None):
+        # "Does the user have a specific permission?"
+        # Simplest possible answer: Yes, always
+        return True
 
-    @property
-    def avatar_url(self):
-        if self.avatar:
-            return self.avatar.url
-        else:
-            return resolve_url("pydenticon_image", self.username)
+    @staticmethod
+    def has_module_perms(app_label):
+        # "Does the user have permissions to view the app `app_label`?"
+        # Simplest possible answer: Yes, always
+        return True
+
+    def __str__(self):
+        return "{}".format(self.email)

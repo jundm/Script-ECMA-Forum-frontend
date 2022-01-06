@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 import json
 from django.core.exceptions import ImproperlyConfigured
+import datetime
+from django.utils.translation import gettext_lazy as _
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -44,26 +46,40 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-INSTALLED_APPS = [
-    # django apps
+
+DJANGO_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    # third apps
-    "rest_framework",
-    "corsheaders",
-    # local apps
-    "accounts",
-    "itboss",
 ]
 
+# django-allauth https://django-allauth.readthedocs.io/en/latest/configuration.html
+# django-rest-auth https://django-rest-auth.readthedocs.io/en/latest/index.html
+# rest_framework https://www.django-rest-framework.org
+# rest_framework-jwt  https://jpadilla.github.io/django-rest-framework-jwt/
+# rest_framework-simplejwt https://django-rest-framework-simplejwt.readthedocs.io/en/latest/
+
+THIRD_PARTY_APPS = [
+    "rest_framework",
+    'rest_framework_simplejwt',
+    'corsheaders',
+]
+# account: 커스텀 유저 & 회원가입
+PROJECT_APPS = [
+    "accounts",
+]
+
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + PROJECT_APPS
+
+# https://docs.djangoproject.com/en/4.0/topics/i18n/translation/#how-django-discovers-language-preference
+# translation: LocaleMiddleware가  session 뒤 common 앞이여야 한다
 MIDDLEWARE = [
-    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -102,6 +118,9 @@ DATABASES = {
     }
 }
 
+# 프로젝트를 시작할때 사용자 정의 모델 사용(마이그레이션을 늦게 하는 이유)
+# https://docs.djangoproject.com/en/4.0/topics/auth/customizing/#using-a-custom-user-model-when-starting-a-project
+AUTH_USER_MODEL = "accounts.CustomUser"
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -121,19 +140,35 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-AUTH_USER_MODEL = "accounts.User"
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "ko"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Asia/Seoul"
 
 USE_I18N = True
 
 USE_TZ = True
 
+LOCALE_PATHS = [
+    BASE_DIR / "locale",
+]
+
+# 세팅방법 https://docs.djangoproject.com/en/4.0/ref/settings/#languages
+# 언어코드 https://github.com/django/django/blob/main/django/conf/global_settings.py
+# 사용함수 https://docs.djangoproject.com/en/4.0/ref/utils/#django.utils.translation.gettext_lazy
+# 컴파일 python manage.py compilemessages or django-admin compilemessages --ignore=cache --ignore=outdated/*/locale
+# 관련문서 https://docs.djangoproject.com/en/4.0/ref/django-admin/#compilemessages
+
+LANGUAGES = (
+    ("ko", _("Koran")),
+    ("ja", _("Japanese")),
+    ("en", _("English")),
+    ("zh-hans", _("Simplified Chinese")),
+    ("zh-hant", _("Traditional Chinese")),
+)
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
@@ -150,8 +185,24 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+
+# https://velog.io/@ayoung0073/DRF-signup-login-jwt
+## DRF
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
-    ]
+    ],
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+}
+## JWT
+# 추가적인 JWT_AUTH 설젇
+JWT_AUTH = {
+    "JWT_SECRET_KEY": SECRET_KEY,
+    "JWT_ALGORITHM": "HS256",  # 암호화 알고리즘
+    "JWT_ALLOW_REFRESH": True,  # refresh 사용 여부
+    "JWT_EXPIRATION_DELTA": datetime.timedelta(days=7),  # 유효기간 설정
+    "JWT_REFRESH_EXPIRATION_DELTA": datetime.timedelta(days=28),  # JWT 토큰 갱신 유효기간
+    # import datetime 상단에 import 하기
 }

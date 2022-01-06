@@ -1,4 +1,8 @@
 django~=4.0.0
 djangorestframework
+djangorestframework-simplejwt
+django-allauth
 django-cors-headers
-pillow
+dj-rest-auth
+Pillow
+black
