@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 import json
 from django.core.exceptions import ImproperlyConfigured
-import datetime
+from datetime import timedelta
 from django.utils.translation import gettext_lazy as _
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -57,15 +57,20 @@ DJANGO_APPS = [
 ]
 
 # django-allauth https://django-allauth.readthedocs.io/en/latest/configuration.html
-# django-rest-auth https://django-rest-auth.readthedocs.io/en/latest/index.html
+# dj-rest-auth https://dj-rest-auth.readthedocs.io/en/latest/installation.html
 # rest_framework https://www.django-rest-framework.org
-# rest_framework-jwt  https://jpadilla.github.io/django-rest-framework-jwt/
 # rest_framework-simplejwt https://django-rest-framework-simplejwt.readthedocs.io/en/latest/
+# django-cors-headers https://github.com/adamchainz/django-cors-headers
+# djoser https://djoser.readthedocs.io/en/latest/getting_started.html
+# drf-yasg https://drf-yasg.readthedocs.io/en/stable/readme.html#usage
 
 THIRD_PARTY_APPS = [
+    "corsheaders",
+    "djoser",
+    "drf_yasg",
     "rest_framework",
-    'rest_framework_simplejwt',
-    'corsheaders',
+    "rest_framework_simplejwt",
+    "rest_framework_simplejwt.token_blacklist",
 ]
 # account: 커스텀 유저 & 회원가입
 PROJECT_APPS = [
@@ -80,6 +85,7 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -193,16 +199,46 @@ REST_FRAMEWORK = {
         "rest_framework.permissions.IsAuthenticated",
     ],
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
 }
-## JWT
-# 추가적인 JWT_AUTH 설젇
-JWT_AUTH = {
-    "JWT_SECRET_KEY": SECRET_KEY,
-    "JWT_ALGORITHM": "HS256",  # 암호화 알고리즘
-    "JWT_ALLOW_REFRESH": True,  # refresh 사용 여부
-    "JWT_EXPIRATION_DELTA": datetime.timedelta(days=7),  # 유효기간 설정
-    "JWT_REFRESH_EXPIRATION_DELTA": datetime.timedelta(days=28),  # JWT 토큰 갱신 유효기간
-    # import datetime 상단에 import 하기
+# JWT
+SIMPLE_JWT = {
+    "AUTH_HEADER_TYPES": ("JWT",),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=100),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "ALGORITHM": "HS256",
+    "SIGNING_KEY": SECRET_KEY,
+    "LEEWAY": 0,  # 만료시간에 여유를 주는 값
 }
+
+# DJOSER CONFIG
+# uid관한 솔루션 https://protocolostomy.com/2021/05/06/user-activation-with-django-and-djoser/
+DJOSER = {
+    "LOGIN_FIELD": "username",
+    "USER_CREATE_PASSWORD_RETYPE": True,  # 비밀번호 재확인
+    # "USERNAME_CHANGED_EMAIL_CONFIRMATION": True, # 이메일 확인
+    # "PASSWORD_CHANGED_EMAIL_CONFIRMATION": True, # 이메일 비밀번호 변경
+    # "SEND_CONFIRMATION_EMAIL": True, # 사용자 확인 이메일
+    "SET_USERNAME_RETYPE": True,  # 사용자 이메일이 동일한지 확인
+    "SET_PASSWORD_RETYPE": True,  # 기존 암호를 썼는지 확인
+    "USERNAME_RESET_CONFIRM_URL": "password/reset/confirm/{uid}/{token}",  # 프론트엔드 사용자 이름 재설정 페이지
+    "PASSWORD_RESET_CONFIRM_URL": "email/reset/confirm/{uid}/{token}",  # 비밀번호 유효성 검사
+    "ACTIVATION_URL": "activate/{uid}/{token}",  # 프론트엔드 활성화 페이지
+    # "SEND_ACTIVATION_EMAIL": True,
+    # "SOCIAL_AUTH_TOKEN_STRATEGY": "djoser.social.token.jwt.TokenStrategy", # 소셜 인증에 사용되는 토큰 전략
+    # "SOCIAL_AUTH_ALLOWED_REDIRECT_URIS": [
+    #     "your redirect url",
+    #     "your redirect url",
+    # ],
+    "SERIALIZERS": {
+        "user_create": "accounts.serializers.CustomUserSerializer",  # custom serializer
+        "user": "djoser.serializers.UserSerializer",
+        "current_user": "djoser.serializers.UserSerializer",
+        "user_delete": "djoser.serializers.UserSerializer",
+    },
+}
+
+CORS_ALLOWED_ORIGINS = [
+    # "my_url",
+]

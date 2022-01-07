@@ -4,5 +4,7 @@ djangorestframework-simplejwt
 django-allauth
 django-cors-headers
 dj-rest-auth
+drf_yasg
 Pillow
 black
+httpie
