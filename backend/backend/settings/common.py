@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 import json
 from django.core.exceptions import ImproperlyConfigured
+from datetime import timedelta
+from django.utils.translation import gettext_lazy as _
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -44,7 +46,8 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-INSTALLED_APPS = [
+
+DJANGO_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -53,9 +56,36 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
 ]
 
+# django-allauth https://django-allauth.readthedocs.io/en/latest/configuration.html
+# dj-rest-auth https://dj-rest-auth.readthedocs.io/en/latest/installation.html
+# rest_framework https://www.django-rest-framework.org
+# rest_framework-simplejwt https://django-rest-framework-simplejwt.readthedocs.io/en/latest/
+# django-cors-headers https://github.com/adamchainz/django-cors-headers
+# djoser https://djoser.readthedocs.io/en/latest/getting_started.html
+# drf-yasg https://drf-yasg.readthedocs.io/en/stable/readme.html#usage
+
+THIRD_PARTY_APPS = [
+    "corsheaders",
+    "djoser",
+    "drf_yasg",
+    "rest_framework",
+    "rest_framework_simplejwt",
+    "rest_framework_simplejwt.token_blacklist",
+]
+# account: 커스텀 유저 & 회원가입
+PROJECT_APPS = [
+    "accounts",
+]
+
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + PROJECT_APPS
+
+# https://docs.djangoproject.com/en/4.0/topics/i18n/translation/#how-django-discovers-language-preference
+# translation: LocaleMiddleware가  session 뒤 common 앞이여야 한다
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -94,6 +124,9 @@ DATABASES = {
     }
 }
 
+# 프로젝트를 시작할때 사용자 정의 모델 사용(마이그레이션을 늦게 하는 이유)
+# https://docs.djangoproject.com/en/4.0/topics/auth/customizing/#using-a-custom-user-model-when-starting-a-project
+AUTH_USER_MODEL = "accounts.CustomUser"
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -117,14 +150,31 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "ko"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Asia/Seoul"
 
 USE_I18N = True
 
 USE_TZ = True
 
+LOCALE_PATHS = [
+    BASE_DIR / "locale",
+]
+
+# 세팅방법 https://docs.djangoproject.com/en/4.0/ref/settings/#languages
+# 언어코드 https://github.com/django/django/blob/main/django/conf/global_settings.py
+# 사용함수 https://docs.djangoproject.com/en/4.0/ref/utils/#django.utils.translation.gettext_lazy
+# 컴파일 python manage.py compilemessages or django-admin compilemessages --ignore=cache --ignore=outdated/*/locale
+# 관련문서 https://docs.djangoproject.com/en/4.0/ref/django-admin/#compilemessages
+
+LANGUAGES = (
+    ("ko", _("Koran")),
+    ("ja", _("Japanese")),
+    ("en", _("English")),
+    ("zh-hans", _("Simplified Chinese")),
+    ("zh-hant", _("Traditional Chinese")),
+)
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
@@ -140,3 +190,55 @@ MEDIA_ROOT = BASE_DIR / "media"
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+# https://velog.io/@ayoung0073/DRF-signup-login-jwt
+## DRF
+REST_FRAMEWORK = {
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",
+    ],
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ],
+}
+# JWT
+SIMPLE_JWT = {
+    "AUTH_HEADER_TYPES": ("JWT",),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=100),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "ALGORITHM": "HS256",
+    "SIGNING_KEY": SECRET_KEY,
+    "LEEWAY": 0,  # 만료시간에 여유를 주는 값
+}
+
+# DJOSER CONFIG
+# uid관한 솔루션 https://protocolostomy.com/2021/05/06/user-activation-with-django-and-djoser/
+DJOSER = {
+    "LOGIN_FIELD": "username",
+    "USER_CREATE_PASSWORD_RETYPE": True,  # 비밀번호 재확인
+    # "USERNAME_CHANGED_EMAIL_CONFIRMATION": True, # 이메일 확인
+    # "PASSWORD_CHANGED_EMAIL_CONFIRMATION": True, # 이메일 비밀번호 변경
+    # "SEND_CONFIRMATION_EMAIL": True, # 사용자 확인 이메일
+    "SET_USERNAME_RETYPE": True,  # 사용자 이메일이 동일한지 확인
+    "SET_PASSWORD_RETYPE": True,  # 기존 암호를 썼는지 확인
+    "USERNAME_RESET_CONFIRM_URL": "password/reset/confirm/{uid}/{token}",  # 프론트엔드 사용자 이름 재설정 페이지
+    "PASSWORD_RESET_CONFIRM_URL": "email/reset/confirm/{uid}/{token}",  # 비밀번호 유효성 검사
+    "ACTIVATION_URL": "activate/{uid}/{token}",  # 프론트엔드 활성화 페이지
+    # "SEND_ACTIVATION_EMAIL": True,
+    # "SOCIAL_AUTH_TOKEN_STRATEGY": "djoser.social.token.jwt.TokenStrategy", # 소셜 인증에 사용되는 토큰 전략
+    # "SOCIAL_AUTH_ALLOWED_REDIRECT_URIS": [
+    #     "your redirect url",
+    #     "your redirect url",
+    # ],
+    "SERIALIZERS": {
+        "user_create": "accounts.serializers.CustomUserSerializer",  # custom serializer
+        "user": "djoser.serializers.UserSerializer",
+        "current_user": "djoser.serializers.UserSerializer",
+        "user_delete": "djoser.serializers.UserSerializer",
+    },
+}
+
+CORS_ALLOWED_ORIGINS = [
+    # "my_url",
+]
