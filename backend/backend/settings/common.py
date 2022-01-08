@@ -67,7 +67,6 @@ DJANGO_APPS = [
 THIRD_PARTY_APPS = [
     "corsheaders",
     "djoser",
-    "drf_yasg",
     "rest_framework",
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
@@ -205,7 +204,7 @@ REST_FRAMEWORK = {
 # JWT
 SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ("JWT",),
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=100),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=10),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "ALGORITHM": "HS256",
     "SIGNING_KEY": SECRET_KEY,
@@ -213,30 +212,52 @@ SIMPLE_JWT = {
 }
 
 # DJOSER CONFIG
-# uid관한 솔루션 https://protocolostomy.com/2021/05/06/user-activation-with-django-and-djoser/
+# uid관한 솔루션 https://protocolostomy.com/2021/05/06/user-activation-with-django-and-djoser/ # 결론: uid = pk 로 쓰기로 했다
+# 밑에 설정 많은데 전부 기본값이다 바꿀꺼 있으면 바꿀려고 기본값이지만 명시해놓음
 DJOSER = {
-    "LOGIN_FIELD": "username",
-    "USER_CREATE_PASSWORD_RETYPE": True,  # 비밀번호 재확인
-    # "USERNAME_CHANGED_EMAIL_CONFIRMATION": True, # 이메일 확인
-    # "PASSWORD_CHANGED_EMAIL_CONFIRMATION": True, # 이메일 비밀번호 변경
-    # "SEND_CONFIRMATION_EMAIL": True, # 사용자 확인 이메일
-    "SET_USERNAME_RETYPE": True,  # 사용자 이메일이 동일한지 확인
-    "SET_PASSWORD_RETYPE": True,  # 기존 암호를 썼는지 확인
-    "USERNAME_RESET_CONFIRM_URL": "password/reset/confirm/{uid}/{token}",  # 프론트엔드 사용자 이름 재설정 페이지
-    "PASSWORD_RESET_CONFIRM_URL": "email/reset/confirm/{uid}/{token}",  # 비밀번호 유효성 검사
-    "ACTIVATION_URL": "activate/{uid}/{token}",  # 프론트엔드 활성화 페이지
-    # "SEND_ACTIVATION_EMAIL": True,
-    # "SOCIAL_AUTH_TOKEN_STRATEGY": "djoser.social.token.jwt.TokenStrategy", # 소셜 인증에 사용되는 토큰 전략
-    # "SOCIAL_AUTH_ALLOWED_REDIRECT_URIS": [
-    #     "your redirect url",
-    #     "your redirect url",
-    # ],
-    "SERIALIZERS": {
-        "user_create": "accounts.serializers.CustomUserSerializer",  # custom serializer
-        "user": "djoser.serializers.UserSerializer",
-        "current_user": "djoser.serializers.UserSerializer",
-        "user_delete": "djoser.serializers.UserSerializer",
-    },
+    # SERIALIZERS
+    "activation": "djoser.serializers.ActivationSerializer",
+    "password_reset": "djoser.serializers.SendEmailResetSerializer",
+    "password_reset_confirm": "djoser.serializers.PasswordResetConfirmSerializer",
+    "password_reset_confirm_retype": "djoser.serializers.PasswordResetConfirmRetypeSerializer",
+    "set_password": "djoser.serializers.SetPasswordSerializer",
+    "set_password_retype": "djoser.serializers.SetPasswordRetypeSerializer",
+    "set_username": "djoser.serializers.SetUsernameSerializer",
+    "set_username_retype": "djoser.serializers.SetUsernameRetypeSerializer",
+    "username_reset": "djoser.serializers.SendEmailResetSerializer",
+    "username_reset_confirm": "djoser.serializers.UsernameResetConfirmSerializer",
+    "username_reset_confirm_retype": "djoser.serializers.UsernameResetConfirmRetypeSerializer",
+    "user_create": "djoser.serializers.UserCreateSerializer",
+    "user_create_password_retype": "djoser.serializers.UserCreatePasswordRetypeSerializer",
+    "user_delete": "djoser.serializers.UserDeleteSerializer",
+    "user": "djoser.serializers.UserSerializer",
+    "current_user": "djoser.serializers.UserSerializer",
+    "token": "djoser.serializers.TokenSerializer",
+    "token_create": "djoser.serializers.TokenCreateSerializer",
+    # EMAILS
+    "activation": "djoser.email.ActivationEmail",
+    "confirmation": "djoser.email.ConfirmationEmail",
+    "password_reset": "djoser.email.PasswordResetEmail",
+    "password_changed_confirmation": "djoser.email.PasswordChangedConfirmationEmail",
+    "username_changed_confirmation": "djoser.email.UsernameChangedConfirmationEmail",
+    "username_reset": "djoser.email.UsernameResetEmail",
+    # CONSTANCE
+    "messages": "djoser.constants.Messages",
+    # PERMISSIONS
+    "activation": ["rest_framework.permissions.AllowAny"],
+    "password_reset": ["rest_framework.permissions.AllowAny"],
+    "password_reset_confirm": ["rest_framework.permissions.AllowAny"],
+    "set_password": ["rest_framework.permissions.CurrentUserOrAdmin"],
+    "username_reset": ["rest_framework.permissions.AllowAny"],
+    "username_reset_confirm": ["rest_framework.permissions.AllowAny"],
+    "set_username": ["rest_framework.permissions.CurrentUserOrAdmin"],
+    "user_create": ["rest_framework.permissions.AllowAny"],
+    "user_delete": ["rest_framework.permissions.CurrentUserOrAdmin"],
+    "user": ["rest_framework.permissions.CurrentUserOrAdmin"],
+    "user_list": ["rest_framework.permissions.CurrentUserOrAdmin"],
+    "token_create": ["rest_framework.permissions.AllowAny"],
+    "token_destroy": ["rest_framework.permissions.IsAuthenticated"],
+    "HIDE_USERS": True,
 }
 
 CORS_ALLOWED_ORIGINS = [
