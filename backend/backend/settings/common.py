@@ -74,6 +74,7 @@ THIRD_PARTY_APPS = [
 # account: 커스텀 유저 & 회원가입
 PROJECT_APPS = [
     "accounts",
+    "posts",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + PROJECT_APPS
