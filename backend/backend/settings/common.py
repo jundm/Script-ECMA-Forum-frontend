@@ -69,7 +69,6 @@ THIRD_PARTY_APPS = [
     "djoser",
     "rest_framework",
     "rest_framework_simplejwt",
-    "rest_framework_simplejwt.token_blacklist",
 ]
 # account: 커스텀 유저 & 회원가입
 PROJECT_APPS = [
