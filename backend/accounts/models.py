@@ -18,8 +18,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     date_joined = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
 
-    USERNAME_FIELD = "username"
-    REQUIRED_FIELDS = ["email", "name"]
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = ["username", "name"]
 
     objects = CustomUserManager()
 
@@ -37,3 +37,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return "{}".format(self.email)
+
+    def get_short_name(self):
+        return self.username
