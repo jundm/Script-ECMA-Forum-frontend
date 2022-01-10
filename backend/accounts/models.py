@@ -7,21 +7,21 @@ from accounts.managers import CustomUserManager
 
 
 class CustomUser(AbstractBaseUser):
-    ADMIN = 'admin'
-    STAFF = 'staff'
+    ADMIN = "admin"
+    STAFF = "staff"
     STATUS = [
-        (ADMIN, _('Admin User')),
-        (STAFF, _('Staff User')),
+        (ADMIN, _("Admin User")),
+        (STAFF, _("Staff User")),
     ]
-    email = models.EmailField(_('이메일 주소'), unique=True)
-    username = models.CharField(_('실명'), max_length=30)
-    nickname = models.CharField(_('닉네임'), max_length=30, unique=True)
+    email = models.EmailField(_("이메일 주소"), unique=True)
+    username = models.CharField(_("실명"), max_length=30)
+    nickname = models.CharField(_("닉네임"), max_length=30, unique=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)  # a admin user; non super-user
     is_admin = models.BooleanField(default=False)
 
-    USERNAME_FIELD = 'nickname'
-    REQUIRED_FIELDS = ['email','username']
+    USERNAME_FIELD = "nickname"
+    REQUIRED_FIELDS = ["email", "username"]
 
     objects = CustomUserManager()
 

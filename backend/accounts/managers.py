@@ -6,6 +6,7 @@ from django.utils.translation import gettext as _
 # https://dev.to/raghavmalawat/custom-user-manager-django-rest-framework-5578
 # https://docs.djangoproject.com/en/4.0/topics/db/managers/
 
+
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, username, nickname, password=None):
         if not email:
@@ -17,9 +18,7 @@ class CustomUserManager(BaseUserManager):
         if not nickname:
             raise ValueError(_("User must have a nickname"))
 
-        user = self.model(
-            email=self.normalize_email(email)
-        )
+        user = self.model(email=self.normalize_email(email))
         user.username = username
         user.nickname = nickname
         user.set_password(password)  # change password to hash
@@ -38,9 +37,7 @@ class CustomUserManager(BaseUserManager):
         if not nickname:
             raise ValueError(_("User must have a nickname"))
 
-        user = self.model(
-            email=self.normalize_email(email)
-        )
+        user = self.model(email=self.normalize_email(email))
         user.username = username
         user.nickname = nickname
         user.set_password(password)  # change password to hash
@@ -49,7 +46,7 @@ class CustomUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_staffuser(self, email, username, nickname,  password=None):
+    def create_staffuser(self, email, username, nickname, password=None):
         if not email:
             raise ValueError(_("User must have an email"))
         if not password:
@@ -59,9 +56,7 @@ class CustomUserManager(BaseUserManager):
         if not nickname:
             raise ValueError(_("User must have a nickname"))
 
-        user = self.model(
-            email=self.normalize_email(email)
-        )
+        user = self.model(email=self.normalize_email(email))
         user.username = username
         user.nickname = nickname
         user.set_password(password)  # change password to hash

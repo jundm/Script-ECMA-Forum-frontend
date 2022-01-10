@@ -9,6 +9,4 @@ from .serializers import CustomUserSerializer
 class UserCreateView(CreateAPIView):
     model = get_user_model()
     serializer_class = CustomUserSerializer
-    permission_classes = [
-        AllowAny
-    ]
+    permission_classes = [AllowAny]

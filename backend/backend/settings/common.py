@@ -64,8 +64,8 @@ DJANGO_APPS = [
 
 THIRD_PARTY_APPS = [
     "rest_framework",
-    'rest_framework_simplejwt',
-    'corsheaders',
+    "rest_framework_simplejwt",
+    "corsheaders",
 ]
 # account: 커스텀 유저 & 회원가입
 PROJECT_APPS = [
@@ -193,7 +193,7 @@ REST_FRAMEWORK = {
         "rest_framework.permissions.IsAuthenticated",
     ],
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
 }
 ## JWT

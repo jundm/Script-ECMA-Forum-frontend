@@ -3,6 +3,7 @@ from rest_framework import serializers
 
 CustomUser = get_user_model()
 
+
 class CustomUserSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = CustomUser.objects.create_user(
@@ -15,4 +16,4 @@ class CustomUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields = ['pk',"nickname", "email", "username", "password"]
+        fields = ["pk", "nickname", "email", "username", "password"]
