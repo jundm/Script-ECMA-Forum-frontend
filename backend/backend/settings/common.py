@@ -69,11 +69,6 @@ THIRD_PARTY_APPS = [
     "djoser",
     "rest_framework",
     "rest_framework_simplejwt",
-<<<<<<< HEAD
-    "corsheaders",
-=======
-    "rest_framework_simplejwt.token_blacklist",
->>>>>>> 2d0cac79333aaa0f888ff12252cde9a93a475488
 ]
 # account: 커스텀 유저 & 회원가입
 PROJECT_APPS = [

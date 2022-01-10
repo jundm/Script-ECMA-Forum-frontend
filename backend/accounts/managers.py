@@ -19,10 +19,7 @@ class CustomUserManager(BaseUserManager):
             raise ValueError(_("User must have a username"))
 
         user = self.model(email=self.normalize_email(email))
-<<<<<<< HEAD
-=======
         user.name = name
->>>>>>> 2d0cac79333aaa0f888ff12252cde9a93a475488
         user.username = username
         user.set_password(password)  # change password to hash
         user.is_admin = False
@@ -41,10 +38,7 @@ class CustomUserManager(BaseUserManager):
             raise ValueError(_("User must have a username"))
 
         user = self.model(email=self.normalize_email(email))
-<<<<<<< HEAD
-=======
         user.name = name
->>>>>>> 2d0cac79333aaa0f888ff12252cde9a93a475488
         user.username = username
         user.set_password(password)  # change password to hash
         user.is_admin = True
@@ -52,11 +46,7 @@ class CustomUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-<<<<<<< HEAD
-    def create_staffuser(self, email, username, nickname, password=None):
-=======
     def create_staffuser(self, email, name, username, password=None):
->>>>>>> 2d0cac79333aaa0f888ff12252cde9a93a475488
         if not email:
             raise ValueError(_("User must have an email"))
         if not password:
@@ -67,10 +57,7 @@ class CustomUserManager(BaseUserManager):
             raise ValueError(_("User must have a username"))
 
         user = self.model(email=self.normalize_email(email))
-<<<<<<< HEAD
-=======
         user.name = name
->>>>>>> 2d0cac79333aaa0f888ff12252cde9a93a475488
         user.username = username
         user.set_password(password)  # change password to hash
         user.is_admin = False
