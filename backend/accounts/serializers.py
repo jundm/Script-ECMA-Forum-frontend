@@ -1,9 +1,15 @@
 from django.contrib.auth import get_user_model
-from rest_framework import serializers
-from accounts.models import CustomUser
+from djoser.serializers import UserCreateSerializer
 
+User = get_user_model()
 
-class CurrentUserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CustomUser
-        fields = ("username", "email", "id", "first_name", "last_name")
+# ------------- Djoser ------------- #
+class CurrentUserSerializer(UserCreateSerializer):
+    class Meta(UserCreateSerializer.Meta):
+        model = User
+        fields = (
+            "id",
+            "name",
+            "username",
+            "email",
+        )
