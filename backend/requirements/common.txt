@@ -4,5 +4,7 @@ djangorestframework-simplejwt
 django-allauth
 django-cors-headers
 dj-rest-auth
-Pillow
 black
+httpie
+Pillow
+shortuuid

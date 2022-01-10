@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 import json
 from django.core.exceptions import ImproperlyConfigured
-import datetime
+from datetime import timedelta
 from django.utils.translation import gettext_lazy as _
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -57,19 +57,28 @@ DJANGO_APPS = [
 ]
 
 # django-allauth https://django-allauth.readthedocs.io/en/latest/configuration.html
-# django-rest-auth https://django-rest-auth.readthedocs.io/en/latest/index.html
+# dj-rest-auth https://dj-rest-auth.readthedocs.io/en/latest/installation.html
 # rest_framework https://www.django-rest-framework.org
-# rest_framework-jwt  https://jpadilla.github.io/django-rest-framework-jwt/
 # rest_framework-simplejwt https://django-rest-framework-simplejwt.readthedocs.io/en/latest/
+# django-cors-headers https://github.com/adamchainz/django-cors-headers
+# djoser https://djoser.readthedocs.io/en/latest/getting_started.html
+# drf-yasg https://drf-yasg.readthedocs.io/en/stable/readme.html#usage
 
 THIRD_PARTY_APPS = [
+    "corsheaders",
+    "djoser",
     "rest_framework",
     "rest_framework_simplejwt",
+<<<<<<< HEAD
     "corsheaders",
+=======
+    "rest_framework_simplejwt.token_blacklist",
+>>>>>>> 2d0cac79333aaa0f888ff12252cde9a93a475488
 ]
 # account: 커스텀 유저 & 회원가입
 PROJECT_APPS = [
     "accounts",
+    "posts",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + PROJECT_APPS
@@ -80,6 +89,7 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -196,13 +206,65 @@ REST_FRAMEWORK = {
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
 }
-## JWT
-# 추가적인 JWT_AUTH 설젇
-JWT_AUTH = {
-    "JWT_SECRET_KEY": SECRET_KEY,
-    "JWT_ALGORITHM": "HS256",  # 암호화 알고리즘
-    "JWT_ALLOW_REFRESH": True,  # refresh 사용 여부
-    "JWT_EXPIRATION_DELTA": datetime.timedelta(days=7),  # 유효기간 설정
-    "JWT_REFRESH_EXPIRATION_DELTA": datetime.timedelta(days=28),  # JWT 토큰 갱신 유효기간
-    # import datetime 상단에 import 하기
+# JWT
+SIMPLE_JWT = {
+    "AUTH_HEADER_TYPES": ("JWT",),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=10),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "ALGORITHM": "HS256",
+    "SIGNING_KEY": SECRET_KEY,
+    "LEEWAY": 0,  # 만료시간에 여유를 주는 값
 }
+
+# DJOSER CONFIG
+# uid관한 솔루션 https://protocolostomy.com/2021/05/06/user-activation-with-django-and-djoser/ # 결론: uid = pk 로 쓰기로 했다
+# 밑에 설정 많은데 전부 기본값이다 바꿀꺼 있으면 바꿀려고 기본값이지만 명시해놓음
+DJOSER = {
+    # SERIALIZERS
+    "activation": "djoser.serializers.ActivationSerializer",
+    "password_reset": "djoser.serializers.SendEmailResetSerializer",
+    "password_reset_confirm": "djoser.serializers.PasswordResetConfirmSerializer",
+    "password_reset_confirm_retype": "djoser.serializers.PasswordResetConfirmRetypeSerializer",
+    "set_password": "djoser.serializers.SetPasswordSerializer",
+    "set_password_retype": "djoser.serializers.SetPasswordRetypeSerializer",
+    "set_username": "djoser.serializers.SetUsernameSerializer",
+    "set_username_retype": "djoser.serializers.SetUsernameRetypeSerializer",
+    "username_reset": "djoser.serializers.SendEmailResetSerializer",
+    "username_reset_confirm": "djoser.serializers.UsernameResetConfirmSerializer",
+    "username_reset_confirm_retype": "djoser.serializers.UsernameResetConfirmRetypeSerializer",
+    "user_create": "djoser.serializers.UserCreateSerializer",
+    "user_create_password_retype": "djoser.serializers.UserCreatePasswordRetypeSerializer",
+    "user_delete": "djoser.serializers.UserDeleteSerializer",
+    "user": "djoser.serializers.UserSerializer",
+    "current_user": "djoser.serializers.UserSerializer",
+    "token": "djoser.serializers.TokenSerializer",
+    "token_create": "djoser.serializers.TokenCreateSerializer",
+    # EMAILS
+    "activation": "djoser.email.ActivationEmail",
+    "confirmation": "djoser.email.ConfirmationEmail",
+    "password_reset": "djoser.email.PasswordResetEmail",
+    "password_changed_confirmation": "djoser.email.PasswordChangedConfirmationEmail",
+    "username_changed_confirmation": "djoser.email.UsernameChangedConfirmationEmail",
+    "username_reset": "djoser.email.UsernameResetEmail",
+    # CONSTANCE
+    "messages": "djoser.constants.Messages",
+    # PERMISSIONS
+    "activation": ["rest_framework.permissions.AllowAny"],
+    "password_reset": ["rest_framework.permissions.AllowAny"],
+    "password_reset_confirm": ["rest_framework.permissions.AllowAny"],
+    "set_password": ["rest_framework.permissions.CurrentUserOrAdmin"],
+    "username_reset": ["rest_framework.permissions.AllowAny"],
+    "username_reset_confirm": ["rest_framework.permissions.AllowAny"],
+    "set_username": ["rest_framework.permissions.CurrentUserOrAdmin"],
+    "user_create": ["rest_framework.permissions.AllowAny"],
+    "user_delete": ["rest_framework.permissions.CurrentUserOrAdmin"],
+    "user": ["rest_framework.permissions.CurrentUserOrAdmin"],
+    "user_list": ["rest_framework.permissions.CurrentUserOrAdmin"],
+    "token_create": ["rest_framework.permissions.AllowAny"],
+    "token_destroy": ["rest_framework.permissions.IsAuthenticated"],
+    "HIDE_USERS": True,
+}
+
+CORS_ALLOWED_ORIGINS = [
+    # "my_url",
+]

@@ -1,3 +1,5 @@
 -r common.txt
 
 django-debug-toolbar
+drf_yasg
+pycrunch-engine
