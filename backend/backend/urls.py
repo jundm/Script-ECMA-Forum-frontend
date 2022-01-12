@@ -25,9 +25,9 @@ from drf_yasg import openapi
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="Itboss API",
+        title="SEForum API",
         default_version="v1",
-        description="Automate created document Itboss API",
+        description="Automate created document SEForum API",
         terms_of_service="https://www.google.com/policies/terms/",
         contact=openapi.Contact(email="contact@snippets.local"),
         license=openapi.License(name="BSD License"),
