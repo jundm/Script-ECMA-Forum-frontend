@@ -62,7 +62,7 @@ DJANGO_APPS = [
 # rest_framework-simplejwt https://django-rest-framework-simplejwt.readthedocs.io/en/latest/
 # django-cors-headers https://github.com/adamchainz/django-cors-headers
 # djoser https://djoser.readthedocs.io/en/latest/getting_started.html
-# drf-yasg https://drf-yasg.readthedocs.io/en/stable/readme.html#usage
+
 
 THIRD_PARTY_APPS = [
     "corsheaders",

@@ -40,3 +40,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def get_short_name(self):
         return self.username
+
+    def run(self):
+        questions = CustomUser.objects.all()
