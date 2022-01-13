@@ -55,3 +55,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
             return self.avatar.url
         else:
             return resolve_url("pydenticon_image", self.username)
+
+
+# 깃허브 테스트중입니다
