@@ -55,6 +55,3 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
             return self.avatar.url
         else:
             return resolve_url("pydenticon_image", self.username)
-
-
-# git 테스트 해보는중
