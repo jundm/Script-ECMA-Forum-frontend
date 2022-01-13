@@ -8,6 +8,9 @@ from . import views
 app_name = "postsApp"
 router = DefaultRouter()
 router.register("api", views.PostViewSet, "postsApi")
+router.register(
+    r"api/(?P<post_pk>\d+)/comments", views.CommentViewSet, "postsCommentsApi"
+)
 
 
 urlpatterns = [] + router.urls
