@@ -153,9 +153,9 @@ LANGUAGE_CODE = "ko"
 
 TIME_ZONE = "Asia/Seoul"
 
-USE_I18N = True
-
-USE_TZ = True
+USE_I18N = True  # 장고 번역 시스템 활성화 여부
+USE_L10N = True  # 현지화 데이터 형식 사용 여부
+USE_TZ = True  # 시간대 인식 여부
 
 LOCALE_PATHS = [
     BASE_DIR / "locale",
@@ -195,7 +195,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 ## DRF
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.IsAuthenticated",
+        "rest_framework.permissions.AllowAny",
+        # "rest_framework.permissions.IsAuthenticated",
     ],
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework_simplejwt.authentication.JWTAuthentication",
@@ -204,7 +205,7 @@ REST_FRAMEWORK = {
 # JWT
 SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ("JWT",),
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=10),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=500),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "ALGORITHM": "HS256",
     "SIGNING_KEY": SECRET_KEY,
@@ -239,7 +240,7 @@ DJOSER = {
         "username_reset": "djoser.serializers.SendEmailResetSerializer",
         "username_reset_confirm": "djoser.serializers.UsernameResetConfirmSerializer",
         "username_reset_confirm_retype": "djoser.serializers.UsernameResetConfirmRetypeSerializer",
-        "user_create": "djoser.serializers.UserCreateSerializer",
+        "user_create": "CustomUser.serializers.UserCreateSerializer",
         "user_create_password_retype": "djoser.serializers.UserCreatePasswordRetypeSerializer",
         "user_delete": "djoser.serializers.UserDeleteSerializer",
         "user": "djoser.serializers.UserSerializer",

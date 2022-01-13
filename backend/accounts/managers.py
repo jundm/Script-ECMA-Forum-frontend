@@ -8,13 +8,11 @@ from django.utils.translation import gettext as _
 
 
 class CustomUserManager(BaseUserManager):
-    def create_user(self, email, name, username, password=None, repassword=None):
+    def create_user(self, email, name, username, password=None):
         if not email:
             raise ValueError(_("User must have an email"))
         if not password:
             raise ValueError(_("User must have a password"))
-        if not password == repassword:
-            raise ValueError(_("Passwords do not match"))
         if not name:
             raise ValueError(_("User must have a name"))
         if not username:
@@ -24,19 +22,16 @@ class CustomUserManager(BaseUserManager):
         user.name = name
         user.username = username
         user.set_password(password)  # change password to hash
-        user.set_password(repassword)  # change password to hash
         user.is_admin = False
         user.is_staff = False
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, name, username, password=None, repassword=None):
+    def create_superuser(self, email, name, username, password=None):
         if not email:
             raise ValueError(_("User must have an email"))
         if not password:
             raise ValueError(_("User must have a password"))
-        if not password == repassword:
-            raise ValueError(_("Passwords do not match"))
         if not name:
             raise ValueError(_("User must have a  name"))
         if not username:
@@ -46,19 +41,16 @@ class CustomUserManager(BaseUserManager):
         user.name = name
         user.username = username
         user.set_password(password)  # change password to hash
-        user.set_password(repassword)  # change password to hash
         user.is_admin = True
         user.is_staff = True
         user.save(using=self._db)
         return user
 
-    def create_staffuser(self, email, name, username, password=None, repassword=None):
+    def create_staffuser(self, email, name, username, password=None):
         if not email:
             raise ValueError(_("User must have an email"))
         if not password:
             raise ValueError(_("User must have a password"))
-        if not password == repassword:
-            raise ValueError(_("Passwords do not match"))
         if not name:
             raise ValueError(_("User must have a  name"))
         if not username:
@@ -68,7 +60,6 @@ class CustomUserManager(BaseUserManager):
         user.name = name
         user.username = username
         user.set_password(password)  # change password to hash
-        user.set_password(repassword)  # change password to hash
         user.is_admin = False
         user.is_staff = True
         user.save(using=self._db)
