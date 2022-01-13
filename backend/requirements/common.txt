@@ -3,8 +3,8 @@ djangorestframework
 djangorestframework-simplejwt
 django-allauth
 django-cors-headers
+django-pydenticon
 dj-rest-auth
 black
 httpie
 Pillow
-shortuuid

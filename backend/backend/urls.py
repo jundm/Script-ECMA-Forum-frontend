@@ -17,6 +17,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include, re_path
+from django_pydenticon.views import image as pydenticon_image
 
 # drf-yasg
 from rest_framework import permissions
@@ -42,6 +43,7 @@ urlpatterns = [
     path("posts/", include("posts.urls")),
     path("", include("djoser.urls")),
     path("", include("djoser.urls.jwt")),
+    path("avatar/image/<path:data>.png", pydenticon_image, name="pydenticon_image"),
     re_path(
         r"^api/v1/swagger(?P<format>\.json|\.yaml)$",
         schema_view.without_ui(cache_timeout=0),
