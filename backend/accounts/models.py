@@ -57,4 +57,4 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
             return resolve_url("pydenticon_image", self.username)
 
 
-# 깃허브 테스트중입니다
+# git 테스트 해보는중
