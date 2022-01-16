@@ -1,22 +1,26 @@
 from django.contrib import admin
 
-from .models import Post, Tag, Comment
+from .models import PostType, Post, Comment, Tag
+
+
+@admin.register(PostType)
+class PostTypeAdmin(admin.ModelAdmin):
+    list_display = ("id", "is_type")
 
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
     list_display = (
         "id",
+        "type",
         "title",
-        "short_content",
+        "content",
         "author",
         "created_at",
-        "updated_at",
     )
-    list_display_links = ("title", "short_content", "author")
-    list_filter = ("author", "created_at", "updated_at")
-    search_fields = ["title"]
+    list_filter = ("type", "author", "created_at", "updated_at")
     date_hierarchy = "created_at"
+    search_fields = ["title"]
 
     def short_content(self, post):
         return post.content[:15]

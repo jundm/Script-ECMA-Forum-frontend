@@ -27,7 +27,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     updated_on = models.DateTimeField(auto_now=True)
 
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ["name"]
+    REQUIRED_FIELDS = ["name", "username"]
 
     objects = CustomUserManager()
 

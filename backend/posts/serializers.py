@@ -22,10 +22,19 @@ class AuthorSerializer(serializers.ModelSerializer):
 
 class PostSerializer(serializers.ModelSerializer):
     author = AuthorSerializer(read_only=True)
+    type = serializers.CharField()
 
     class Meta:
         model = Post
-        fields = ["id", "author", "title", "content", "created_at", "updated_at"]
+        fields = [
+            "id",
+            "type",
+            "author",
+            "title",
+            "content",
+            "created_at",
+            "updated_at",
+        ]
 
 
 class CommentSerializer(serializers.ModelSerializer):
