@@ -1,12 +1,21 @@
 from rest_framework.generics import get_object_or_404
 from rest_framework.viewsets import ModelViewSet
-from .models import Post, Comment
-from .serializers import PostSerializer, CommentSerializer
+from .models import Post, Comment, PostComment
+from .serializers import PostSerializer, CommentSerializer, PostCommentSerializer
 
 
 class PostViewSet(ModelViewSet):
     queryset = Post.objects.all().select_related("author")
     serializer_class = PostSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
+        return super().perform_create(serializer)
+
+
+class PostCommentViewSet(ModelViewSet):
+    queryset = PostComment.objects.all().select_related("author")
+    serializer_class = PostCommentSerializer
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)

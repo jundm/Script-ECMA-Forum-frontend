@@ -1,29 +1,46 @@
+# 수정 사항
+# search_fields = ["title"]
+#
+# def short_content(self, post):
+#     return post.content[:15]
 from django.contrib import admin
 
-from .models import PostType, Post, Comment, Tag
+from .models import PostType, Post, PostComment, Comment, Tag
 
 
 @admin.register(PostType)
 class PostTypeAdmin(admin.ModelAdmin):
-    list_display = ("id", "is_type")
+    list_display = ("id", "is_category")
 
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
     list_display = (
         "id",
-        "type",
         "title",
         "content",
-        "author",
         "created_at",
+        "updated_at",
+        "category",
+        "author",
     )
-    list_filter = ("type", "author", "created_at", "updated_at")
+    list_filter = ("created_at", "updated_at", "category", "author")
     date_hierarchy = "created_at"
-    search_fields = ["title"]
 
-    def short_content(self, post):
-        return post.content[:15]
+
+@admin.register(PostComment)
+class PostCommentAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "title",
+        "content",
+        "created_at",
+        "updated_at",
+        "answer",
+        "author",
+    )
+    list_filter = ("created_at", "updated_at", "answer", "author")
+    date_hierarchy = "created_at"
 
 
 @admin.register(Comment)
