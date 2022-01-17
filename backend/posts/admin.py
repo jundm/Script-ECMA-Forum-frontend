@@ -5,12 +5,7 @@
 #     return post.content[:15]
 from django.contrib import admin
 
-from .models import PostType, Post, PostComment, Comment, Tag
-
-
-@admin.register(PostType)
-class PostTypeAdmin(admin.ModelAdmin):
-    list_display = ("id", "is_category")
+from .models import Post, PostComment, Comment, Tag
 
 
 @admin.register(Post)

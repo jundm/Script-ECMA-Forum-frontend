@@ -1,9 +1,10 @@
+import json
 import re
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from rest_framework.relations import PrimaryKeyRelatedField, StringRelatedField
+from rest_framework.relations import StringRelatedField
 
-from .models import Post, Comment, PostComment, PostType
+from .models import Post, Comment, PostComment
 
 
 class AuthorSerializer(serializers.ModelSerializer):
@@ -22,25 +23,15 @@ class AuthorSerializer(serializers.ModelSerializer):
             return scheme + "://" + host + author.avatar_url
 
 
-class PostTypeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = PostType
-        fields = ["is_category"]
-
-
 class PostSerializer(serializers.ModelSerializer):
     author = AuthorSerializer(read_only=True)
-    category = StringRelatedField()
-    category_id = serializers.PrimaryKeyRelatedField(
-        queryset=PostType.objects.all(), source="category", write_only=True
-    )
+    tag_set = serializers.StringRelatedField(many=True, read_only=True)
 
     class Meta:
         model = Post
         fields = [
             "id",
             "category",
-            "category_id",
             "author",
             "title",
             "content",

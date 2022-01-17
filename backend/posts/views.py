@@ -1,6 +1,8 @@
+import re
+
 from rest_framework.generics import get_object_or_404
 from rest_framework.viewsets import ModelViewSet
-from .models import Post, Comment, PostComment
+from .models import Post, Comment, PostComment, Tag
 from .serializers import PostSerializer, CommentSerializer, PostCommentSerializer
 
 
@@ -8,9 +10,24 @@ class PostViewSet(ModelViewSet):
     queryset = Post.objects.all().select_related("author")
     serializer_class = PostSerializer
 
+    # def perform_create(self, serializer):
+    #     serializer.save(author=self.request.user)
+    #     return super().perform_create(serializer)
+
     def perform_create(self, serializer):
-        serializer.save(author=self.request.user)
-        return super().perform_create(serializer)
+        super().perform_create(serializer)
+        post = serializer.instance
+
+        tag_name_set = self.request.data.dict().get("content")
+        re_tag = re.findall(r"#([a-zA-Z\dㄱ-힣]+)", tag_name_set)
+
+        tag_list = []
+        for word in re_tag:
+            tag_name = word.strip()
+            tag, __ = Tag.objects.get_or_create(name=tag_name)
+            tag_list.append(tag)
+
+        post.tag_set.add(*tag_list)
 
 
 class PostCommentViewSet(ModelViewSet):
