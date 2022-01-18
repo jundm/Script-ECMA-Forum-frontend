@@ -10,10 +10,6 @@ class PostViewSet(ModelViewSet):
     queryset = Post.objects.all().select_related("author")
     serializer_class = PostSerializer
 
-    # def perform_create(self, serializer):
-    #     serializer.save(author=self.request.user)
-    #     return super().perform_create(serializer)
-
     def perform_create(self, serializer):
         super().perform_create(serializer)
         post = serializer.instance
