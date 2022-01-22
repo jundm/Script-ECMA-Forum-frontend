@@ -11,7 +11,7 @@ from accounts.managers import CustomUserManager
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_("이메일 주소"), max_length=50, unique=True)
     name = models.CharField(_("실명"), max_length=30)
-    username = models.CharField(_("닉네임"), max_length=30, unique=True)
+    username = models.CharField(_("닉네임"), max_length=30, unique=True, blank=True)
     avatar = models.ImageField(
         _("프로필 사진"),
         blank=True,
@@ -27,7 +27,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     updated_on = models.DateTimeField(auto_now=True)
 
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ["username", "name"]
+    REQUIRED_FIELDS = ["name", "username"]
 
     objects = CustomUserManager()
 

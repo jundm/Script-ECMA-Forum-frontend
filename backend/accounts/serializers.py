@@ -14,7 +14,7 @@ class UserCreateSerializer(UserCreateSerializer):
             "username",
             "email",
         )
-        REQUIRED_FIELDS = ["username"]
+        REQUIRED_FIELDS = ["name"]
 
 
 # ------------- Basic User Info ------------- #
