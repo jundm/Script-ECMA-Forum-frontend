@@ -2,22 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4927912a-8a50-4997-9246-117e62f45853" name="변경" comment="">
-      <change afterPath="$PROJECT_DIR$/../backend/posts/serializers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/accounts/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/accounts/migrations/0001_initial.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/accounts/migrations/0002_customuser_date_joined_customuser_updated_on.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/accounts/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/accounts/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/accounts/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/accounts/serializers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/backend/settings/common.py" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/backend/settings/common.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/posts/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/posts/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/posts/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/posts/migrations/0001_initial.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/posts/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/posts/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/posts/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/posts/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/posts/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/posts/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/_app.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/_app.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/global.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles/global.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -35,6 +22,9 @@
       <filtered-out-file-type name="TAG" />
       <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
     </file-type-list>
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/node_modules/redux-persist/types/storage/createWebStorage.d.ts" root0="SKIP_INSPECTION" />
   </component>
   <component name="JsBowerSettings">
     <bower-package value="" />
@@ -80,7 +70,8 @@
       <workItem from="1642814772066" duration="1358000" />
       <workItem from="1642816581089" duration="680000" />
       <workItem from="1642817267206" duration="1212000" />
-      <workItem from="1642818687899" duration="5401000" />
+      <workItem from="1642818687899" duration="6194000" />
+      <workItem from="1642829657534" duration="18772000" />
     </task>
     <servers />
   </component>
