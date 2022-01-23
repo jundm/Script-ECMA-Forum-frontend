@@ -6,7 +6,6 @@ export default function Main() {
     <div>
       <Head>
         <title>ScriptECMAForum</title>
-        {/*<link rel="icon" href="/196.png" />*/}
       </Head>
       <div>Main</div>
     </div>

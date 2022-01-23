@@ -19,6 +19,8 @@ function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <title>ScriptECMAForum</title>
         <link rel="icon" type="image/png" href="https://user-images.githubusercontent.com/80582578/150659751-3470092d-4f58-438a-b347-1b0ecbe66151.png" />
       </Head>

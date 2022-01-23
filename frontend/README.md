@@ -1,23 +1,18 @@
-# Next.js + Jest
+# 공식문서 모음
 
-This example shows how to configure Jest to work with Next.js.
+Next https://nextjs.org
 
-This includes Next.js' built-in support for Global CSS, CSS Modules and TypeScript.
+redux-persist https://github.com/rt2zz/redux-persist#basic-usage
 
-## How to Use
+redux https://ko.redux.js.org/introduction/getting-started
 
-Quickly get started using [Create Next App](https://github.com/vercel/next.js/tree/canary/packages/create-next-app#readme)!
+redux-toolkit https://redux-toolkit.js.org
 
-In your terminal, run the following command:
+next-redux-wrapper https://github.com/kirill-konshin/next-redux-wrapper
 
-```bash
-npx create-next-app --example with-jest with-jest-app
-# or
-yarn create next-app --example with-jest with-jest-app
-```
+jest https://jestjs.io
 
-## Run Jest Tests
+typescript https://typescript-kr.github.io
 
-```bash
-npm test
-```
+emotion https://emotion.sh/docs/introduction
+
