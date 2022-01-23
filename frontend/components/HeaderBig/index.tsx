@@ -25,13 +25,8 @@ interface HeaderProps {
 }
 
 const HeaderBig = (props: HeaderProps) => {
-  // const Uid = useSelector(loginUid);
-  // const User = useSelector(loginUser);
-  // const NickName = User.payload.userReducer.user;
-  // const slug = Uid.payload.userReducer.uid;
   const toggleHeader = () => {
     props.setIsOpen((isOpen) => !isOpen);
-    // props.saveLocalStorage();
   };
   const LogoSrc =
     "https://user-images.githubusercontent.com/80582578/150622621-619d3778-7717-4455-9093-60e0be731da5.png";

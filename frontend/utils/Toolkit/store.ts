@@ -13,9 +13,7 @@ import {
   REGISTER,
   persistStore,
 } from "redux-persist";
-import storage from 'redux-persist/lib/storage';
-
-
+import storage from "redux-persist/lib/storage";
 
 const persistConfig = {
   key: "root",
@@ -46,5 +44,5 @@ export const store = configureStore({
 const makeStore: MakeStore<any> = (context: Context) => store;
 
 export const wrapper = createWrapper<any>(makeStore, { debug: true });
-export type RootState = ReturnType<typeof store.getState>
+export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

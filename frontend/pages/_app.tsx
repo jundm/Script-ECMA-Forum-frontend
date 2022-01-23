@@ -1,26 +1,33 @@
 import type { AppProps } from "next/app";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import "@/styles/global.css";
+import Head from "next/head";
 import HeaderBig from "@/components/HeaderBig";
 import HeaderSmall from "@/components/HeaderSmall";
 import { wrapper } from "../utils/Toolkit/store";
-import "@/styles/global.css";
-import Head from "next/head";
+import { useDispatch, useSelector } from "react-redux";
+import { userHeader } from "../utils/Toolkit/Slice/userSlice";
 
 function App({ Component, pageProps }: AppProps) {
-  const [isOpen, setIsOpen] = useState(false);
+  const checkUser = useSelector(userHeader);
+  let headerState = checkUser.payload.userReducer.header;
+  const dispatch = useDispatch();
+  const [isOpen, setIsOpen] = useState(headerState);
+  useEffect(() => {
+    dispatch(userHeader(isOpen));
+  }, [isOpen]);
   return (
     <>
       <Head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>ScriptECMAForum</title>
+        <link rel="icon" type="image/png" href="https://user-images.githubusercontent.com/80582578/150659751-3470092d-4f58-438a-b347-1b0ecbe66151.png" />
       </Head>
-      {isOpen ? (
+      {headerState ? (
         <HeaderSmall
-          // saveLocalStorage={saveLocalStorage}
           setIsOpen={setIsOpen}
         />
       ) : (
         <HeaderBig
-          // saveLocalStorage={saveLocalStorage}
           setIsOpen={setIsOpen}
         />
       )}
