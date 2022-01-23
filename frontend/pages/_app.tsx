@@ -1,12 +1,12 @@
 import type { AppProps } from "next/app";
 import { useEffect, useState } from "react";
-import "@/styles/global.css";
+import "@styles/global.css";
 import Head from "next/head";
-import HeaderBig from "@/components/HeaderBig";
-import HeaderSmall from "@/components/HeaderSmall";
-import { wrapper } from "../utils/Toolkit/store";
+import HeaderBig from "@components/HeaderBig";
+import HeaderSmall from "@components/HeaderSmall";
+import { wrapper } from "@utils/Toolkit/store";
 import { useDispatch, useSelector } from "react-redux";
-import { userHeader } from "../utils/Toolkit/Slice/userSlice";
+import { userHeader } from "@utils/Toolkit/Slice/userSlice";
 
 function App({ Component, pageProps }: AppProps) {
   const checkUser = useSelector(userHeader);
