@@ -5,8 +5,7 @@ from . import views
 
 app_name = "postsApp"
 router = DefaultRouter()
-# router.register("api", views.PostViewSet, "postsApi")
-router.register(r"api/(?P<category>\w+)", views.PostViewSet, "postsApi")
+router.register("api", views.PostViewSet, "postsApi")
 router.register(r"api/(?P<post_pk>\d+)/postComment", views.PostCommentViewSet)
 router.register(r"api/(?P<post_pk>\d+)/comments", views.CommentViewSet)
 

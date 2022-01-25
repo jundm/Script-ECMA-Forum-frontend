@@ -9,16 +9,14 @@ from .serializers import PostSerializer, CommentSerializer, PostCommentSerialize
 class PostViewSet(ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    # filter_backends = [DjangoFilterBackend]
-    # filterset_fields = ["category", "id"]
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ["id", "category"]
 
     def perform_create(self, serializer):
         author = self.request.user
-        category = get_object_or_404(Post, pk=self.kwargs["category"])
-        serializer.save(author=author, category=category)
+        serializer.save(author=author)
         post = serializer.instance
 
-        # print("test", self.request.query_params)
         tag_name_set = self.request.data.get("content")
         re_tag = re.findall(r"#([a-zA-Z\dㄱ-힣]+)", tag_name_set)
 
@@ -29,14 +27,6 @@ class PostViewSet(ModelViewSet):
             tag_list.append(tag)
 
         post.tag_set.add(*tag_list)
-
-    def get_queryset(self):
-        qs = super().get_queryset()
-        print("test", self.kwargs["category"])
-        # print("test", super().get_queryset())
-        qs = qs.filter(category=self.kwargs["category"])
-        # print("test", self.request.query_params.get)
-        return qs
 
 
 class PostCommentViewSet(ModelViewSet):
