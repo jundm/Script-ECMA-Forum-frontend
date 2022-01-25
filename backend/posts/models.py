@@ -28,7 +28,6 @@ class Post(PostModel):
     category = models.CharField(max_length=12, choices=Choices)
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        null=True,
         related_name="PostAuthor_set",
         on_delete=models.CASCADE,
         verbose_name=_("작성자"),
