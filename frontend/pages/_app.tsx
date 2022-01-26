@@ -7,7 +7,7 @@ import HeaderSmall from "@components/HeaderSmall";
 import { wrapper } from "@utils/Toolkit/store";
 import { useDispatch, useSelector } from "react-redux";
 import { userHeader } from "@utils/Toolkit/Slice/userSlice";
-// 
+//
 function App({ Component, pageProps }: AppProps) {
   const checkUser = useSelector(userHeader);
   let headerState = checkUser.payload.userReducer.header;

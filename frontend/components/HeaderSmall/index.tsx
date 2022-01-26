@@ -8,7 +8,6 @@ import {
   Logo,
   WidthDiv,
   LoginSignUp,
-  Div,
   UserNameDiv,
   ProfileDiv,
 } from "./styles";
@@ -27,15 +26,13 @@ const HeaderSmall = (props: HeaderProps) => {
   return (
     <>
       <HeaderOutLineSmall>
-        <Div>
           <WidthDiv>
             <Logo src={LogoSrc} onClick={toggleHeader} />
-            <MenuUl>
               <MenuLi>😎인기</MenuLi>
               <MenuLi>🙈질문</MenuLi>
               <MenuLi>😆소통</MenuLi>
               <MenuLi>🥳뉴스</MenuLi>
-            </MenuUl>
+
             {false ? (
               <>
                 {/*<UserNameDiv>{NickName.slice(0, 2)}</UserNameDiv>*/}
@@ -47,7 +44,6 @@ const HeaderSmall = (props: HeaderProps) => {
               </>
             )}
           </WidthDiv>
-        </Div>
       </HeaderOutLineSmall>
     </>
   );

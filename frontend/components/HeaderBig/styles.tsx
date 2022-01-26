@@ -70,6 +70,8 @@ export const Logout = styled(HeaderLoginDiv)`
 `;
 
 export const Div = styled.div`
+  height: 150px;
+  text-align: center;
   @keyframes float {
     0% {
       transform: translateY(0px);

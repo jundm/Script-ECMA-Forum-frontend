@@ -1,8 +1,6 @@
 import styled from "@emotion/styled";
 
 export const HeaderOutLineSmall = styled.header`
-  text-align: center;
-  justify-content: center;
   z-index: 200;
   background: #3f81b3 url("https://source.unsplash.com/DSwBHyWKiVw/1280x720")
     no-repeat center;
@@ -10,9 +8,7 @@ export const HeaderOutLineSmall = styled.header`
   //position: fixed;
   width: 100%;
 `;
-export const Div = styled.div`
-  display: flex;
-`;
+
 export const WidthDiv = styled.div`
   display: flex;
   justify-content: center;
@@ -69,14 +65,12 @@ export const UserNameDiv = styled.div`
 export const MenuUl = styled.ul`
   display: flex;
   justify-content: center;
-  text-align: center;
-  padding:0;
+  align-items: center;
 `;
 export const MenuLi = styled.li`
   z-index: 21;
-  display: block;
+  //display: block;
   padding: 10px 1px;
-  text-align: center;
   font-weight: bold;
   font-size: 1.2em;
   color: #d1e834;

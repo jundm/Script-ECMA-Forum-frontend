@@ -2,16 +2,20 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4927912a-8a50-4997-9246-117e62f45853" name="변경" comment="">
-      <change beforePath="$PROJECT_DIR$/../backend/accounts/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/accounts/migrations/0001_initial.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/backend/asgi.py" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/backend/asgi.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../backend/backend/settings/common.py" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/backend/settings/common.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/posts/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/posts/migrations/0001_initial.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/posts/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/posts/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/posts/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/posts/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/posts/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/posts/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/requirements/common.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/requirements/common.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/HeaderBig/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/HeaderBig/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/HeaderBig/styles.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/HeaderBig/styles.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/HeaderSmall/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/HeaderSmall/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/HeaderSmall/styles.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/HeaderSmall/styles.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/_app.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/_app.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/article/pop/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/article/hot/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/accounts/signup/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/accounts/signup/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/styles/global.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles/global.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/Toolkit/Slice/userSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/utils/Toolkit/Slice/userSlice.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,6 +93,8 @@
       <workItem from="1642987167436" duration="1589000" />
       <workItem from="1643004637093" duration="292000" />
       <workItem from="1643005543180" duration="413000" />
+      <workItem from="1643172871131" duration="2924000" />
+      <workItem from="1643176898918" duration="290000" />
     </task>
     <servers />
   </component>

@@ -16,6 +16,7 @@ import {
   // HeaderLink,
 } from "./styles";
 import React from "react";
+import Link from "next/link";
 // import { useSelector } from "react-redux";
 // import { loginUid, loginUser } from "@/utils/Toolkit/Slice/userSlice";
 
@@ -46,8 +47,16 @@ const HeaderBig = (props: HeaderProps) => {
               </>
             ) : (
               <>
-                <LoginSignUp>😘로그인</LoginSignUp>
-                <LoginSignUp>🥰회원가입</LoginSignUp>
+                <Link href="/accounts/login">
+                  <a>
+                    <LoginSignUp>😘로그인</LoginSignUp>
+                  </a>
+                </Link>
+                <Link href="/accounts/signup">
+                  <a>
+                    <LoginSignUp>🥰회원가입</LoginSignUp>
+                  </a>
+                </Link>
               </>
             )}
           </AuthenticationDiv>
@@ -58,10 +67,26 @@ const HeaderBig = (props: HeaderProps) => {
           <FaceMessageDiv>👈 응슷곰을 누르면 메뉴가 접혀요! </FaceMessageDiv>
         </Div>
         <MenuUl>
-          <MenuLi>😎인기</MenuLi>
-          <MenuLi>🙈질문</MenuLi>
-          <MenuLi>😆소통</MenuLi>
-          <MenuLi>🥳뉴스</MenuLi>
+          <Link href="/article/hot">
+            <a>
+              <MenuLi>😎인기</MenuLi>
+            </a>
+          </Link>
+          <Link href="/article/question">
+            <a>
+              <MenuLi>🙈질문</MenuLi>
+            </a>
+          </Link>
+          <Link href="/article/free">
+            <a>
+              <MenuLi>😆소통</MenuLi>
+            </a>
+          </Link>
+          <Link href="/article/news">
+            <a>
+              <MenuLi>🥳뉴스</MenuLi>
+            </a>
+          </Link>
         </MenuUl>
       </HeaderOutLineBig>
     </>
