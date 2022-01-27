@@ -9,7 +9,7 @@ interface AuthState {
   header: boolean;
 }
 const initialState: AuthState = {
-  header: true,
+  header: false,
 };
 
 export const userSlice = createSlice({

@@ -20,7 +20,7 @@ export const WidthDiv = styled.div`
 `;
 export const AuthenticationDiv = styled.div`
   display: flex;
-  justify-content: right;
+  justify-content: center;
   text-align: center;
   z-index: 20;
 `;
@@ -71,7 +71,8 @@ export const Logout = styled(HeaderLoginDiv)`
 
 export const Div = styled.div`
   height: 150px;
-  text-align: center;
+  display: inline-block;
+  vertical-align: middle;
   @keyframes float {
     0% {
       transform: translateY(0px);

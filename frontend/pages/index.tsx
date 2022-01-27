@@ -8,6 +8,10 @@ export default function Main() {
         <title>ScriptECMAForum</title>
       </Head>
       <div>Main</div>
+      <span className="block text-5xl font-bold leading-none">
+        Awesome Website
+      </span>
+      <span className="">Awesome Website</span>
     </div>
   );
 }
