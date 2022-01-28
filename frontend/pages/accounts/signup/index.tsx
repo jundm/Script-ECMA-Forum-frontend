@@ -13,6 +13,7 @@ import {
   AutoComplete,
 } from "antd";
 
+//TODO 추가예정=[validator, add form, email인증]
 interface SignUpProps {}
 const { Option } = Select;
 // *! 지역
@@ -75,6 +76,7 @@ const tailFormItemLayout = {
 };
 
 function SignUp(this: any, {}: SignUpProps) {
+  const [form] = Form.useForm();
   const [isLoading, setIsLoading] = useState(false);
   const [inputs, setInputs] = useState({
     name: "",
@@ -86,17 +88,10 @@ function SignUp(this: any, {}: SignUpProps) {
   const { name, username, email, password, re_password } = inputs;
   const onChange = (e: any) => {
     const { name, value } = e.target;
-    if (name === "displayName") {
-      setInputs({
-        ...inputs,
-        [name]: value.slice(0, 12),
-      });
-    } else {
-      setInputs({
-        ...inputs,
-        [name]: value,
-      });
-    }
+    setInputs({
+      ...inputs,
+      [name]: value,
+    });
   };
 
   const onFinish = async (value: any) => {
@@ -110,20 +105,18 @@ function SignUp(this: any, {}: SignUpProps) {
         re_password,
       })
       .then((res) => {
-        setInputs({
-          name: "",
-          username: "",
-          email: "",
-          password: "",
-          re_password: "",
-        }),
-          console.log(res);
+        console.log(res);
+        form.resetFields([
+          "email",
+          "name",
+          "username",
+          "password",
+          "re_password",
+        ]);
       })
       .catch((e) => console.warn(e.message));
-    debugger;
     setIsLoading(false);
   };
-  const [form] = Form.useForm();
 
   // const prefixSelector = (
   //   <Form.Item name="prefix" noStyle>
@@ -178,11 +171,11 @@ function SignUp(this: any, {}: SignUpProps) {
           rules={[
             {
               type: "email",
-              message: "The input is not valid E-mail!",
+              message: "이메일 형식으로 입력하세요!",
             },
             {
               required: true,
-              message: "Please input your E-mail!",
+              message: "이메일을 입력하세요!",
             },
           ]}
         >
@@ -195,7 +188,7 @@ function SignUp(this: any, {}: SignUpProps) {
           rules={[
             {
               required: true,
-              message: "Please input your password!",
+              message: "비밀번호를 입력하세요!",
             },
           ]}
           hasFeedback
@@ -215,7 +208,7 @@ function SignUp(this: any, {}: SignUpProps) {
           rules={[
             {
               required: true,
-              message: "Please confirm your password!",
+              message: "비밀번호를 확인 하세요!",
             },
             ({ getFieldValue }) => ({
               validator(_, value) {
@@ -375,7 +368,7 @@ function SignUp(this: any, {}: SignUpProps) {
           </Checkbox>
         </Form.Item>
         <Form.Item {...tailFormItemLayout}>
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" disabled={isLoading}>
             회원가입
           </Button>
         </Form.Item>

@@ -16,3 +16,7 @@ typescript https://typescript-kr.github.io
 
 emotion https://emotion.sh/docs/introduction
 
+react-cookies https://www.npmjs.com/package/react-cookies
+
+axios https://axios-http.com/kr/docs/
+
