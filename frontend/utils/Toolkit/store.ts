@@ -34,7 +34,8 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(logger),
+    }),
+  // }).concat(logger), //*! 로거 비활성화
   devTools: process.env.NODE_ENV !== "production",
 });
 

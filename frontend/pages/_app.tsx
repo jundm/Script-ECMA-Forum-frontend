@@ -1,4 +1,4 @@
-import type { AppProps } from "next/app";
+import type { AppContext, AppProps } from "next/app";
 import { useEffect, useState } from "react";
 import "@styles/global.css";
 import "antd/dist/antd.css";
@@ -8,6 +8,8 @@ import HeaderSmall from "@components/HeaderSmall";
 import { wrapper } from "@utils/Toolkit/store";
 import { useDispatch, useSelector } from "react-redux";
 import { userHeader } from "@utils/Toolkit/Slice/userSlice";
+import cookies from "next-cookies";
+import { setLoginToken } from "@utils/Cookies/TokenManager";
 
 function App({ Component, pageProps }: AppProps) {
   const checkUser = useSelector(userHeader);
@@ -17,6 +19,7 @@ function App({ Component, pageProps }: AppProps) {
   useEffect(() => {
     dispatch(userHeader(isOpen));
   }, [isOpen]);
+
   return (
     <>
       <Head>
@@ -39,4 +42,14 @@ function App({ Component, pageProps }: AppProps) {
   );
 }
 
+App.getInitialProps = async (appContext: AppContext) => {
+  const { ctx } = appContext;
+  const allCookies = cookies(ctx);
+  const accessTokenByCookie = allCookies["accessToken"];
+  if (accessTokenByCookie !== undefined) {
+    const refreshTokenByCookie = allCookies["refreshToken"] || "";
+    setLoginToken(accessTokenByCookie, refreshTokenByCookie);
+  }
+  return {};
+};
 export default wrapper.withRedux(App);
