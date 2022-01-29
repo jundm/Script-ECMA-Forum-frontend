@@ -11,10 +11,12 @@ import {
   Checkbox,
   Button,
   AutoComplete,
+  Card,
 } from "antd";
 
 //TODO 추가예정=[validator, add form, email인증]
 interface SignUpProps {}
+const loginWidth = 500;
 const { Option } = Select;
 // *! 지역
 // const residences = [
@@ -154,112 +156,119 @@ function SignUp(this: any, {}: SignUpProps) {
 
   return (
     <div className="" style={{ margin: "auto" }}>
-      <Form
-        {...formItemLayout}
-        form={form}
-        name="register"
-        onFinish={onFinish}
-        initialValues={{
-          residence: ["zhejiang", "hangzhou", "xihu"],
-          prefix: "86",
-        }}
-        scrollToFirstError
+      <Card
+        title="SignUp"
+        bordered={true}
+        style={{ width: `${loginWidth + 50}px`, margin: "0 auto" }}
       >
-        <Form.Item
-          name="email"
-          label="이메일"
-          rules={[
-            {
-              type: "email",
-              message: "이메일 형식으로 입력하세요!",
-            },
-            {
-              required: true,
-              message: "이메일을 입력하세요!",
-            },
-          ]}
+        <Form
+          {...formItemLayout}
+          form={form}
+          name="register"
+          onFinish={onFinish}
+          initialValues={{
+            residence: ["zhejiang", "hangzhou", "xihu"],
+            prefix: "86",
+          }}
+          scrollToFirstError
         >
-          <Input name="email" onChange={onChange} value={email} />
-        </Form.Item>
-
-        <Form.Item
-          name="password"
-          label="비밀번호"
-          rules={[
-            {
-              required: true,
-              message: "비밀번호를 입력하세요!",
-            },
-          ]}
-          hasFeedback
-        >
-          <Input.Password
-            name="password"
-            onChange={onChange}
-            value={password}
-          />
-        </Form.Item>
-
-        <Form.Item
-          name="re_password"
-          label="비밀번호 확인"
-          dependencies={["password"]}
-          hasFeedback
-          rules={[
-            {
-              required: true,
-              message: "비밀번호를 확인 하세요!",
-            },
-            ({ getFieldValue }) => ({
-              validator(_, value) {
-                if (!value || getFieldValue("password") === value) {
-                  return Promise.resolve();
-                }
-                return Promise.reject(
-                  new Error("The two passwords that you entered do not match!")
-                );
+          <Form.Item
+            name="email"
+            label="이메일"
+            rules={[
+              {
+                type: "email",
+                message: "이메일 형식으로 입력하세요!",
               },
-            }),
-          ]}
-        >
-          <Input.Password
+              {
+                required: true,
+                message: "이메일을 입력하세요!",
+              },
+            ]}
+          >
+            <Input name="email" onChange={onChange} value={email} />
+          </Form.Item>
+
+          <Form.Item
+            name="password"
+            label="비밀번호"
+            rules={[
+              {
+                required: true,
+                message: "비밀번호를 입력하세요!",
+              },
+            ]}
+            hasFeedback
+          >
+            <Input.Password
+              name="password"
+              onChange={onChange}
+              value={password}
+            />
+          </Form.Item>
+
+          <Form.Item
             name="re_password"
-            onChange={onChange}
-            value={re_password}
-          />
-        </Form.Item>
+            label="비밀번호 확인"
+            dependencies={["password"]}
+            hasFeedback
+            rules={[
+              {
+                required: true,
+                message: "비밀번호를 확인 하세요!",
+              },
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (!value || getFieldValue("password") === value) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(
+                    new Error(
+                      "The two passwords that you entered do not match!"
+                    )
+                  );
+                },
+              }),
+            ]}
+          >
+            <Input.Password
+              name="re_password"
+              onChange={onChange}
+              value={re_password}
+            />
+          </Form.Item>
 
-        <Form.Item
-          name="name"
-          label="실명"
-          tooltip="주민등록상 실제 이름을 기입합니다."
-          rules={[
-            {
-              required: true,
-              message: "실명을 입력하세요!",
-              whitespace: false,
-            },
-          ]}
-        >
-          <Input name="name" onChange={onChange} value={name} />
-        </Form.Item>
-        <Form.Item
-          name="username"
-          label="닉네임"
-          tooltip="닉네임을 사용 합니다(중복 불가)"
-          rules={[
-            {
-              required: true,
-              message: "닉네임을 입력하세요!",
-              whitespace: true,
-            },
-          ]}
-        >
-          <Input name="username" onChange={onChange} value={username} />
-        </Form.Item>
+          <Form.Item
+            name="name"
+            label="실명"
+            tooltip="주민등록상 실제 이름을 기입합니다."
+            rules={[
+              {
+                required: true,
+                message: "실명을 입력하세요!",
+                whitespace: false,
+              },
+            ]}
+          >
+            <Input name="name" onChange={onChange} value={name} />
+          </Form.Item>
+          <Form.Item
+            name="username"
+            label="닉네임"
+            tooltip="닉네임을 사용 합니다(중복 불가)"
+            rules={[
+              {
+                required: true,
+                message: "닉네임을 입력하세요!",
+                whitespace: true,
+              },
+            ]}
+          >
+            <Input name="username" onChange={onChange} value={username} />
+          </Form.Item>
 
-        {/* 지역 */}
-        {/* <Form.Item
+          {/* 지역 */}
+          {/* <Form.Item
           name="residence"
           label="Habitual Residence"
           rules={[
@@ -273,7 +282,7 @@ function SignUp(this: any, {}: SignUpProps) {
           <Cascader options={residences} />
         </Form.Item> */}
 
-        {/* <Form.Item
+          {/* <Form.Item
           name="phone"
           label="Phone Number"
           rules={[
@@ -283,7 +292,7 @@ function SignUp(this: any, {}: SignUpProps) {
           <Input addonBefore={prefixSelector} style={{ width: "100%" }} />
         </Form.Item> */}
 
-        {/* <Form.Item
+          {/* <Form.Item
           name="donation"
           label="Donation"
           rules={[{ required: true, message: "Please input donation amount!" }]}
@@ -291,7 +300,7 @@ function SignUp(this: any, {}: SignUpProps) {
           <InputNumber addonAfter={suffixSelector} style={{ width: "100%" }} />
         </Form.Item> */}
 
-        {/* <Form.Item
+          {/* <Form.Item
           name="website"
           label="Website"
           rules={[{ required: true, message: "Please input website!" }]}
@@ -305,7 +314,7 @@ function SignUp(this: any, {}: SignUpProps) {
           </AutoComplete>
         </Form.Item> */}
 
-        {/* <Form.Item
+          {/* <Form.Item
           name="intro"
           label="Intro"
           rules={[{ required: true, message: "Please input Intro" }]}
@@ -313,7 +322,7 @@ function SignUp(this: any, {}: SignUpProps) {
           <Input.TextArea showCount maxLength={100} />
         </Form.Item> */}
 
-        {/* <Form.Item
+          {/* <Form.Item
           name="gender"
           label="Gender"
           rules={[{ required: true, message: "Please select gender!" }]}
@@ -325,7 +334,7 @@ function SignUp(this: any, {}: SignUpProps) {
           </Select>
         </Form.Item> */}
 
-        {/* <Form.Item
+          {/* <Form.Item
           label="Captcha"
           extra="We must make sure that your are a human."
         >
@@ -350,29 +359,30 @@ function SignUp(this: any, {}: SignUpProps) {
           </Row>
         </Form.Item> */}
 
-        <Form.Item
-          name="agreement"
-          valuePropName="checked"
-          rules={[
-            {
-              validator: (_, value) =>
-                value
-                  ? Promise.resolve()
-                  : Promise.reject(new Error("Should accept agreement")),
-            },
-          ]}
-          {...tailFormItemLayout}
-        >
-          <Checkbox>
-            <a href="">약관에 동의합니다.</a>
-          </Checkbox>
-        </Form.Item>
-        <Form.Item {...tailFormItemLayout}>
-          <Button type="primary" htmlType="submit" disabled={isLoading}>
-            회원가입
-          </Button>
-        </Form.Item>
-      </Form>
+          <Form.Item
+            name="agreement"
+            valuePropName="checked"
+            rules={[
+              {
+                validator: (_, value) =>
+                  value
+                    ? Promise.resolve()
+                    : Promise.reject(new Error("Should accept agreement")),
+              },
+            ]}
+            {...tailFormItemLayout}
+          >
+            <Checkbox>
+              <a href="">약관에 동의합니다.</a>
+            </Checkbox>
+          </Form.Item>
+          <Form.Item {...tailFormItemLayout}>
+            <Button type="primary" htmlType="submit" disabled={isLoading}>
+              회원가입
+            </Button>
+          </Form.Item>
+        </Form>
+      </Card>
     </div>
   );
 }
