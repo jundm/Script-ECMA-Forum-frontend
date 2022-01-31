@@ -35,7 +35,7 @@ function Login({}: LoginProps) {
   const onFinish = (values: any) => {
     setIsLoading(true);
     axios
-      .post("http://localhost:8000/jwt/create/", {
+      .post(process.env.NEXT_PUBLIC_DEVELOPMENT_ENV_BASE_URL + "jwt/create/", {
         email,
         password,
       })

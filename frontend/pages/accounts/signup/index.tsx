@@ -99,7 +99,7 @@ function SignUp(this: any, {}: SignUpProps) {
   const onFinish = async (value: any) => {
     setIsLoading(true);
     axios
-      .post("http://localhost:8000/users/", {
+      .post(process.env.NEXT_PUBLIC_DEVELOPMENT_ENV_BASE_URL + "users/", {
         name,
         username,
         email,
@@ -378,7 +378,7 @@ function SignUp(this: any, {}: SignUpProps) {
           </Form.Item>
           <Form.Item {...tailFormItemLayout}>
             <Button type="primary" htmlType="submit" disabled={isLoading}>
-              회원가입
+              {isLoading ? "회원가입중.." : "회원가입"}
             </Button>
           </Form.Item>
         </Form>

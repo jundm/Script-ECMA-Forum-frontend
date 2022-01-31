@@ -26,12 +26,13 @@ yarn-debug.log*
 yarn-error.log*
 
 # local env files
+# development,production 관리를 위한 업로드
 .env.local
 .env.development.local
-.env.development.
+# .env.development.
 .env.test.local
 .env.production.local
-.env.production
+# .env.production
 
 # vercel
 .vercel

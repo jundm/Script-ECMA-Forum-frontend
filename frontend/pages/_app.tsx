@@ -44,6 +44,7 @@ function App({ Component, pageProps }: AppProps) {
 
 App.getInitialProps = async (appContext: AppContext) => {
   const { ctx } = appContext;
+  // const cookieReq = ctx.req ? ctx.req.headers.cookie : null;
   const allCookies = cookies(ctx);
   const accessTokenByCookie = allCookies["accessToken"];
   if (accessTokenByCookie !== undefined) {
