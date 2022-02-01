@@ -16,7 +16,6 @@ import {
 
 //TODO 추가예정=[validator, add form, email인증]
 interface SignUpProps {}
-console.log("회원가입");
 const loginWidth = 500;
 const { Option } = Select;
 // *! 지역
@@ -79,6 +78,7 @@ const tailFormItemLayout = {
 };
 
 function SignUp(this: any, {}: SignUpProps) {
+  console.log("회원가입");
   const [form] = Form.useForm();
   const [isLoading, setIsLoading] = useState(false);
   const [inputs, setInputs] = useState({

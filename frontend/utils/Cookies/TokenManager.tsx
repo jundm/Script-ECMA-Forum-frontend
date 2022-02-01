@@ -1,21 +1,30 @@
 import axios from "axios";
-import cookie from "react-cookies";
+import Cookies from "universal-cookie";
 import { HTTP_ONLY } from "./config/config";
 
+const cookies = new Cookies();
+
 function setLoginToken(accessToken: string, refreshToken: string) {
-  axios.defaults.headers.common["Authorization"] = "JWT" + accessToken;
+  axios.defaults.headers.common.Authorization = `JWT ${accessToken}`;
+  console.log("Authorization이 설정되었습니다");
   const expires = new Date();
   expires.setDate(Date.now() + 1000 * 60 * 15);
-  cookie.save("accessToken", accessToken, {
+  cookies.set("accessToken", accessToken, {
     path: "/",
     expires,
     httpOnly: HTTP_ONLY,
   });
-  cookie.save("refreshToken", refreshToken, {
+  cookies.set("refreshToken", refreshToken, {
     path: "/",
     expires,
     httpOnly: HTTP_ONLY,
   });
 }
+function setLogoutToken() {
+  axios.defaults.headers.common["Authorization"] = "";
+  console.log("Authorization이 로그아웃 되었습니다");
+  cookies.remove("accessToken", { path: "/" });
+  cookies.remove("refreshToken", { path: "/" });
+}
 
-export { setLoginToken };
+export { setLoginToken, setLogoutToken };

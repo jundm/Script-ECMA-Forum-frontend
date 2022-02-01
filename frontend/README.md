@@ -16,7 +16,6 @@ typescript https://typescript-kr.github.io
 
 emotion https://emotion.sh/docs/introduction
 
-react-cookies https://www.npmjs.com/package/react-cookies
+universal-cookie https://www.npmjs.com/package/universal-cookie (react-cookies, next-cookies 완벽상위호환)
 
 axios https://axios-http.com/kr/docs/
-

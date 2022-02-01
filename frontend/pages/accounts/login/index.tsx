@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, Card, Checkbox, Form, Input } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import axios from "axios";
-import { setLoginToken } from "@utils/Cookies/TokenManager";
+import { setLoginToken, setLogoutToken } from "@utils/Cookies/TokenManager";
 import Link from "next/link";
 
 interface LoginProps {}
@@ -44,6 +44,7 @@ function Login({}: LoginProps) {
         const accessToken = res.data.access;
         const refreshToken = res.data.refresh;
         setLoginToken(accessToken, refreshToken);
+        console.log("onFinish");
       })
       .catch((e) => console.warn(e.message));
     setIsLoading(false);
@@ -106,7 +107,9 @@ function Login({}: LoginProps) {
           </Form.Item>
 
           <Link href="">
-            <a className="login-form-forgot">비밀번호를 잊으셨나요?</a>
+            <a className="login-form-forgot" onClick={setLogoutToken}>
+              비밀번호를 잊으셨나요?(토큰삭제)
+            </a>
           </Link>
         </Form.Item>
 
