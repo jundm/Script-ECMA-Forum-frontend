@@ -4,7 +4,7 @@ const {
 } = require("next/constants");
 
 // This uses phases as outlined here: https://nextjs.org/docs/#custom-configuration
-//* https://github.com/colormono/clone-fintech-web/blob/main/next.config.js
+// *https://github.com/colormono/clone-fintech-web/blob/main/next.config.js
 module.exports = (phase, { defaultConfig }) => {
   /** @type {import('next').NextConfig} */
 

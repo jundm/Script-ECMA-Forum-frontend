@@ -9,6 +9,7 @@ interface LoginProps {}
 
 //TODO Remember me 적용
 function Login({}: LoginProps) {
+  console.log("로그인");
   const loginWidth = 300;
   const [form] = Form.useForm();
   const [isLoading, setIsLoading] = useState(false);

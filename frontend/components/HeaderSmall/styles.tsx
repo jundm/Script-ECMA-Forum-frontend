@@ -7,6 +7,7 @@ export const HeaderOutLineSmall = styled.header`
   background-size: cover;
   //position: fixed;
   width: 100%;
+  margin-bottom: 10px;
 `;
 
 export const WidthDiv = styled.div`

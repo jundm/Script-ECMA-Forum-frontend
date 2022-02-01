@@ -1,4 +1,5 @@
 // import { loginUid, loginUser } from "@/utils/Toolkit/Slice/userSlice";
+import Link from "next/link";
 import React from "react";
 // import { useSelector } from "react-redux";
 import {
@@ -26,24 +27,44 @@ const HeaderSmall = (props: HeaderProps) => {
   return (
     <>
       <HeaderOutLineSmall>
-          <WidthDiv>
-            <Logo src={LogoSrc} onClick={toggleHeader} />
+        <WidthDiv>
+          <Logo src={LogoSrc} onClick={toggleHeader} />
+          <Link href="/article/hot">
+            <a>
               <MenuLi>😎인기</MenuLi>
+            </a>
+          </Link>
+          <Link href="/article/question">
+            <a>
               <MenuLi>🙈질문</MenuLi>
+            </a>
+          </Link>
+          <Link href="/article/free">
+            <a>
               <MenuLi>😆소통</MenuLi>
+            </a>
+          </Link>
+          <Link href="/article/news">
+            <a>
               <MenuLi>🥳뉴스</MenuLi>
+            </a>
+          </Link>
 
-            {false ? (
-              <>
-                {/*<UserNameDiv>{NickName.slice(0, 2)}</UserNameDiv>*/}
-                <ProfileDiv>님😍</ProfileDiv>
-              </>
-            ) : (
-              <>
-                <LoginSignUp>😘로그인</LoginSignUp>
-              </>
-            )}
-          </WidthDiv>
+          {false ? (
+            <>
+              {/*<UserNameDiv>{NickName.slice(0, 2)}</UserNameDiv>*/}
+              <ProfileDiv>님😍</ProfileDiv>
+            </>
+          ) : (
+            <>
+              <Link href="/accounts/login">
+                <a>
+                  <LoginSignUp>😘로그인</LoginSignUp>
+                </a>
+              </Link>
+            </>
+          )}
+        </WidthDiv>
       </HeaderOutLineSmall>
     </>
   );
