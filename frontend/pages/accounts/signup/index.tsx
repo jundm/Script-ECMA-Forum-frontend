@@ -100,7 +100,7 @@ function SignUp(this: any, {}: SignUpProps) {
   const onFinish = async (value: any) => {
     setIsLoading(true);
     axios
-      .post(process.env.NEXT_PUBLIC_DEVELOPMENT_ENV_BASE_URL + "users/", {
+      .post(process.env.NEXT_PUBLIC_ENV_BASE_URL + "users/", {
         name,
         username,
         email,
