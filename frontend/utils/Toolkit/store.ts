@@ -2,6 +2,7 @@ import { configureStore, ThunkAction } from "@reduxjs/toolkit";
 import logger from "redux-logger";
 import { Context, createWrapper, MakeStore } from "next-redux-wrapper";
 import userReducer from "./Slice/userSlice";
+import globalReducer from "./Slice/globalSlice";
 import { combineReducers } from "redux";
 import {
   persistReducer,
@@ -19,10 +20,11 @@ const persistConfig = {
   key: "root",
   version: 1,
   storage,
-  whitelist: ["userReducer"],
+  whitelist: ["globalReducer"],
 };
 const rootReducer = combineReducers({
   userReducer,
+  globalReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

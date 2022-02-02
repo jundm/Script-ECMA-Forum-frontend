@@ -7,27 +7,31 @@ import HeaderBig from "@components/HeaderBig";
 import HeaderSmall from "@components/HeaderSmall";
 import { wrapper } from "@utils/Toolkit/store";
 import { useDispatch, useSelector } from "react-redux";
-import { userHeader } from "@utils/Toolkit/Slice/userSlice";
+import { globalHeader } from "@utils/Toolkit/Slice/globalSlice";
+import { userName } from "@utils/Toolkit/Slice/userSlice";
 import Cookies from "universal-cookie";
 import { setLoginToken } from "@utils/Cookies/TokenManager";
 import axios from "axios";
 
-function App({ Component, pageProps }: AppProps) {
-  const checkUser = useSelector(userHeader);
-  let headerState = checkUser.payload.userReducer.header;
+function App({ Component, pageProps }: AppProps, { users }: any) {
+  console.log("users", users);
+  const toggleHeader = useSelector(globalHeader);
+  // const checkUser = useSelector(userName);
+  // console.log(checkUser, "checkUser");
+  let headerState = toggleHeader.payload.globalReducer.header;
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(headerState);
   useEffect(() => {
-    dispatch(userHeader(isOpen));
+    dispatch(globalHeader(isOpen));
   }, [isOpen]);
-  useEffect(() => {
-    axios
-      .get(process.env.NEXT_PUBLIC_ENV_BASE_URL + "users/me/")
-      .then((res) => {
-        console.log("res", res.data);
-      })
-      .catch((e) => console.warn(e));
-  }, []);
+  // useEffect(() => {
+  //   axios
+  //     .get(process.env.NEXT_PUBLIC_ENV_BASE_URL + "users/me/")
+  //     .then((res) => {
+  //       console.log("res", res.data);
+  //     })
+  //     .catch((e) => console.warn(e));
+  // }, []);
   return (
     <>
       <Head>
@@ -50,17 +54,33 @@ function App({ Component, pageProps }: AppProps) {
   );
 }
 
-//TODO SSR COOKIE 활용하기
+
 App.getInitialProps = async (appContext: AppContext) => {
   const { ctx } = appContext;
-  const cookieReq = ctx.req ? ctx.req.headers.cookie : null;
-  const cookies = new Cookies(cookieReq);
-  const accessToken = cookies.get("accessToken");
-  const refreshToken = cookies.get("refreshToken");
-  console.log("accessToken", accessToken);
-  console.log("refreshToken", refreshToken);
-
+  // const cookieReq = ctx.req ? ctx.req.headers.cookie : null;
+  // const cookies = new Cookies(cookieReq);
+  // let accessToken = cookies.get("accessToken");
+  // const refreshToken = cookies.get("refreshToken");
+  // const token =
+  //   (axios.defaults.headers.common.Authorization = `JWT ${accessToken}`);
+  // if (token.slice(2) !== "JWT") {
+  //   let accessToken = axios.post(
+  //     process.env.NEXT_PUBLIC_ENV_BASE_URL + "jwt/refresh/",
+  //     {
+  //       header: { refresh: refreshToken },
+  //     }
+  //   );
+  // }
+  // const { data } = await axios.get(
+  //   process.env.NEXT_PUBLIC_ENV_BASE_URL + "users/me/"
+  // );
+  // ctx.store.dispatch({
+  //   payload: { username: data },
+  // });
   const appProps = await _App.getInitialProps(appContext);
-  return { ...appProps };
+  return {
+    // users: data,
+    ...appProps,
+  };
 };
 export default wrapper.withRedux(App);
