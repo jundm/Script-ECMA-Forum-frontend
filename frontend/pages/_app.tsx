@@ -1,4 +1,4 @@
-import _App, { AppContext, AppProps } from "next/app";
+import _App, { AppProps } from "next/app";
 import { useEffect, useState } from "react";
 import "@styles/global.css";
 import "antd/dist/antd.css";
@@ -8,8 +8,8 @@ import HeaderSmall from "@components/HeaderSmall";
 import { wrapper } from "@utils/Toolkit/store";
 import { useDispatch, useSelector } from "react-redux";
 import { globalHeader } from "@utils/Toolkit/Slice/globalSlice";
-function App({ Component, pageProps }: AppProps, { users }: any) {
-  console.log("users", users);
+
+function App({ Component, pageProps }: AppProps) {
   const toggleHeader = useSelector(globalHeader);
   let headerState = toggleHeader.payload.globalReducer.header;
   const dispatch = useDispatch();
