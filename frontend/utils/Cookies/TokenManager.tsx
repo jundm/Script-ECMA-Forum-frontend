@@ -6,7 +6,7 @@ const cookies = new Cookies();
 
 function setLoginToken(accessToken: string, refreshToken: string) {
   const expires = new Date();
-  // axios.defaults.headers.common.Authorization = `JWT ${accessToken}`;
+  axios.defaults.headers.common.Authorization = `JWT ${accessToken}`;
   // console.log("Authorization이 설정되었습니다");
   expires.setDate(Date.now() + 1000 * 60 * 15);
   cookies.set("accessToken", accessToken, {
@@ -29,8 +29,7 @@ function setLogoutToken() {
 }
 function setRefreshToken() {
   const refreshToken = cookies.get("refreshToken");
-  if(refreshToken){
-    
+  if (refreshToken) {
   }
 }
 
