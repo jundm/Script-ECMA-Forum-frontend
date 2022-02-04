@@ -4,16 +4,18 @@ import { HTTP_ONLY } from "./config/config";
 
 const cookies = new Cookies();
 
-function setLoginToken(accessToken: string, refreshToken: string) {
-  const expires = new Date();
+function setAccessToken(accessToken: string) {
   axios.defaults.headers.common.Authorization = `JWT ${accessToken}`;
-  // console.log("Authorization이 설정되었습니다");
+  const expires = new Date();
   expires.setDate(Date.now() + 1000 * 60 * 15);
   cookies.set("accessToken", accessToken, {
     path: "/",
     expires,
     httpOnly: HTTP_ONLY,
   });
+}
+function setRefreshToken(refreshToken: string) {
+  const expires = new Date();
   expires.setDate(Date.now() + 1000 * 60 * 60 * 24);
   cookies.set("refreshToken", refreshToken, {
     path: "/",
@@ -23,14 +25,8 @@ function setLoginToken(accessToken: string, refreshToken: string) {
 }
 function setLogoutToken() {
   axios.defaults.headers.common["Authorization"] = "";
-  console.log("Authorization이 로그아웃 되었습니다");
   cookies.remove("accessToken", { path: "/" });
   cookies.remove("refreshToken", { path: "/" });
 }
-function setRefreshToken() {
-  const refreshToken = cookies.get("refreshToken");
-  if (refreshToken) {
-  }
-}
 
-export { setLoginToken, setLogoutToken };
+export { setAccessToken, setRefreshToken, setLogoutToken };

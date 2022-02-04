@@ -2,20 +2,17 @@ import React, { useState } from "react";
 import { Button, Card, Checkbox, Form, Input } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import axios from "axios";
-import { setLoginToken, setLogoutToken } from "@utils/Cookies/TokenManager";
+import {
+  setAccessToken,
+  setLogoutToken,
+  setRefreshToken,
+} from "@utils/Cookies/TokenManager";
 import Link from "next/link";
-import Cookies from "universal-cookie";
-import { AppContext } from "next/app";
-import { GetServerSideProps } from "next";
 
-interface LoginProps {
-  cookieReq: any;
-}
+interface LoginProps {}
 
 //TODO Remember me 적용
-function Login({ cookieReq }: LoginProps) {
-  console.log("로그인");
-  // console.log("로그인", cookieReq);
+function Login() {
   const loginWidth = 300;
   const [form] = Form.useForm();
   const [isLoading, setIsLoading] = useState(false);
@@ -47,10 +44,10 @@ function Login({ cookieReq }: LoginProps) {
         password,
       })
       .then((res) => {
-        const accessToken = res.data.access;
-        const refreshToken = res.data.refresh;
-        setLoginToken(accessToken, refreshToken);
-        console.log("onFinish");
+        const access = res.data.access;
+        const refresh = res.data.refresh;
+        setAccessToken(access);
+        setRefreshToken(refresh);
       })
       .catch((e) => console.warn(e.message));
     setIsLoading(false);
@@ -138,13 +135,11 @@ function Login({ cookieReq }: LoginProps) {
     </Card>
   );
 }
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const cookieReq = context.req ? context.req.headers.cookie : null;
-  const cookies = new Cookies(cookieReq);
-  const accessToken = cookies.get("accessToken");
-  const refreshToken = cookies.get("refreshToken");
-  axios.defaults.headers.common["Authorization"] = `JWT ${accessToken}`;
-  return { props: { accessToken, refreshToken } };
-};
+
+// export const getServerSideProps: GetServerSideProps = async (context) => {
+//   const cookieReq = context.req ? context.req.headers.cookie : null;
+//   const cookies = new Cookies(cookieReq);
+//   return { props: {} };
+// };
 
 export default Login;

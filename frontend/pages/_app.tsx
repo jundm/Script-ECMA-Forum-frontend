@@ -9,7 +9,7 @@ import { wrapper } from "@utils/Toolkit/store";
 import { useDispatch, useSelector } from "react-redux";
 import { globalHeader } from "@utils/Toolkit/Slice/globalSlice";
 
-function App({ Component, pageProps }: AppProps) {
+function App({ Component, pageProps }: AppProps, accessToken: any) {
   const toggleHeader = useSelector(globalHeader);
   let headerState = toggleHeader.payload.globalReducer.header;
   const dispatch = useDispatch();
