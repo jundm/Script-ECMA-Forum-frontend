@@ -70,7 +70,7 @@ export const MenuUl = styled.ul`
 `;
 export const MenuLi = styled.li`
   z-index: 21;
-  //display: block;
+  display: flex;
   padding: 10px 1px;
   font-weight: bold;
   font-size: 1.2em;

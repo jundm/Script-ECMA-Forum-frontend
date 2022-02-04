@@ -13,16 +13,20 @@ import {
   UserNameDiv,
   ProfileDiv,
   Logout,
-  // HeaderLink,
 } from "./styles";
 import React from "react";
 import Link from "next/link";
-// import { useSelector } from "react-redux";
-// import { loginUid, loginUser } from "@/utils/Toolkit/Slice/userSlice";
+import Smiling from "public/svg/Smiling With Closed Eyes Emoji.svg";
+import Smile from "public/svg/Smile Emoji With Hearts.svg";
+import Blow from "public/svg/Blow Kiss Emoji.svg";
+import Mongkey from "public/svg/Mongkey.svg";
+import Party from "public/svg/Party Face Emoji.svg";
+import Sunglasses from "public/svg/Sunglasses Emoji.svg";
+import Heart from "public/svg/Heart Eyes Emoji.svg";
 
 interface HeaderProps {
-  // saveLocalStorage: () => void;
   setIsOpen: (arg: (isOpen: any) => boolean) => void;
+  isSafari: boolean;
 }
 
 const HeaderBig = (props: HeaderProps) => {
@@ -31,6 +35,8 @@ const HeaderBig = (props: HeaderProps) => {
   };
   const LogoSrc =
     "https://user-images.githubusercontent.com/80582578/150622621-619d3778-7717-4455-9093-60e0be731da5.png";
+
+  const Safari = props.isSafari;
 
   return (
     <>
@@ -41,7 +47,7 @@ const HeaderBig = (props: HeaderProps) => {
               <>
                 <HeaderLoginDiv>
                   <UserNameDiv>NickName</UserNameDiv>
-                  <ProfileDiv>님😍</ProfileDiv>
+                  <ProfileDiv>님{Safari ? "😍" : <Heart />}</ProfileDiv>
                   <Logout>logout</Logout>
                 </HeaderLoginDiv>
               </>
@@ -49,12 +55,18 @@ const HeaderBig = (props: HeaderProps) => {
               <>
                 <Link href="/accounts/login">
                   <a>
-                    <LoginSignUp>😘로그인</LoginSignUp>
+                    <LoginSignUp>
+                      {Safari ? "😘" : <Blow />}
+                      로그인
+                    </LoginSignUp>
                   </a>
                 </Link>
                 <Link href="/accounts/signup">
                   <a>
-                    <LoginSignUp>🥰회원가입</LoginSignUp>
+                    <LoginSignUp>
+                      {Safari ? "🥰" : <Smile />}
+                      회원가입
+                    </LoginSignUp>
                   </a>
                 </Link>
               </>
@@ -69,22 +81,34 @@ const HeaderBig = (props: HeaderProps) => {
         <MenuUl>
           <Link href="/article/hot">
             <a>
-              <MenuLi>😎인기</MenuLi>
+              <MenuLi>
+                {Safari ? "😎" : <Sunglasses />}
+                인기
+              </MenuLi>
             </a>
           </Link>
           <Link href="/article/question">
             <a>
-              <MenuLi>🙈질문</MenuLi>
+              <MenuLi>
+                {Safari ? "🙈" : <Mongkey />}
+                질문
+              </MenuLi>
             </a>
           </Link>
           <Link href="/article/free">
             <a>
-              <MenuLi>😆소통</MenuLi>
+              <MenuLi>
+                {Safari ? "😆" : <Smiling />}
+                소통
+              </MenuLi>
             </a>
           </Link>
           <Link href="/article/news">
             <a>
-              <MenuLi>🥳뉴스</MenuLi>
+              <MenuLi>
+                {Safari ? "🥳" : <Party />}
+                뉴스
+              </MenuLi>
             </a>
           </Link>
         </MenuUl>

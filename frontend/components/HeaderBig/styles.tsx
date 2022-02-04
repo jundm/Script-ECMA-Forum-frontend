@@ -25,6 +25,7 @@ export const AuthenticationDiv = styled.div`
   z-index: 20;
 `;
 export const LoginSignUp = styled.div`
+  display: flex;
   z-index: 21;
   padding: 10px;
   text-align: center;
@@ -50,6 +51,7 @@ export const ProfileDiv = styled(HeaderLoginDiv)`
   color: #ffffff;
   text-shadow: -0.6px -0.6px 0 #000, 0.6px -0.6px 0 #000, -0.6px 0.6px 0 #000,
     0.6px 0.6px 0 #000;
+  display: flex;
 `;
 export const UserNameDiv = styled(HeaderLoginDiv)`
   color: #d5e433;
@@ -114,7 +116,7 @@ export const MenuUl = styled.ul`
   z-index: 21;
 `;
 export const MenuLi = styled.li`
-  //display: relative;
+  display: flex;
   z-index: 21;
   padding: 10px;
   text-align: center;

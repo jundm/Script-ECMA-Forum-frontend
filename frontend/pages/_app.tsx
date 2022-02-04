@@ -8,17 +8,33 @@ import HeaderSmall from "@components/HeaderSmall";
 import { wrapper } from "@utils/Toolkit/store";
 import { useDispatch, useSelector } from "react-redux";
 import { globalHeader } from "@utils/Toolkit/Slice/globalSlice";
-import { setLogoutToken, setVerrifyToken } from "@utils/Cookies/TokenManager";
+import { setVerrifyToken } from "@utils/Cookies/TokenManager";
+import Cookies from "universal-cookie";
+import { useRouter } from "next/router";
+import { detect } from "detect-browser";
 
-function App({ Component, pageProps }: AppProps, accessToken: any) {
+function App({ Component, pageProps }: AppProps) {
   const toggleHeader = useSelector(globalHeader);
   let headerState = toggleHeader.payload.globalReducer.header;
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(headerState);
+  const [isSafari, setIsSafari] = useState(false);
+  const isBrowser = detect();
   useEffect(() => {
     dispatch(globalHeader(isOpen));
+    setIsSafari(isBrowser?.os === "iOS" || isBrowser?.os === "Mac OS");
   }, [isOpen]);
-  setVerrifyToken();
+  const cookies = new Cookies();
+  const router = useRouter();
+  //*@params 임시 HOC
+  useEffect(() => {
+    if (cookies.get("accessToken")) {
+      setVerrifyToken();
+    } else {
+      router.push("/accounts/login");
+    }
+  }, [router.route]);
+
   return (
     <>
       <Head>
@@ -32,9 +48,9 @@ function App({ Component, pageProps }: AppProps, accessToken: any) {
         />
       </Head>
       {headerState ? (
-        <HeaderSmall setIsOpen={setIsOpen} />
+        <HeaderSmall setIsOpen={setIsOpen} isSafari={isSafari} />
       ) : (
-        <HeaderBig setIsOpen={setIsOpen} />
+        <HeaderBig setIsOpen={setIsOpen} isSafari={isSafari} />
       )}
       <Component {...pageProps} />
     </>

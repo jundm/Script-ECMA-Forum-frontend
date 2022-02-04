@@ -8,6 +8,8 @@ import {
   setRefreshToken,
 } from "@utils/Cookies/TokenManager";
 import Link from "next/link";
+import { GetServerSideProps } from "next";
+import Cookies from "universal-cookie";
 
 interface LoginProps {}
 
@@ -135,11 +137,13 @@ function Login() {
     </Card>
   );
 }
-
 // export const getServerSideProps: GetServerSideProps = async (context) => {
 //   const cookieReq = context.req ? context.req.headers.cookie : null;
 //   const cookies = new Cookies(cookieReq);
-//   return { props: {} };
+//   const accessToken = cookies.get("accessToken");
+//   const refreshToken = cookies.get("refreshToken");
+//   axios.defaults.headers.common["Authorization"] = `JWT ${accessToken}`;
+//   return { props: { accessToken, refreshToken } };
 // };
 
 export default Login;
