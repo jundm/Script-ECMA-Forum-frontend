@@ -8,6 +8,7 @@ import HeaderSmall from "@components/HeaderSmall";
 import { wrapper } from "@utils/Toolkit/store";
 import { useDispatch, useSelector } from "react-redux";
 import { globalHeader } from "@utils/Toolkit/Slice/globalSlice";
+import { setLogoutToken, setVerrifyToken } from "@utils/Cookies/TokenManager";
 
 function App({ Component, pageProps }: AppProps, accessToken: any) {
   const toggleHeader = useSelector(globalHeader);
@@ -17,7 +18,7 @@ function App({ Component, pageProps }: AppProps, accessToken: any) {
   useEffect(() => {
     dispatch(globalHeader(isOpen));
   }, [isOpen]);
-
+  setVerrifyToken();
   return (
     <>
       <Head>
