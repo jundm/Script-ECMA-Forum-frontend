@@ -42,12 +42,7 @@ function setVerrifyToken() {
             .then((res) => {
               if (res) {
                 console.log("토큰을 재발급 합니다");
-                expires.setDate(Date.now() + 1000 * 60 * 15);
-                cookies.set("accessToken", res.data.access, {
-                  path: "/",
-                  expires,
-                  httpOnly: HTTP_ONLY,
-                });
+                setAccessToken(res.data.access);
               }
             });
         }
