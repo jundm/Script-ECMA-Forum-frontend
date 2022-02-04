@@ -79,7 +79,7 @@ const HeaderSmall = (props: HeaderProps) => {
                 <a>
                   <LoginSignUp>
                     {Safari ? "😘" : <Blow />}
-                    😘로그인
+                    로그인
                   </LoginSignUp>
                 </a>
               </Link>
