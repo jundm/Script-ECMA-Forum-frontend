@@ -19,7 +19,7 @@ function setRefreshToken(refreshToken: string) {
   const expires = new Date(Date.now() + 1000 * 60 * 60 * 24);
   cookies.set("refreshToken", refreshToken, {
     path: "/",
-    expires,
+    // expires,
     httpOnly: HTTP_ONLY,
   });
 }
