@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import {
   Form,
@@ -13,9 +13,14 @@ import {
   AutoComplete,
   Card,
 } from "antd";
+import { useRouter } from "next/router";
+import Cookies from "universal-cookie";
+import { useSelector } from "react-redux";
+import { userName } from "@utils/Toolkit/Slice/globalSlice";
 
 //TODO 추가예정=[validator, add form, email인증]
 interface SignUpProps {}
+
 const loginWidth = 500;
 const { Option } = Select;
 // *! 지역
@@ -79,6 +84,19 @@ const tailFormItemLayout = {
 
 function SignUp(this: any, {}: SignUpProps) {
   console.log("회원가입");
+  const router = useRouter();
+  const cookies = new Cookies();
+  const acccountUser = useSelector(userName);
+  const acccountUserName = acccountUser.payload.globalReducer.username;
+  useEffect(() => {
+    if (
+      acccountUserName &&
+      cookies.get("accessToken") &&
+      cookies.get("refreshToken")
+    ) {
+      router.back();
+    }
+  }, [router.route]);
   const [form] = Form.useForm();
   const [isLoading, setIsLoading] = useState(false);
   const [inputs, setInputs] = useState({

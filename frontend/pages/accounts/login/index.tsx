@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Card, Checkbox, Form, Input } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import axios from "axios";
@@ -9,14 +9,29 @@ import {
 } from "@utils/Cookies/TokenManager";
 import Link from "next/link";
 // import { GetServerSideProps } from "next";
-// import Cookies from "universal-cookie";
+import Cookies from "universal-cookie";
 import { userName } from "@utils/Toolkit/Slice/globalSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/router";
 
 interface LoginProps {}
 
 //TODO Remember me 적용
+//TODO 효과적인 HOC 찾아보기
 function Login() {
+  const router = useRouter();
+  const cookies = new Cookies();
+  const acccountUser = useSelector(userName);
+  const acccountUserName = acccountUser.payload.globalReducer.username;
+  useEffect(() => {
+    if (
+      acccountUserName &&
+      cookies.get("accessToken") &&
+      cookies.get("refreshToken")
+    ) {
+      router.back();
+    }
+  }, [router.route]);
   const dispatch = useDispatch();
   const loginWidth = 300;
   const [form] = Form.useForm();
