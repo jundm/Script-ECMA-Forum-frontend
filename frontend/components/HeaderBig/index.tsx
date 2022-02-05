@@ -23,6 +23,7 @@ import Mongkey from "public/svg/Mongkey.svg";
 import Party from "public/svg/Party Face Emoji.svg";
 import Sunglasses from "public/svg/Sunglasses Emoji.svg";
 import Heart from "public/svg/Heart Eyes Emoji.svg";
+import Pointing from "public/svg/Pointing Index Emoji.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { userName } from "@utils/Toolkit/Slice/globalSlice";
 import { setLogoutToken } from "@utils/Cookies/TokenManager";
@@ -86,7 +87,9 @@ const HeaderBig = (props: HeaderProps) => {
         <Div>
           <Logo src={LogoSrc} />
           <FaceDiv onClick={toggleHeader} />
-          <FaceMessageDiv>👈 응슷곰을 누르면 메뉴가 접혀요! </FaceMessageDiv>
+          <FaceMessageDiv>
+            <Pointing /> 응슷곰을 누르면 메뉴가 접혀요!
+          </FaceMessageDiv>
         </Div>
         <MenuUl>
           <Link href="/article/hot">

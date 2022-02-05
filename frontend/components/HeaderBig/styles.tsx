@@ -99,7 +99,7 @@ export const FaceDiv = styled.div`
 `;
 
 export const FaceMessageDiv = styled(FaceDiv)`
-  //display: hidden;
+  display: flex;
   transform: translate(70px, -110px);
   text-shadow: -0.5px -0.5px 0 #000, 0.5px -0.5px 0 #000, -0.5px 0.5px 0 #000,
     0.5px 0.5px 0 #000;
