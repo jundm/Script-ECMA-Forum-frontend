@@ -11,18 +11,14 @@ import { globalHeader } from "@utils/Toolkit/Slice/globalSlice";
 import { setVerrifyToken } from "@utils/Cookies/TokenManager";
 import Cookies from "universal-cookie";
 import { useRouter } from "next/router";
-import { detect } from "detect-browser";
 
 function App({ Component, pageProps }: AppProps) {
   const toggleHeader = useSelector(globalHeader);
   let headerState = toggleHeader.payload.globalReducer.header;
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(headerState);
-  const [isSafari, setIsSafari] = useState(false);
-  const isBrowser = detect();
   useEffect(() => {
     dispatch(globalHeader(isOpen));
-    setIsSafari(isBrowser?.os === "iOS" || isBrowser?.os === "Mac OS");
   }, [isOpen]);
   const cookies = new Cookies();
   const router = useRouter();
@@ -48,11 +44,13 @@ function App({ Component, pageProps }: AppProps) {
         />
       </Head>
       {headerState ? (
-        <HeaderSmall setIsOpen={setIsOpen} isSafari={isSafari} />
+        <HeaderSmall setIsOpen={setIsOpen} />
       ) : (
-        <HeaderBig setIsOpen={setIsOpen} isSafari={isSafari} />
+        <HeaderBig setIsOpen={setIsOpen} />
       )}
-      <Component {...pageProps} />
+      <div className="container mx-auto px-4">
+        <Component {...pageProps} />
+      </div>
     </>
   );
 }

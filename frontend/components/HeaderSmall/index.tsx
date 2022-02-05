@@ -20,7 +20,6 @@ import { userName } from "@utils/Toolkit/Slice/globalSlice";
 
 interface HeaderProps {
   setIsOpen: (arg: (isOpen: any) => boolean) => void;
-  isSafari: boolean;
 }
 
 const HeaderSmall = (props: HeaderProps) => {
@@ -31,7 +30,6 @@ const HeaderSmall = (props: HeaderProps) => {
   };
   const LogoSrc =
     "https://user-images.githubusercontent.com/80582578/150622884-8271a4f6-ed84-4a69-a8d4-08c4359e4d33.png";
-  const Safari = props.isSafari;
 
   return (
     <>
@@ -41,7 +39,7 @@ const HeaderSmall = (props: HeaderProps) => {
           <Link href="/article/hot">
             <a>
               <MenuLi>
-                {Safari ? "😎" : <Sunglasses />}
+                <Sunglasses />
                 인기
               </MenuLi>
             </a>
@@ -49,7 +47,7 @@ const HeaderSmall = (props: HeaderProps) => {
           <Link href="/article/question">
             <a>
               <MenuLi>
-                {Safari ? "🙈" : <Mongkey />}
+                <Mongkey />
                 질문
               </MenuLi>
             </a>
@@ -57,7 +55,7 @@ const HeaderSmall = (props: HeaderProps) => {
           <Link href="/article/free">
             <a>
               <MenuLi>
-                {Safari ? "😆" : <Smiling />}
+                <Smiling />
                 소통
               </MenuLi>
             </a>
@@ -65,7 +63,7 @@ const HeaderSmall = (props: HeaderProps) => {
           <Link href="/article/news">
             <a>
               <MenuLi>
-                {Safari ? "🥳" : <Party />}
+                <Party />
                 뉴스
               </MenuLi>
             </a>
@@ -74,14 +72,16 @@ const HeaderSmall = (props: HeaderProps) => {
           {acccountUserName ? (
             <>
               <UserNameDiv>{acccountUserName.slice(0, 2)}</UserNameDiv>
-              <ProfileDiv>님{Safari ? "😍" : <Heart />}</ProfileDiv>
+              <ProfileDiv>
+                님<Heart />
+              </ProfileDiv>
             </>
           ) : (
             <>
               <Link href="/accounts/login">
                 <a>
                   <LoginSignUp>
-                    {Safari ? "😘" : <Blow />}
+                    <Blow />
                     로그인
                   </LoginSignUp>
                 </a>
