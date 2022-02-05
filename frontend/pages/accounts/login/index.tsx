@@ -8,13 +8,16 @@ import {
   setRefreshToken,
 } from "@utils/Cookies/TokenManager";
 import Link from "next/link";
-import { GetServerSideProps } from "next";
-import Cookies from "universal-cookie";
+// import { GetServerSideProps } from "next";
+// import Cookies from "universal-cookie";
+import { userName } from "@utils/Toolkit/Slice/globalSlice";
+import { useDispatch } from "react-redux";
 
 interface LoginProps {}
 
 //TODO Remember me 적용
 function Login() {
+  const dispatch = useDispatch();
   const loginWidth = 300;
   const [form] = Form.useForm();
   const [isLoading, setIsLoading] = useState(false);
@@ -50,6 +53,12 @@ function Login() {
         const refresh = res.data.refresh;
         setAccessToken(access);
         setRefreshToken(refresh);
+        axios
+          .get(process.env.NEXT_PUBLIC_ENV_BASE_URL + "users/me/")
+          .then((res) => {
+            dispatch(userName(res.data.username));
+          })
+          .catch((e) => console.warn(e.message));
       })
       .catch((e) => console.warn(e.message));
     setIsLoading(false);
@@ -141,9 +150,15 @@ function Login() {
 //   const cookieReq = context.req ? context.req.headers.cookie : null;
 //   const cookies = new Cookies(cookieReq);
 //   const accessToken = cookies.get("accessToken");
-//   const refreshToken = cookies.get("refreshToken");
+//   const refreshToken = cookies.get("refreshToken");;
 //   axios.defaults.headers.common["Authorization"] = `JWT ${accessToken}`;
-//   return { props: { accessToken, refreshToken } };
+//   try {
+//     const me = await axios.get(
+//       process.env.NEXT_PUBLIC_ENV_BASE_URL + "users/me/"
+//     );
+//     console.log(me.data, "미미미");
+//   } catch {}
+//   return { props: {} };
 // };
 
 export default Login;

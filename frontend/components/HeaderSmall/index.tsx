@@ -1,7 +1,6 @@
-// import { loginUid, loginUser } from "@/utils/Toolkit/Slice/userSlice";
 import Link from "next/link";
 import React from "react";
-// import { useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import {
   HeaderOutLineSmall,
   MenuLi,
@@ -9,6 +8,7 @@ import {
   WidthDiv,
   LoginSignUp,
   ProfileDiv,
+  UserNameDiv,
 } from "./styles";
 import Smiling from "public/svg/Smiling With Closed Eyes Emoji.svg";
 import Blow from "public/svg/Blow Kiss Emoji.svg";
@@ -16,6 +16,7 @@ import Mongkey from "public/svg/Mongkey.svg";
 import Party from "public/svg/Party Face Emoji.svg";
 import Sunglasses from "public/svg/Sunglasses Emoji.svg";
 import Heart from "public/svg/Heart Eyes Emoji.svg";
+import { userName } from "@utils/Toolkit/Slice/globalSlice";
 
 interface HeaderProps {
   setIsOpen: (arg: (isOpen: any) => boolean) => void;
@@ -23,6 +24,8 @@ interface HeaderProps {
 }
 
 const HeaderSmall = (props: HeaderProps) => {
+  const acccountUser = useSelector(userName);
+  const acccountUserName = acccountUser.payload.globalReducer.username;
   const toggleHeader = () => {
     props.setIsOpen((isOpen) => !isOpen);
   };
@@ -68,9 +71,9 @@ const HeaderSmall = (props: HeaderProps) => {
             </a>
           </Link>
 
-          {false ? (
+          {acccountUserName ? (
             <>
-              {/*<UserNameDiv>{NickName.slice(0, 2)}</UserNameDiv>*/}
+              <UserNameDiv>{acccountUserName.slice(0, 2)}</UserNameDiv>
               <ProfileDiv>님{Safari ? "😍" : <Heart />}</ProfileDiv>
             </>
           ) : (

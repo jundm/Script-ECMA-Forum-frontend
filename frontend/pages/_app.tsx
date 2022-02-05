@@ -26,9 +26,9 @@ function App({ Component, pageProps }: AppProps) {
   }, [isOpen]);
   const cookies = new Cookies();
   const router = useRouter();
-  //*@params 임시 HOC
+  //*@params 임시 HOC (더 좋은 방법 없을까?)
   useEffect(() => {
-    if (cookies.get("accessToken")) {
+    if (cookies.get("accessToken") && cookies.get("refreshToken")) {
       setVerrifyToken();
     } else {
       router.push("/accounts/login");

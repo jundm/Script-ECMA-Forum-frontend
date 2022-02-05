@@ -1,21 +1,22 @@
+import { userName } from "@utils/Toolkit/Slice/globalSlice";
 import axios from "axios";
+import { useDispatch } from "react-redux";
 import Cookies from "universal-cookie";
 import { HTTP_ONLY } from "./config/config";
 
 const cookies = new Cookies();
-const expires = new Date();
 
 function setAccessToken(accessToken: string) {
   axios.defaults.headers.common.Authorization = `JWT ${accessToken}`;
-  expires.setDate(Date.now() + 1000 * 60 * 15);
+  const expires = new Date(Date.now() + 1000 * 60 * 15);
   cookies.set("accessToken", accessToken, {
     path: "/",
-    expires,
+    // expires,
     httpOnly: HTTP_ONLY,
   });
 }
 function setRefreshToken(refreshToken: string) {
-  expires.setDate(Date.now() + 1000 * 60 * 60 * 24);
+  const expires = new Date(Date.now() + 1000 * 60 * 60 * 24);
   cookies.set("refreshToken", refreshToken, {
     path: "/",
     expires,
@@ -26,6 +27,7 @@ function setLogoutToken() {
   axios.defaults.headers.common.Authorization = "";
   cookies.remove("accessToken", { path: "/" });
   cookies.remove("refreshToken", { path: "/" });
+  
 }
 function setVerrifyToken() {
   if (cookies.get("accessToken")) {
