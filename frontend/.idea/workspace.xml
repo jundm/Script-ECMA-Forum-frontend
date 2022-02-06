@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="4927912a-8a50-4997-9246-117e62f45853" name="변경" comment="">
+      <change beforePath="$PROJECT_DIR$/../backend/backend/asgi.py" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/backend/asgi.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/backend/settings/common.py" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/backend/settings/common.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/HeaderBig/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/HeaderBig/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/HeaderBig/styles.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/HeaderBig/styles.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/HeaderSmall/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/HeaderSmall/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/HeaderSmall/styles.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/HeaderSmall/styles.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/_app.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/_app.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/accounts/signup/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/accounts/signup/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/styles/global.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles/global.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/Toolkit/Slice/userSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/utils/Toolkit/Slice/userSlice.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/node_modules/redux-persist/types/storage/createWebStorage.d.ts" root0="SKIP_INSPECTION" />
+  </component>
+  <component name="JsBowerSettings">
+    <bower-package value="" />
+    <bower.json value="" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="PackageJsonUpdateNotifier">
+    <dismissed value="$PROJECT_DIR$/package.json" />
+  </component>
+  <component name="ProjectId" id="2423GtaL4jmp7CNQg5xqAzwDLRi" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.standard" value="true" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.standard" value="" />
+    <property name="nodejs_package_manager_path" value="yarn" />
+    <property name="prettierjs.PrettierConfiguration.Package" value="$PROJECT_DIR$/node_modules/prettier" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="ts.external.directory.path" value="$PROJECT_DIR$/node_modules/typescript/lib" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/pages/accounts/signup" />
+      <recent name="$PROJECT_DIR$/pages/accounts/login" />
+      <recent name="$PROJECT_DIR$/public" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="애플리케이션 수준" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="디폴트 작업">
+      <changelist id="4927912a-8a50-4997-9246-117e62f45853" name="변경" comment="" />
+      <created>1642814764630</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1642814764630</updated>
+      <workItem from="1642814772066" duration="1358000" />
+      <workItem from="1642816581089" duration="680000" />
+      <workItem from="1642817267206" duration="1212000" />
+      <workItem from="1642818687899" duration="6194000" />
+      <workItem from="1642829657534" duration="29365000" />
+      <workItem from="1642925111141" duration="4125000" />
+      <workItem from="1642987167436" duration="1589000" />
+      <workItem from="1643004637093" duration="292000" />
+      <workItem from="1643005543180" duration="413000" />
+      <workItem from="1643172871131" duration="2924000" />
+      <workItem from="1643176898918" duration="290000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>
