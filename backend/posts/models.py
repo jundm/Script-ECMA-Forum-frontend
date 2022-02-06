@@ -27,6 +27,7 @@ class Post(PostModel):
         ("news", "news"),
     )
     category = models.CharField(max_length=12, choices=Choices)
+
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         related_name="PostAuthor_set",
@@ -58,6 +59,7 @@ class Comment(models.Model):
         related_name="CommentAuthor_set",
         verbose_name=_("댓글작성자"),
     )
+
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     content = models.TextField(_("내용"), null=False)
 
