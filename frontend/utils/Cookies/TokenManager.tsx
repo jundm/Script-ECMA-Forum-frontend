@@ -1,13 +1,10 @@
-import { userName } from "@utils/Toolkit/Slice/globalSlice";
 import axios from "axios";
-import { useDispatch } from "react-redux";
 import Cookies from "universal-cookie";
 import { HTTP_ONLY } from "./config/config";
 
 const cookies = new Cookies();
 
 function setAccessToken(accessToken: string) {
-  axios.defaults.headers.common.Authorization = `JWT ${accessToken}`;
   const expires = new Date(Date.now() + 1000 * 60 * 15);
   cookies.set("accessToken", accessToken, {
     path: "/",
@@ -27,7 +24,6 @@ function setLogoutToken() {
   axios.defaults.headers.common.Authorization = "";
   cookies.remove("accessToken", { path: "/" });
   cookies.remove("refreshToken", { path: "/" });
-  
 }
 function setVerrifyToken() {
   if (cookies.get("accessToken")) {

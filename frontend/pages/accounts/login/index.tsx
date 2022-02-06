@@ -8,7 +8,7 @@ import {
   setRefreshToken,
 } from "@utils/Cookies/TokenManager";
 import Link from "next/link";
-// import { GetServerSideProps } from "next";
+import { GetServerSideProps } from "next";
 import Cookies from "universal-cookie";
 import { userName } from "@utils/Toolkit/Slice/globalSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,15 +23,15 @@ function Login() {
   const cookies = new Cookies();
   const acccountUser = useSelector(userName);
   const acccountUserName = acccountUser.payload.globalReducer.username;
-  useEffect(() => {
-    if (
-      acccountUserName &&
-      cookies.get("accessToken") &&
-      cookies.get("refreshToken")
-    ) {
-      router.back();
-    }
-  }, [router.route]);
+  // useEffect(() => {
+  //   if (
+  //     acccountUserName &&
+  //     cookies.get("accessToken") &&
+  //     cookies.get("refreshToken")
+  //   ) {
+  //     router.back();
+  //   }
+  // });
   const dispatch = useDispatch();
   const loginWidth = 300;
   const [form] = Form.useForm();
@@ -161,19 +161,22 @@ function Login() {
     </Card>
   );
 }
-// export const getServerSideProps: GetServerSideProps = async (context) => {
-//   const cookieReq = context.req ? context.req.headers.cookie : null;
-//   const cookies = new Cookies(cookieReq);
-//   const accessToken = cookies.get("accessToken");
-//   const refreshToken = cookies.get("refreshToken");;
-//   axios.defaults.headers.common["Authorization"] = `JWT ${accessToken}`;
-//   try {
-//     const me = await axios.get(
-//       process.env.NEXT_PUBLIC_ENV_BASE_URL + "users/me/"
-//     );
-//     console.log(me.data, "미미미");
-//   } catch {}
-//   return { props: {} };
-// };
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const cookieReq = context.req ? context.req.headers.cookie : null;
+  const cookies = new Cookies(cookieReq);
+  const accessToken = cookies.get("accessToken");
+  if (accessToken) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  } else {
+    return {
+      props: {},
+    };
+  }
+};
 
 export default Login;

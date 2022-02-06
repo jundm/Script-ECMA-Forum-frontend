@@ -33,6 +33,7 @@ interface HeaderProps {
 }
 
 //TODO 토큰이 전부 만료 됐을때 어떻게 처리할지 생각해보기 (일단은 생각할 필요 없음)
+//TODO username을 session에 담는 것으로 수정하기
 const HeaderBig = (props: HeaderProps) => {
   const dispatch = useDispatch();
   const acccountUser = useSelector(userName);

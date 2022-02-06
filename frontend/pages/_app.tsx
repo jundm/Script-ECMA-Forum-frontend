@@ -11,6 +11,8 @@ import { globalHeader } from "@utils/Toolkit/Slice/globalSlice";
 import { setVerrifyToken } from "@utils/Cookies/TokenManager";
 import Cookies from "universal-cookie";
 import { useRouter } from "next/router";
+import axios from "axios";
+import useSWR from "swr";
 
 function App({ Component, pageProps }: AppProps) {
   const toggleHeader = useSelector(globalHeader);
@@ -22,6 +24,10 @@ function App({ Component, pageProps }: AppProps) {
   }, [isOpen]);
   const cookies = new Cookies();
   const router = useRouter();
+  const accessToken = cookies.get("accessToken");
+  if (accessToken) {
+    axios.defaults.headers.common.Authorization = `JWT ${accessToken}`;
+  }
   //*@params 임시 HOC (더 좋은 방법 없을까?)
   useEffect(() => {
     if (cookies.get("accessToken") && cookies.get("refreshToken")) {
@@ -30,6 +36,14 @@ function App({ Component, pageProps }: AppProps) {
       router.push("/accounts/login");
     }
   }, [router.route]);
+  const fetcher = (url: any) =>
+    axios
+      .get(process.env.NEXT_PUBLIC_ENV_BASE_URL + url)
+      // .get(url)
+      .then((res) => res.data);
+  const { data, error } = useSWR("users/me/", fetcher);
+  console.log("data", data);
+  console.error("error", error);
 
   return (
     <>

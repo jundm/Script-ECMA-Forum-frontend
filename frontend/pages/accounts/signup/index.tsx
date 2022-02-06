@@ -17,6 +17,7 @@ import { useRouter } from "next/router";
 import Cookies from "universal-cookie";
 import { useSelector } from "react-redux";
 import { userName } from "@utils/Toolkit/Slice/globalSlice";
+import { GetServerSideProps } from "next";
 
 //TODO 추가예정=[validator, add form, email인증]
 interface SignUpProps {}
@@ -96,7 +97,7 @@ function SignUp(this: any, {}: SignUpProps) {
     ) {
       router.back();
     }
-  }, [router.route]);
+  });
   const [form] = Form.useForm();
   const [isLoading, setIsLoading] = useState(false);
   const [inputs, setInputs] = useState({
@@ -406,4 +407,21 @@ function SignUp(this: any, {}: SignUpProps) {
   );
 }
 
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const cookieReq = context.req ? context.req.headers.cookie : null;
+  const cookies = new Cookies(cookieReq);
+  const accessToken = cookies.get("accessToken");
+  if (accessToken) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  } else {
+    return {
+      props: {},
+    };
+  }
+};
 export default SignUp;
