@@ -1,22 +1,48 @@
 {
-  "name": "frontend",
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "lint": "next lint",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "test": "jest --watch",
+    "test:ci": "jest --ci"
   },
   "dependencies": {
-    "next": "12.0.7",
-    "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "@reduxjs/toolkit": "^1.7.1",
+    "@types/react-cookies": "^0.1.0",
+    "antd": "^4.18.5",
+    "axios": "^0.25.0",
+    "detect-browser": "^5.3.0",
+    "formik": "^2.2.9",
+    "next": "latest",
+    "next-redux-wrapper": "^7.0.5",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-redux": "^7.2.6",
+    "redux-persist": "^6.0.0",
+    "swr": "^1.1.2",
+    "universal-cookie": "^4.0.4"
   },
   "devDependencies": {
-    "@types/node": "17.0.5",
+    "@emotion/react": "^11.7.0",
+    "@emotion/styled": "^11.6.0",
+    "@svgr/webpack": "^6.2.1",
+    "@testing-library/jest-dom": "5.16.1",
+    "@testing-library/react": "12.1.2",
+    "@testing-library/user-event": "13.5.0",
     "@types/react": "17.0.38",
+    "@types/redux-logger": "^3.0.9",
+    "autoprefixer": "^10.4.2",
+    "babel-jest": "27.4.5",
     "eslint": "8.5.0",
-    "eslint-config-next": "12.0.7",
+    "eslint-config-next": "latest",
+    "eslint-plugin-testing-library": "5.0.1",
+    "jest": "27.4.5",
+    "postcss": "^8.4.5",
+    "prettier": "^2.5.1",
+    "redux-logger": "^3.0.6",
+    "tailwindcss": "^3.0.16",
     "typescript": "4.5.4"
   }
 }
