@@ -1,6 +1,7 @@
 import re
 
 from rest_framework.generics import get_object_or_404
+
 from rest_framework.permissions import AllowAny
 from rest_framework.viewsets import ModelViewSet
 from django_filters.rest_framework import DjangoFilterBackend
@@ -12,6 +13,7 @@ from .pagination import PostPageNumberPagination
 class PostViewSet(ModelViewSet):
     queryset = Post.objects.all().select_related("author")
     serializer_class = PostSerializer
+
 
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ["id", "category"]
@@ -37,7 +39,6 @@ class PostViewSet(ModelViewSet):
 
 
 class PostCommentViewSet(ModelViewSet):
-
     queryset = PostComment.objects.all()
     serializer_class = PostCommentSerializer
 
@@ -66,6 +67,7 @@ class PostCommentViewSet(ModelViewSet):
             tag_list.append(tag)
 
         post.tag_set.add(*tag_list)
+
 
 
 
