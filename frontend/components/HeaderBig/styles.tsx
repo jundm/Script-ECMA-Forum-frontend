@@ -52,8 +52,10 @@ export const ProfileDiv = styled(HeaderLoginDiv)`
   text-shadow: -0.6px -0.6px 0 #000, 0.6px -0.6px 0 #000, -0.6px 0.6px 0 #000,
     0.6px 0.6px 0 #000;
   display: flex;
+  margin-left: -5px;
 `;
-export const UserNameDiv = styled(HeaderLoginDiv)`
+export const WapperUser = styled.div`
+  display: flex;
   color: #d5e433;
   cursor: pointer;
   margin-right: 0px;
@@ -61,6 +63,10 @@ export const UserNameDiv = styled(HeaderLoginDiv)`
     0.2px 0.2px 0 #000;
   :hover {
     background-color: #3a3a8ac7;
+  }
+`;
+export const UserNameDiv = styled(HeaderLoginDiv)`
+
   }
 `;
 export const Logout = styled(HeaderLoginDiv)`

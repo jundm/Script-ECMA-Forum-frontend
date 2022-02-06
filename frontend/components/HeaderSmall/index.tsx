@@ -71,10 +71,12 @@ const HeaderSmall = (props: HeaderProps) => {
 
           {acccountUserName ? (
             <>
-              <UserNameDiv>{acccountUserName.slice(0, 2)}</UserNameDiv>
-              <ProfileDiv>
-                님<Heart />
-              </ProfileDiv>
+              <UserNameDiv>
+                {acccountUserName.slice(0, 2)}
+                <ProfileDiv>
+                  님<Heart />
+                </ProfileDiv>
+              </UserNameDiv>
             </>
           ) : (
             <>

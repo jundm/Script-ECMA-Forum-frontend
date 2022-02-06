@@ -51,6 +51,7 @@ export const ProfileDiv = styled.div`
     0.6px 0.6px 0 #000;
 `;
 export const UserNameDiv = styled.div`
+  display: flex;
   font-weight: bold;
   font-size: 1.1rem;
   cursor: pointer;

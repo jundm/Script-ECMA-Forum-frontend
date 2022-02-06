@@ -13,6 +13,7 @@ import {
   UserNameDiv,
   ProfileDiv,
   Logout,
+  WapperUser,
 } from "./styles";
 import React from "react";
 import Link from "next/link";
@@ -27,6 +28,7 @@ import Pointing from "public/svg/Pointing Index Emoji.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { userName } from "@utils/Toolkit/Slice/globalSlice";
 import { setLogoutToken } from "@utils/Cookies/TokenManager";
+import axios from "axios";
 
 interface HeaderProps {
   setIsOpen: (arg: (isOpen: any) => boolean) => void;
@@ -56,10 +58,12 @@ const HeaderBig = (props: HeaderProps) => {
             {acccountUserName ? (
               <>
                 <HeaderLoginDiv>
-                  <UserNameDiv>{acccountUserName}</UserNameDiv>
-                  <ProfileDiv>
-                    님 <Heart />
-                  </ProfileDiv>
+                  <WapperUser>
+                    <UserNameDiv>{acccountUserName}</UserNameDiv>
+                    <ProfileDiv>
+                      님 <Heart />
+                    </ProfileDiv>
+                  </WapperUser>
                   <Logout onClick={onLogout}>logout</Logout>
                 </HeaderLoginDiv>
               </>

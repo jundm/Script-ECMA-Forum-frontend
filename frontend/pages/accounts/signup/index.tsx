@@ -407,21 +407,21 @@ function SignUp(this: any, {}: SignUpProps) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const cookieReq = context.req ? context.req.headers.cookie : null;
-  const cookies = new Cookies(cookieReq);
-  const accessToken = cookies.get("accessToken");
-  if (accessToken) {
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    };
-  } else {
-    return {
-      props: {},
-    };
-  }
-};
+// export const getServerSideProps: GetServerSideProps = async (context) => {
+//   const cookieReq = context.req ? context.req.headers.cookie : null;
+//   const cookies = new Cookies(cookieReq);
+//   const accessToken = cookies.get("accessToken");
+//   if (accessToken) {
+//     return {
+//       redirect: {
+//         destination: "/",
+//         permanent: false,
+//       },
+//     };
+//   } else {
+//     return {
+//       props: {},
+//     };
+//   }
+// };
 export default SignUp;
