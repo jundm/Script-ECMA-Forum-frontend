@@ -37,7 +37,7 @@ const HeaderSmall = (props: HeaderProps) => {
       <HeaderOutLineSmall>
         <WidthDiv>
           <Logo src={LogoSrc} onClick={toggleHeader} />
-          <Link href="/article/hot">
+          <Link href="/articles/hot">
             <a>
               <MenuLi>
                 {Safari ? "😎" : <Sunglasses />}
@@ -45,7 +45,7 @@ const HeaderSmall = (props: HeaderProps) => {
               </MenuLi>
             </a>
           </Link>
-          <Link href="/article/question">
+          <Link href="/articles/question">
             <a>
               <MenuLi>
                 {Safari ? "🙈" : <Mongkey />}
@@ -53,7 +53,7 @@ const HeaderSmall = (props: HeaderProps) => {
               </MenuLi>
             </a>
           </Link>
-          <Link href="/article/free">
+          <Link href="/articles/free">
             <a>
               <MenuLi>
                 {Safari ? "😆" : <Smiling />}
@@ -61,7 +61,7 @@ const HeaderSmall = (props: HeaderProps) => {
               </MenuLi>
             </a>
           </Link>
-          <Link href="/article/news">
+          <Link href="/articles/news">
             <a>
               <MenuLi>
                 {Safari ? "🥳" : <Party />}

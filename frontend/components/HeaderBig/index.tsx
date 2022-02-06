@@ -25,10 +25,9 @@ import Party from "public/svg/Party Face Emoji.svg";
 import Sunglasses from "public/svg/Sunglasses Emoji.svg";
 import Heart from "public/svg/Heart Eyes Emoji.svg";
 import Pointing from "public/svg/Pointing Index Emoji.svg";
-import { useDispatch, useSelector } from "react-redux";
-import { userName } from "@utils/Toolkit/Slice/globalSlice";
+import { name, userName } from "@utils/Toolkit/Slice/globalSlice";
 import { setLogoutToken } from "@utils/Cookies/TokenManager";
-import axios from "axios";
+import { useAppDispatch, useAppSelector } from "@utils/Toolkit/hook";
 
 interface HeaderProps {
   setIsOpen: (arg: (isOpen: any) => boolean) => void;
@@ -38,8 +37,8 @@ interface HeaderProps {
 //TODO 토큰이 전부 만료 됐을때 어떻게 처리할지 생각해보기 (일단은 생각할 필요 없음)
 //TODO username을 session에 담는 것으로 수정하기
 const HeaderBig = (props: HeaderProps) => {
-  const dispatch = useDispatch();
-  const acccountUser = useSelector(userName);
+  const dispatch = useAppDispatch();
+  const acccountUser = useAppSelector(userName);
   const acccountUserName = acccountUser.payload.globalReducer.username;
   const toggleHeader = () => {
     props.setIsOpen((isOpen) => !isOpen);
@@ -48,7 +47,7 @@ const HeaderBig = (props: HeaderProps) => {
     "https://user-images.githubusercontent.com/80582578/150622621-619d3778-7717-4455-9093-60e0be731da5.png";
   const Safari = props.isSafari;
   const onLogout = () => {
-    dispatch(userName("")), setLogoutToken();
+    dispatch(userName("")), dispatch(name("")), setLogoutToken();
   };
 
   return (
@@ -96,7 +95,7 @@ const HeaderBig = (props: HeaderProps) => {
           </FaceMessageDiv>
         </Div>
         <MenuUl>
-          <Link href="/article/hot">
+          <Link href="/articles/hot">
             <a>
               <MenuLi>
                 {Safari ? "😎" : <Sunglasses />}
@@ -104,7 +103,7 @@ const HeaderBig = (props: HeaderProps) => {
               </MenuLi>
             </a>
           </Link>
-          <Link href="/article/question">
+          <Link href="/articles/question">
             <a>
               <MenuLi>
                 {Safari ? "🙈" : <Mongkey />}
@@ -112,7 +111,7 @@ const HeaderBig = (props: HeaderProps) => {
               </MenuLi>
             </a>
           </Link>
-          <Link href="/article/free">
+          <Link href="/articles/free">
             <a>
               <MenuLi>
                 {Safari ? "😆" : <Smiling />}
@@ -120,7 +119,7 @@ const HeaderBig = (props: HeaderProps) => {
               </MenuLi>
             </a>
           </Link>
-          <Link href="/article/news">
+          <Link href="/articles/news">
             <a>
               <MenuLi>
                 {Safari ? "🥳" : <Party />}

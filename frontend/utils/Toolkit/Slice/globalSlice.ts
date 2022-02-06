@@ -8,10 +8,12 @@ import { HYDRATE } from "next-redux-wrapper";
 interface AuthState {
   header: boolean;
   username: string;
+  name: string;
 }
 const initialState: AuthState = {
   header: false,
   username: "",
+  name: "",
 };
 
 export const globalSlice = createSlice({
@@ -24,6 +26,9 @@ export const globalSlice = createSlice({
     userName: (state, { payload }) => {
       state.username = payload;
     },
+    name: (state, { payload }) => {
+      state.name = payload;
+    },
   },
   extraReducers: {
     [HYDRATE]: (state, action) => {
@@ -35,5 +40,5 @@ export const globalSlice = createSlice({
     },
   },
 });
-export const { globalHeader, userName } = globalSlice.actions;
+export const { globalHeader, userName, name } = globalSlice.actions;
 export default globalSlice.reducer;

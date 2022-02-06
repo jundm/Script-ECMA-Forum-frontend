@@ -6,19 +6,20 @@ import Head from "next/head";
 import HeaderBig from "@components/HeaderBig";
 import HeaderSmall from "@components/HeaderSmall";
 import { wrapper } from "@utils/Toolkit/store";
-import { useDispatch, useSelector } from "react-redux";
-import { globalHeader } from "@utils/Toolkit/Slice/globalSlice";
+import { globalHeader, name, userName } from "@utils/Toolkit/Slice/globalSlice";
 import { setVerrifyToken } from "@utils/Cookies/TokenManager";
 import Cookies from "universal-cookie";
 import { useRouter } from "next/router";
 import { detect } from "detect-browser";
 import axios from "axios";
-import useSWR from "swr";
+import { useAppSelector, useAppDispatch } from "@utils/Toolkit/hook";
 
 function App({ Component, pageProps }: AppProps) {
-  const toggleHeader = useSelector(globalHeader);
+  const toggleHeader = useAppSelector(globalHeader);
+  // const isUserName = useAppSelector(userName).payload.globalReducer.username;
+  // const isName = useAppSelector(name).payload.globalReducer.name;
   let headerState = toggleHeader.payload.globalReducer.header;
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [isOpen, setIsOpen] = useState(headerState);
   const [isSafari, setIsSafari] = useState(false);
   const isBrowser = detect();
@@ -27,28 +28,31 @@ function App({ Component, pageProps }: AppProps) {
     dispatch(globalHeader(isOpen));
   }, [isOpen]);
   const cookies = new Cookies();
-  const router = useRouter();
+  // const router = useRouter();
   const accessToken = cookies.get("accessToken");
-  if (accessToken) {
-    axios.defaults.headers.common.Authorization = `JWT ${accessToken}`;
-  }
+  const refreshToken = cookies.get("refreshToken");
+
   //*@params 임시 HOC (더 좋은 방법 없을까?)
   useEffect(() => {
-    if (cookies.get("accessToken") && cookies.get("refreshToken")) {
-      setVerrifyToken();
-    } else {
-      router.push("/accounts/login");
+    if (accessToken) {
+      axios.defaults.headers.common.Authorization = `JWT ${accessToken}`;
     }
-  }, [router.route]);
-  const fetcher = (url: any) =>
-    axios
-      .get(process.env.NEXT_PUBLIC_ENV_BASE_URL + url)
-      // .get(url)
-      .then((res) => res.data);
-  const { data, error } = useSWR("users/me/", fetcher);
-  console.log("data", data);
-  console.error("error", error);
-
+    if (accessToken && refreshToken) {
+      setVerrifyToken();
+    }
+  }, [accessToken]);
+  useEffect(() => {
+    console.log("실행");
+    if (accessToken && refreshToken) {
+      axios
+        .get(process.env.NEXT_PUBLIC_ENV_BASE_URL + "users/me/")
+        .then((res) => {
+          dispatch(userName(res.data.username));
+          dispatch(name(res.data.username));
+        })
+        .catch((e) => console.warn(e.message));
+    }
+  }, [refreshToken]);
   return (
     <>
       <Head>
@@ -62,9 +66,9 @@ function App({ Component, pageProps }: AppProps) {
         />
       </Head>
       {headerState ? (
-        <HeaderSmall setIsOpen={setIsOpen} isSafari={isSafari}/>
+        <HeaderSmall setIsOpen={setIsOpen} isSafari={isSafari} />
       ) : (
-        <HeaderBig setIsOpen={setIsOpen} isSafari={isSafari}/>
+        <HeaderBig setIsOpen={setIsOpen} isSafari={isSafari} />
       )}
       <div className="container mx-auto px-4">
         <Component {...pageProps} />

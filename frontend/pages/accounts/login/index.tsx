@@ -10,7 +10,7 @@ import {
 import Link from "next/link";
 import { GetServerSideProps } from "next";
 import Cookies from "universal-cookie";
-import { userName } from "@utils/Toolkit/Slice/globalSlice";
+import { userName, name } from "@utils/Toolkit/Slice/globalSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 
@@ -68,12 +68,7 @@ function Login() {
         const refresh = res.data.refresh;
         setAccessToken(access);
         setRefreshToken(refresh);
-        axios
-          .get(process.env.NEXT_PUBLIC_ENV_BASE_URL + "users/me/")
-          .then((res) => {
-            dispatch(userName(res.data.username));
-          })
-          .catch((e) => console.warn(e.message));
+        router.push("/");
       })
       .catch((e) => console.warn(e.message));
     setIsLoading(false);
