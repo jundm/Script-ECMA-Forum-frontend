@@ -43,13 +43,13 @@ class PostSerializer(serializers.ModelSerializer):
 
 class PostCommentSerializer(serializers.ModelSerializer):
     author = AuthorSerializer(read_only=True)
+    tag_set = serializers.StringRelatedField(many=True, read_only=True)
 
     class Meta:
         model = PostComment
         fields = [
             "id",
             "author",
-            "answer",
             "title",
             "content",
             "tag_set",

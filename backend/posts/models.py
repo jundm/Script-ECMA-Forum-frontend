@@ -43,9 +43,20 @@ class PostComment(PostModel):
         verbose_name=_("답변작성자"),
     )
 
+    class Meta:
+        ordering = ["-id"]
+
+    def __str__(self):
+        return f"{self.author},{self.title},{self.content}"
+
 
 class Comment(models.Model):
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="CommentAuthor_set",
+        verbose_name=_("댓글작성자"),
+    )
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     content = models.TextField(_("내용"), null=False)
 
