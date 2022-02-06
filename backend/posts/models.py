@@ -2,6 +2,7 @@ import re
 from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext as _
+from rest_framework.pagination import PageNumberPagination
 
 
 class PostModel(models.Model):

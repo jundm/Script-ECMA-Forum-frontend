@@ -1,9 +1,6 @@
-import json
 import re
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from rest_framework.relations import StringRelatedField
-
 from .models import Post, Comment, PostComment
 
 
