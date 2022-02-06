@@ -32,6 +32,7 @@ import axios from "axios";
 
 interface HeaderProps {
   setIsOpen: (arg: (isOpen: any) => boolean) => void;
+  isSafari: boolean;
 }
 
 //TODO 토큰이 전부 만료 됐을때 어떻게 처리할지 생각해보기 (일단은 생각할 필요 없음)
@@ -45,7 +46,7 @@ const HeaderBig = (props: HeaderProps) => {
   };
   const LogoSrc =
     "https://user-images.githubusercontent.com/80582578/150622621-619d3778-7717-4455-9093-60e0be731da5.png";
-
+  const Safari = props.isSafari;
   const onLogout = () => {
     dispatch(userName("")), setLogoutToken();
   };
@@ -60,9 +61,7 @@ const HeaderBig = (props: HeaderProps) => {
                 <HeaderLoginDiv>
                   <WapperUser>
                     <UserNameDiv>{acccountUserName}</UserNameDiv>
-                    <ProfileDiv>
-                      님 <Heart />
-                    </ProfileDiv>
+                    <ProfileDiv>님 {Safari ? "😍" : <Heart />}</ProfileDiv>
                   </WapperUser>
                   <Logout onClick={onLogout}>logout</Logout>
                 </HeaderLoginDiv>
@@ -72,7 +71,7 @@ const HeaderBig = (props: HeaderProps) => {
                 <Link href="/accounts/login">
                   <a>
                     <LoginSignUp>
-                      <Blow />
+                      {Safari ? "😘" : <Blow />}
                       로그인
                     </LoginSignUp>
                   </a>
@@ -80,7 +79,7 @@ const HeaderBig = (props: HeaderProps) => {
                 <Link href="/accounts/signup">
                   <a>
                     <LoginSignUp>
-                      <Smile />
+                      {Safari ? "🥰" : <Smile />}
                       회원가입
                     </LoginSignUp>
                   </a>
@@ -93,14 +92,14 @@ const HeaderBig = (props: HeaderProps) => {
           <Logo src={LogoSrc} />
           <FaceDiv onClick={toggleHeader} />
           <FaceMessageDiv>
-            <Pointing /> 응슷곰을 누르면 메뉴가 접혀요!
+            {Safari ? "👈" : <Pointing />} 응슷곰을 누르면 메뉴가 접혀요!
           </FaceMessageDiv>
         </Div>
         <MenuUl>
           <Link href="/article/hot">
             <a>
               <MenuLi>
-                <Sunglasses />
+                {Safari ? "😎" : <Sunglasses />}
                 인기
               </MenuLi>
             </a>
@@ -108,7 +107,7 @@ const HeaderBig = (props: HeaderProps) => {
           <Link href="/article/question">
             <a>
               <MenuLi>
-                <Mongkey />
+                {Safari ? "🙈" : <Mongkey />}
                 질문
               </MenuLi>
             </a>
@@ -116,7 +115,7 @@ const HeaderBig = (props: HeaderProps) => {
           <Link href="/article/free">
             <a>
               <MenuLi>
-                <Smiling />
+                {Safari ? "😆" : <Smiling />}
                 소통
               </MenuLi>
             </a>
@@ -124,7 +123,7 @@ const HeaderBig = (props: HeaderProps) => {
           <Link href="/article/news">
             <a>
               <MenuLi>
-                <Party />
+                {Safari ? "🥳" : <Party />}
                 뉴스
               </MenuLi>
             </a>

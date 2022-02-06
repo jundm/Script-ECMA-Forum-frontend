@@ -20,6 +20,7 @@ import { userName } from "@utils/Toolkit/Slice/globalSlice";
 
 interface HeaderProps {
   setIsOpen: (arg: (isOpen: any) => boolean) => void;
+  isSafari: boolean;
 }
 
 const HeaderSmall = (props: HeaderProps) => {
@@ -30,7 +31,7 @@ const HeaderSmall = (props: HeaderProps) => {
   };
   const LogoSrc =
     "https://user-images.githubusercontent.com/80582578/150622884-8271a4f6-ed84-4a69-a8d4-08c4359e4d33.png";
-
+  const Safari = props.isSafari;
   return (
     <>
       <HeaderOutLineSmall>
@@ -39,7 +40,7 @@ const HeaderSmall = (props: HeaderProps) => {
           <Link href="/article/hot">
             <a>
               <MenuLi>
-                <Sunglasses />
+                {Safari ? "😎" : <Sunglasses />}
                 인기
               </MenuLi>
             </a>
@@ -47,7 +48,7 @@ const HeaderSmall = (props: HeaderProps) => {
           <Link href="/article/question">
             <a>
               <MenuLi>
-                <Mongkey />
+                {Safari ? "🙈" : <Mongkey />}
                 질문
               </MenuLi>
             </a>
@@ -55,7 +56,7 @@ const HeaderSmall = (props: HeaderProps) => {
           <Link href="/article/free">
             <a>
               <MenuLi>
-                <Smiling />
+                {Safari ? "😆" : <Smiling />}
                 소통
               </MenuLi>
             </a>
@@ -63,7 +64,7 @@ const HeaderSmall = (props: HeaderProps) => {
           <Link href="/article/news">
             <a>
               <MenuLi>
-                <Party />
+                {Safari ? "🥳" : <Party />}
                 뉴스
               </MenuLi>
             </a>
@@ -73,9 +74,7 @@ const HeaderSmall = (props: HeaderProps) => {
             <>
               <UserNameDiv>
                 {acccountUserName.slice(0, 2)}
-                <ProfileDiv>
-                  님<Heart />
-                </ProfileDiv>
+                <ProfileDiv>님{Safari ? "😍" : <Heart />}</ProfileDiv>
               </UserNameDiv>
             </>
           ) : (
@@ -83,7 +82,7 @@ const HeaderSmall = (props: HeaderProps) => {
               <Link href="/accounts/login">
                 <a>
                   <LoginSignUp>
-                    <Blow />
+                    {Safari ? "😘" : <Blow />}
                     로그인
                   </LoginSignUp>
                 </a>
