@@ -13,6 +13,7 @@ import axios from "axios";
 import { useAppSelector, useAppDispatch } from "@utils/Toolkit/hook";
 import { name, userName } from "@utils/Toolkit/Slice/userSlice";
 import { useRouter } from "next/router";
+import { setVerrifyToken } from "@utils/Cookies/TokenManager";
 
 function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -31,14 +32,9 @@ function App({ Component, pageProps }: AppProps) {
   const accessToken = cookies.get("accessToken");
   const refreshToken = cookies.get("refreshToken");
   useEffect(() => {
-    if (accessToken) {
-      axios.defaults.headers.common.Authorization = `JWT ${accessToken}`;
-    } else {
-      axios.defaults.headers.common.Authorization = "";
-    }
-  }, [accessToken]);
-  useEffect(() => {
     if (accessToken && refreshToken) {
+      console.log("응애");
+      axios.defaults.headers.common.Authorization = `JWT ${accessToken}`;
       axios
         .get(process.env.NEXT_PUBLIC_ENV_BASE_URL + "users/me/")
         .then((res) => {
@@ -46,9 +42,12 @@ function App({ Component, pageProps }: AppProps) {
           dispatch(name(res.data.username));
         })
         .catch((e) => console.warn(e.message));
+    } else if (!accessToken && !refreshToken) {
+      axios.defaults.headers.common.Authorization = "";
+    } else if (!accessToken && refreshToken) {
+      setVerrifyToken();
     }
-  }, [refreshToken]);
-
+  }, [accessToken]);
   return (
     <>
       <Head>

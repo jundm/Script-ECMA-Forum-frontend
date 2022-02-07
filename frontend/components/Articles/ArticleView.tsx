@@ -16,7 +16,7 @@ function ArticleView({ id }: ArticleViewProps) {
   return (
     <div>
       <Head>
-        <title>{data?.title} ScriptECMAForum</title>
+        <title>{data?.title}-ScriptECMAForum</title>
       </Head>
       <h1>{data?.title}</h1>
       <hr />

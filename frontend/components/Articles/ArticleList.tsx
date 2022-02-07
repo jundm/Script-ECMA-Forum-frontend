@@ -14,11 +14,9 @@ function ArticleList({ title, category }: ArticleListProps) {
   if (error) {
     return error.message;
   }
-  console.log(data, "data");
-
   return (
     <div className="container">
-      <Head>{category} 심심 ScriptECMAForum</Head>
+      <Head>{category}-ScriptECMAForum</Head>
       <h1>{title}</h1>
       <ul>
         {data?.results.map((article: any) => (
