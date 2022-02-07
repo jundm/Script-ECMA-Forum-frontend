@@ -14,7 +14,6 @@ class PostViewSet(ModelViewSet):
     queryset = Post.objects.all().select_related("author")
     serializer_class = PostSerializer
 
-
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ["id", "category"]
     permission_classes = [AllowAny]
@@ -67,8 +66,6 @@ class PostCommentViewSet(ModelViewSet):
             tag_list.append(tag)
 
         post.tag_set.add(*tag_list)
-
-
 
 
 class CommentViewSet(ModelViewSet):

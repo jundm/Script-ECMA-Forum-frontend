@@ -7,17 +7,36 @@ interface ArticleListProps {
   title: any;
   category: any;
 }
+//* 값 참고
+// author: {username: 'jun', name: 'jun', avatar_url: 'http://localhost:8000/avatar/image/jun.png'}
+// category: "free"
+// content: "호호호"
+// created_at: "2022-02-07T16:29:04.050399+09:00"
+// id: 3
+// tag_set: []
+// title: "이건 세번째 글이야"
+// updated_at: "2022-02-07T16:29:04.050450+09:00"
 
 function ArticleList({ title, category }: ArticleListProps) {
-  const { data, error } = useFetch(
-    `${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/`
-  );
+  const { data, error } = useFetch(`posts/api/`);
   if (error) {
     return <>데이터를 불러올 수 없습니다.</>;
   }
+
   return (
     <div className="container">
       <h1>{title}</h1>
+      <ul>
+        {data?.results.map((article: any) => (
+          <>
+            <li key={article.id.toString()}>
+              <Link href={`/articles/${category}/${article.id}`}>
+                <a>{article.title}</a>
+              </Link>
+            </li>
+          </>
+        ))}
+      </ul>
       <Link href={`/articles/${category}/create`}>
         <a>
           <Button type="primary" shape="round">

@@ -40,7 +40,7 @@ function ArticleCreate({ category }: ArticleCreateProps) {
             })
             .then((res) => {
               console.log(res, "글쓰기 성공");
-              router.push(`/article/${category}`);
+              router.push(`/articles/${category}`);
             })
             .catch((e) => console.warn(e.message));
           setLoading(false);
