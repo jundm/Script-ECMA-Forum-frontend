@@ -6,33 +6,25 @@ import Head from "next/head";
 import HeaderBig from "@components/HeaderBig";
 import HeaderSmall from "@components/HeaderSmall";
 import { wrapper } from "@utils/Toolkit/store";
-import { globalHeader, name, userName } from "@utils/Toolkit/Slice/globalSlice";
-import { setVerrifyToken } from "@utils/Cookies/TokenManager";
+import { globalHeader } from "@utils/Toolkit/Slice/globalSlice";
 import Cookies from "universal-cookie";
-import { useRouter } from "next/router";
 import { detect } from "detect-browser";
 import axios from "axios";
 import { useAppSelector, useAppDispatch } from "@utils/Toolkit/hook";
+import { name, userName } from "@utils/Toolkit/Slice/userSlice";
 
 function App({ Component, pageProps }: AppProps) {
   const toggleHeader = useAppSelector(globalHeader);
-  let headerState = toggleHeader.payload.globalReducer.header;
+  let headerState = toggleHeader.payload.global.header;
   const dispatch = useAppDispatch();
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(headerState);
   const [isSafari, setIsSafari] = useState(false);
   const isBrowser = detect();
-  const saveLocalStorage = () => {
-    localStorage.setItem("toogle", JSON.stringify(!isOpen));
-  };
   useEffect(() => {
     setIsSafari(isBrowser?.os === "iOS" || isBrowser?.os === "Mac OS");
-    const isOpen = localStorage.getItem("toogle");
-    if (isOpen) {
-      setIsOpen(JSON.parse(isOpen));
-    }
+    dispatch(globalHeader(isOpen));
   }, [isOpen]);
   const cookies = new Cookies();
-  // const router = useRouter();
   const accessToken = cookies.get("accessToken");
   const refreshToken = cookies.get("refreshToken");
   useEffect(() => {
@@ -67,18 +59,10 @@ function App({ Component, pageProps }: AppProps) {
           href="https://user-images.githubusercontent.com/80582578/150659751-3470092d-4f58-438a-b347-1b0ecbe66151.png"
         />
       </Head>
-      {isOpen ? (
-        <HeaderSmall
-          setIsOpen={setIsOpen}
-          isSafari={isSafari}
-          saveLocalStorage={saveLocalStorage}
-        />
+      {headerState ? (
+        <HeaderSmall setIsOpen={setIsOpen} isSafari={isSafari} />
       ) : (
-        <HeaderBig
-          setIsOpen={setIsOpen}
-          isSafari={isSafari}
-          saveLocalStorage={saveLocalStorage}
-        />
+        <HeaderBig setIsOpen={setIsOpen} isSafari={isSafari} />
       )}
       <div className="container mx-auto px-4">
         <Component {...pageProps} />

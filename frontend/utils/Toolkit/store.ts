@@ -15,16 +15,22 @@ import {
   persistStore,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage/session";
+import localStorage from "redux-persist/lib/storage";
 
 const persistConfig = {
   key: "root",
   version: 1,
-  storage,
-  whitelist: ["globalReducer"],
+  storage: localStorage,
+  blacklist: ["auth"],
 };
+const authPersistConfig = {
+  key: "auth",
+  storage: storage,
+};
+
 const rootReducer = combineReducers({
-  userReducer,
-  globalReducer,
+  auth: persistReducer(authPersistConfig, userReducer),
+  global: globalReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

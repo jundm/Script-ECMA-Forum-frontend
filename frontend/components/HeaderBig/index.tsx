@@ -25,25 +25,22 @@ import Party from "public/svg/Party Face Emoji.svg";
 import Sunglasses from "public/svg/Sunglasses Emoji.svg";
 import Heart from "public/svg/Heart Eyes Emoji.svg";
 import Pointing from "public/svg/Pointing Index Emoji.svg";
-import { name, userName } from "@utils/Toolkit/Slice/globalSlice";
+import { name, userName } from "@utils/Toolkit/Slice/userSlice";
 import { setLogoutToken } from "@utils/Cookies/TokenManager";
 import { useAppDispatch, useAppSelector } from "@utils/Toolkit/hook";
 
 interface HeaderProps {
-  saveLocalStorage: () => void;
   setIsOpen: (arg: (isOpen: any) => boolean) => void;
   isSafari: boolean;
 }
 
-//TODO 토큰이 전부 만료 됐을때 어떻게 처리할지 생각해보기 (일단은 생각할 필요 없음)
-//TODO username을 session에 담는 것으로 수정하기
 const HeaderBig = (props: HeaderProps) => {
   const dispatch = useAppDispatch();
   const acccountUser = useAppSelector(userName);
-  const acccountUserName = acccountUser.payload.globalReducer.username;
+  const acccountUserName = acccountUser.payload.auth.username;
+
   const toggleHeader = () => {
     props.setIsOpen((isOpen) => !isOpen);
-    props.saveLocalStorage();
   };
   const LogoSrc =
     "https://user-images.githubusercontent.com/80582578/150622621-619d3778-7717-4455-9093-60e0be731da5.png";
