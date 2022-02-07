@@ -8,7 +8,7 @@ interface ArticleListProps {
   category: any;
 }
 //* 값 참고
-// author: {username: 'jun', name: 'jun', avatar_url: 'http://localhost:8000/avatar/image/jun.png'}
+// author: {username: '', name: '', avatar_url: '/avatar/image/jun.png'}
 // category: "free"
 // content: "호호호"
 // created_at: "2022-02-07T16:29:04.050399+09:00"
@@ -20,7 +20,7 @@ interface ArticleListProps {
 function ArticleList({ title, category }: ArticleListProps) {
   const { data, error } = useFetch(`posts/api/`);
   if (error) {
-    return <>데이터를 불러올 수 없습니다.</>;
+    return error.message;
   }
 
   return (

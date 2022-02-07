@@ -16,10 +16,9 @@ function Create({}: CreateProps) {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const cookieReq = context.req ? context.req.headers.cookie : null;
   const cookies = new Cookies(cookieReq);
-  const accessToken = cookies.get("accessToken");
   const refreshToken = cookies.get("refreshToken");
   const resolvedUrl = context.resolvedUrl;
-  if (accessToken && refreshToken) {
+  if (refreshToken) {
     return {
       props: {},
     };

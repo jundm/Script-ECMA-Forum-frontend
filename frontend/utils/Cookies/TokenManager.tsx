@@ -5,10 +5,11 @@ import { HTTP_ONLY } from "./config/config";
 const cookies = new Cookies();
 
 function setAccessToken(accessToken: string) {
-  const expires = new Date(Date.now() + 1000 * 60 * 15);
+  const expires = new Date(Date.now() + 1000 * 60 * 14);
+  axios.defaults.headers.common.Authorization = `JWT ${accessToken}`;
   cookies.set("accessToken", accessToken, {
     path: "/",
-    // expires,
+    expires,
     httpOnly: HTTP_ONLY,
   });
 }
@@ -26,7 +27,18 @@ function setLogoutToken() {
   cookies.remove("refreshToken", { path: "/" });
 }
 function setVerrifyToken() {
-  if (cookies.get("accessToken")) {
+  if (!cookies.get("accessToken")) {
+    axios
+      .post(process.env.NEXT_PUBLIC_ENV_BASE_URL + "jwt/refresh/", {
+        refresh: cookies.get("refreshToken"),
+      })
+      .then((res) => {
+        if (res) {
+          console.log("토큰이 삭제가 잘되서 토큰을 재발급 합니다");
+          setAccessToken(res.data.access);
+        }
+      });
+  } else if (cookies.get("accessToken")) {
     axios
       .post(process.env.NEXT_PUBLIC_ENV_BASE_URL + "jwt/verify/", {
         token: cookies.get("accessToken"),
@@ -39,7 +51,9 @@ function setVerrifyToken() {
             })
             .then((res) => {
               if (res) {
-                console.log("토큰을 재발급 합니다");
+                console.log(
+                  "만료시간이 지났지만 토큰삭제가 안되서 재발급 합니다"
+                );
                 setAccessToken(res.data.access);
               }
             });
