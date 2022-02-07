@@ -12,8 +12,11 @@ import { detect } from "detect-browser";
 import axios from "axios";
 import { useAppSelector, useAppDispatch } from "@utils/Toolkit/hook";
 import { name, userName } from "@utils/Toolkit/Slice/userSlice";
+import { useRouter } from "next/router";
 
 function App({ Component, pageProps }: AppProps) {
+  const router = useRouter();
+  const routeName = router.pathname.split("/");
   const toggleHeader = useAppSelector(globalHeader);
   let headerState = toggleHeader.payload.global.header;
   const dispatch = useAppDispatch();
@@ -45,12 +48,13 @@ function App({ Component, pageProps }: AppProps) {
         .catch((e) => console.warn(e.message));
     }
   }, [refreshToken]);
+
   return (
     <>
       <Head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-        <title>ScriptECMAForum</title>
+        <title>{routeName[routeName.length - 1]}-ScriptECMAForum</title>
         <link
           rel="icon"
           type="image/png"

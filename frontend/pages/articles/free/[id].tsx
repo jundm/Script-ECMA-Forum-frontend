@@ -5,27 +5,26 @@ import { SWRConfig } from "swr";
 
 interface ViewPageProps {
   id: number;
-  // article: {
-  //   id: number;
-  //   category: string;
-  //   author: {
-  //     username: string;
-  //     name: string;
-  //     avatar_url: string;
-  //   };
-  //   title: string;
-  //   content: string;
-  //   tag_set: string[];
-  //   created_at: string;
-  //   updated_at: string;
-  // };
+  fallback: {
+    id: number;
+    category: string;
+    author: {
+      username: string;
+      name: string;
+      avatar_url: string;
+    };
+    title: string;
+    content: string;
+    tag_set: string[];
+    created_at: string;
+    updated_at: string;
+  };
+  // fallback: any;
 }
 
-function ViewPage({ id }: ViewPageProps) {
-  console.log(id, "id");
-
+function ViewPage({ id, fallback }: ViewPageProps) {
   return (
-    <SWRConfig>
+    <SWRConfig value={{ fallback }}>
       <div>
         <ArticleView id={id} />
       </div>

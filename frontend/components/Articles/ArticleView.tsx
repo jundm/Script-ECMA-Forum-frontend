@@ -1,5 +1,7 @@
 import useFetch from "@utils/Hook/useFetch";
+import Head from "next/head";
 import React from "react";
+import nl2br from "react-nl2br";
 
 interface ArticleViewProps {
   id: number;
@@ -13,9 +15,12 @@ function ArticleView({ id }: ArticleViewProps) {
 
   return (
     <div>
+      <Head>
+        <title>{data?.title} ScriptECMAForum</title>
+      </Head>
       <h1>{data?.title}</h1>
       <hr />
-      <p>{data?.content}</p>
+      <p>{nl2br(data?.content)}</p>
     </div>
   );
 }
