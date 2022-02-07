@@ -16,16 +16,41 @@ import {
 } from "redux-persist";
 import storage from "redux-persist/lib/storage/session";
 import localStorage from "redux-persist/lib/storage";
+import { encryptTransform } from "redux-persist-transform-encrypt";
+import Cookies from "universal-cookie";
+
+const cookies = new Cookies();
+const accessToken = cookies.get("accessToken") || "WA29HXHSvL-NotLogin";
 
 const persistConfig = {
   key: "root",
-  version: 1,
+  version: 2,
   storage: localStorage,
+  whitelist: ["global"],
   blacklist: ["auth"],
+  transforms: [
+    encryptTransform({
+      secretKey: accessToken,
+      onError: function (error) {
+        console.warn("persist-error", error);
+      },
+    }),
+  ],
 };
 const authPersistConfig = {
   key: "auth",
+  version: 1,
   storage: storage,
+  whitelist: ["auth"],
+  blacklist: ["global"],
+  transforms: [
+    encryptTransform({
+      secretKey: accessToken,
+      onError: function (error) {
+        console.warn("persist-error", error);
+      },
+    }),
+  ],
 };
 
 const rootReducer = combineReducers({
