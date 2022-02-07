@@ -19,6 +19,7 @@ import Heart from "public/svg/Heart Eyes Emoji.svg";
 import { userName } from "@utils/Toolkit/Slice/globalSlice";
 
 interface HeaderProps {
+  saveLocalStorage: () => void;
   setIsOpen: (arg: (isOpen: any) => boolean) => void;
   isSafari: boolean;
 }
@@ -28,6 +29,7 @@ const HeaderSmall = (props: HeaderProps) => {
   const acccountUserName = acccountUser.payload.globalReducer.username;
   const toggleHeader = () => {
     props.setIsOpen((isOpen) => !isOpen);
+    props.saveLocalStorage();
   };
   const LogoSrc =
     "https://user-images.githubusercontent.com/80582578/150622884-8271a4f6-ed84-4a69-a8d4-08c4359e4d33.png";

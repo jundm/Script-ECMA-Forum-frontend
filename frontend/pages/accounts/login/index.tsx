@@ -10,7 +10,7 @@ import {
 import Link from "next/link";
 import { GetServerSideProps } from "next";
 import Cookies from "universal-cookie";
-import { userName, name } from "@utils/Toolkit/Slice/globalSlice";
+import { userName, name } from "@utils/Toolkit/Slice/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 

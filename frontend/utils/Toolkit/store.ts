@@ -14,7 +14,7 @@ import {
   REGISTER,
   persistStore,
 } from "redux-persist";
-import storage from "redux-persist/lib/storage";
+import storage from "redux-persist/lib/storage/session";
 
 const persistConfig = {
   key: "root",

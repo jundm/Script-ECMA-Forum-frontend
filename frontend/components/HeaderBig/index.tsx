@@ -30,6 +30,7 @@ import { setLogoutToken } from "@utils/Cookies/TokenManager";
 import { useAppDispatch, useAppSelector } from "@utils/Toolkit/hook";
 
 interface HeaderProps {
+  saveLocalStorage: () => void;
   setIsOpen: (arg: (isOpen: any) => boolean) => void;
   isSafari: boolean;
 }
@@ -42,6 +43,7 @@ const HeaderBig = (props: HeaderProps) => {
   const acccountUserName = acccountUser.payload.globalReducer.username;
   const toggleHeader = () => {
     props.setIsOpen((isOpen) => !isOpen);
+    props.saveLocalStorage();
   };
   const LogoSrc =
     "https://user-images.githubusercontent.com/80582578/150622621-619d3778-7717-4455-9093-60e0be731da5.png";

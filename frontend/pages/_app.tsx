@@ -16,16 +16,20 @@ import { useAppSelector, useAppDispatch } from "@utils/Toolkit/hook";
 
 function App({ Component, pageProps }: AppProps) {
   const toggleHeader = useAppSelector(globalHeader);
-  // const isUserName = useAppSelector(userName).payload.globalReducer.username;
-  // const isName = useAppSelector(name).payload.globalReducer.name;
   let headerState = toggleHeader.payload.globalReducer.header;
   const dispatch = useAppDispatch();
-  const [isOpen, setIsOpen] = useState(headerState);
+  const [isOpen, setIsOpen] = useState(true);
   const [isSafari, setIsSafari] = useState(false);
   const isBrowser = detect();
+  const saveLocalStorage = () => {
+    localStorage.setItem("toogle", JSON.stringify(!isOpen));
+  };
   useEffect(() => {
     setIsSafari(isBrowser?.os === "iOS" || isBrowser?.os === "Mac OS");
-    dispatch(globalHeader(isOpen));
+    const isOpen = localStorage.getItem("toogle");
+    if (isOpen) {
+      setIsOpen(JSON.parse(isOpen));
+    }
   }, [isOpen]);
   const cookies = new Cookies();
   // const router = useRouter();
@@ -63,10 +67,18 @@ function App({ Component, pageProps }: AppProps) {
           href="https://user-images.githubusercontent.com/80582578/150659751-3470092d-4f58-438a-b347-1b0ecbe66151.png"
         />
       </Head>
-      {headerState ? (
-        <HeaderSmall setIsOpen={setIsOpen} isSafari={isSafari} />
+      {isOpen ? (
+        <HeaderSmall
+          setIsOpen={setIsOpen}
+          isSafari={isSafari}
+          saveLocalStorage={saveLocalStorage}
+        />
       ) : (
-        <HeaderBig setIsOpen={setIsOpen} isSafari={isSafari} />
+        <HeaderBig
+          setIsOpen={setIsOpen}
+          isSafari={isSafari}
+          saveLocalStorage={saveLocalStorage}
+        />
       )}
       <div className="container mx-auto px-4">
         <Component {...pageProps} />
