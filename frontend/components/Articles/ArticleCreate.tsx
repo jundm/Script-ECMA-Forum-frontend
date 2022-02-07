@@ -3,7 +3,7 @@ import { Button, Input } from "antd";
 import { Formik } from "formik";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { userName } from "@utils/Toolkit/Slice/globalSlice";
+import { userName } from "@utils/Toolkit/Slice/userSlice";
 import { setVerrifyToken } from "@utils/Cookies/TokenManager";
 import { useRouter } from "next/router";
 import Cookies from "universal-cookie";
@@ -19,8 +19,8 @@ function ArticleCreate({ category }: ArticleCreateProps) {
   const [isLoading, setLoading] = useState(false);
   const [isDisable, setIsDisable] = useState(false);
   const acccountUser = useSelector(userName);
-  const acccountUserName = acccountUser.payload.globalReducer.username;
-  const acccountName = acccountUser.payload.globalReducer.name;
+  const acccountUserName = acccountUser.payload.auth.username;
+  const acccountName = acccountUser.payload.auth.name;
   const router = useRouter();
   const cookies = new Cookies();
 

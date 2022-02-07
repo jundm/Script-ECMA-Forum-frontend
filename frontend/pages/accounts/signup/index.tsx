@@ -16,7 +16,7 @@ import {
 import { useRouter } from "next/router";
 import Cookies from "universal-cookie";
 import { useSelector } from "react-redux";
-import { userName } from "@utils/Toolkit/Slice/globalSlice";
+import { userName } from "@utils/Toolkit/Slice/userSlice";
 import { GetServerSideProps } from "next";
 
 //TODO 추가예정=[validator, add form, email인증]
@@ -88,7 +88,7 @@ function SignUp(this: any, {}: SignUpProps) {
   const router = useRouter();
   const cookies = new Cookies();
   const acccountUser = useSelector(userName);
-  const acccountUserName = acccountUser.payload.globalReducer.username;
+  const acccountUserName = acccountUser.payload.auth.username;
   useEffect(() => {
     if (
       acccountUserName &&

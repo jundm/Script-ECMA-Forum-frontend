@@ -22,7 +22,7 @@ function Login() {
   const router = useRouter();
   const cookies = new Cookies();
   const acccountUser = useSelector(userName);
-  const acccountUserName = acccountUser.payload.globalReducer.username;
+  const acccountUserName = acccountUser.payload.auth.username;
   useEffect(() => {
     if (
       acccountUserName &&
