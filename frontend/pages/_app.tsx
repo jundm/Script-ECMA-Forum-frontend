@@ -34,9 +34,7 @@ function App({ Component, pageProps }: AppProps) {
       axios.defaults.headers.common.Authorization = "";
     }
   }, [accessToken]);
-  //*@params 임시 HOC (더 좋은 방법 없을까?)
   useEffect(() => {
-    console.log("실행");
     if (accessToken && refreshToken) {
       axios
         .get(process.env.NEXT_PUBLIC_ENV_BASE_URL + "users/me/")
