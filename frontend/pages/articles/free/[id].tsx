@@ -20,7 +20,6 @@ interface ViewPageProps {
     created_at: string;
     updated_at: string;
   };
-  // fallback: any;
 }
 
 function ViewPage({ id, fallback }: ViewPageProps) {

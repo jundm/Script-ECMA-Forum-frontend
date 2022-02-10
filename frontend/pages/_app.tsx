@@ -13,7 +13,7 @@ import axios from "axios";
 import { useAppSelector, useAppDispatch } from "@utils/Toolkit/hook";
 import { name, userName } from "@utils/Toolkit/Slice/userSlice";
 import { useRouter } from "next/router";
-import { setVerrifyToken } from "@utils/Cookies/TokenManager";
+import { setVerifyToken } from "@utils/Cookies/TokenManager";
 
 function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -44,7 +44,7 @@ function App({ Component, pageProps }: AppProps) {
     } else if (!accessToken && !refreshToken) {
       axios.defaults.headers.common.Authorization = "";
     } else if (!accessToken && refreshToken) {
-      setVerrifyToken();
+      setVerifyToken();
     }
   }, [accessToken]);
   return (

@@ -1,5 +1,6 @@
 import ArticleList from "@components/Articles/ArticleList";
 import { fetcher } from "@utils/Hook/useFetch";
+import isbot from "isbot";
 import React from "react";
 import { SWRConfig } from "swr";
 
@@ -24,10 +25,12 @@ function Free({ page, fallback }: FreeProps) {
     </SWRConfig>
   );
 }
-export const getServerSideProps = async ({ query }: any) => {
+export const getServerSideProps = async ({ query, req }: any) => {
   const page = query.page || 1;
   const url = `posts/api/?category=free&page=${page}`;
-  const articleList = await fetcher(url);
+  const articleList = isbot(req.headers["user-agent"])
+    ? await fetcher(url)
+    : null;
   return {
     props: {
       page,

@@ -26,7 +26,7 @@ function setLogoutToken() {
   cookies.remove("accessToken", { path: "/" });
   cookies.remove("refreshToken", { path: "/" });
 }
-function setVerrifyToken() {
+function setVerifyToken() {
   if (!cookies.get("accessToken")) {
     axios
       .post(process.env.NEXT_PUBLIC_ENV_BASE_URL + "jwt/refresh/", {
@@ -62,4 +62,4 @@ function setVerrifyToken() {
   }
 }
 
-export { setAccessToken, setRefreshToken, setLogoutToken, setVerrifyToken };
+export { setAccessToken, setRefreshToken, setLogoutToken, setVerifyToken };

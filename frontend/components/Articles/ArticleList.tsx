@@ -5,7 +5,7 @@ import useFetch from "@utils/Hook/useFetch";
 import Head from "next/head";
 import Pagination from "rc-pagination";
 import { useRouter } from "next/router";
-import { setVerrifyToken } from "@utils/Cookies/TokenManager";
+import { setVerifyToken } from "@utils/Cookies/TokenManager";
 
 interface ArticleListProps {
   title: string;
@@ -15,9 +15,9 @@ interface ArticleListProps {
 
 function ArticleList({ title, category, page }: ArticleListProps) {
   const router = useRouter();
-  const { data, error } = useFetch(`posts/api/?category=free&${page}}`);
+  const { data, error } = useFetch(`posts/api/?category=free&page=${page}`);
   if (error) {
-    setVerrifyToken();
+    setVerifyToken();
     console.error(error);
   }
   console.log("data", data);
@@ -34,14 +34,14 @@ function ArticleList({ title, category, page }: ArticleListProps) {
           </li>
         ))}
       </ul>
-      {/* <Pagination
+      <Pagination
         pageSize={30}
-        total={data?.count}
-        // current={}
+        total={data?.total}
+        current={data?.current_page}
         onChange={(page) => {
           router.push(`?page=${page}`);
         }}
-      /> */}
+      />
       <Link href={`/articles/${category}/create`}>
         <a>
           <Button type="primary" shape="round">

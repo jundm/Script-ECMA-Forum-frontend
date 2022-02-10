@@ -4,7 +4,7 @@ import { Formik } from "formik";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { userName } from "@utils/Toolkit/Slice/userSlice";
-import { setVerrifyToken } from "@utils/Cookies/TokenManager";
+import { setVerifyToken } from "@utils/Cookies/TokenManager";
 import { useRouter } from "next/router";
 import Cookies from "universal-cookie";
 
@@ -31,7 +31,7 @@ function ArticleCreate({ category }: ArticleCreateProps) {
         validate={(values) => {}}
         onSubmit={(values) => {
           setLoading(true);
-          setVerrifyToken();
+          setVerifyToken();
           const createArticle = axios
             .post(`${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/`, {
               category,
