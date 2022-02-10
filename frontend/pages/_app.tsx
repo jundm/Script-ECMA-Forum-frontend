@@ -33,7 +33,6 @@ function App({ Component, pageProps }: AppProps) {
   const refreshToken = cookies.get("refreshToken");
   useEffect(() => {
     if (accessToken && refreshToken) {
-      console.log("응애");
       axios.defaults.headers.common.Authorization = `JWT ${accessToken}`;
       axios
         .get(process.env.NEXT_PUBLIC_ENV_BASE_URL + "users/me/")

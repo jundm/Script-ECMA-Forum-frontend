@@ -3,17 +3,24 @@ import React from "react";
 import { Button } from "antd";
 import useFetch from "@utils/Hook/useFetch";
 import Head from "next/head";
+import Pagination from "rc-pagination";
+import { useRouter } from "next/router";
+import { setVerrifyToken } from "@utils/Cookies/TokenManager";
 
 interface ArticleListProps {
   title: string;
   category: string;
+  page: any;
 }
 
-function ArticleList({ title, category }: ArticleListProps) {
-  const { data, error } = useFetch(`posts/api/?category=free`);
+function ArticleList({ title, category, page }: ArticleListProps) {
+  const router = useRouter();
+  const { data, error } = useFetch(`posts/api/?category=free&${page}}`);
   if (error) {
-    return error.message;
+    setVerrifyToken();
+    console.error(error);
   }
+  console.log("data", data);
   return (
     <div className="container">
       <Head>{category}-ScriptECMAForum</Head>
@@ -27,6 +34,14 @@ function ArticleList({ title, category }: ArticleListProps) {
           </li>
         ))}
       </ul>
+      {/* <Pagination
+        pageSize={30}
+        total={data?.count}
+        // current={}
+        onChange={(page) => {
+          router.push(`?page=${page}`);
+        }}
+      /> */}
       <Link href={`/articles/${category}/create`}>
         <a>
           <Button type="primary" shape="round">

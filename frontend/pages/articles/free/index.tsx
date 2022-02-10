@@ -12,22 +12,25 @@ interface FreeProps {
       results: [];
     };
   };
+  page: any;
 }
 
-function Free({ fallback }: FreeProps) {
+function Free({ page, fallback }: FreeProps) {
   return (
     <SWRConfig value={{ fallback }}>
       <div>
-        <ArticleList title="자유 게시판" category="free" />
+        <ArticleList title="자유 게시판" category="free" page={page} />
       </div>
     </SWRConfig>
   );
 }
-export const getServerSideProps = async () => {
-  const url = "posts/api/?category=free";
+export const getServerSideProps = async ({ query }: any) => {
+  const page = query.page || 1;
+  const url = `posts/api/?category=free&page=${page}`;
   const articleList = await fetcher(url);
   return {
     props: {
+      page,
       fallback: {
         [url]: articleList,
       },

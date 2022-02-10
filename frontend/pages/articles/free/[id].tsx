@@ -1,5 +1,6 @@
 import ArticleView from "@components/Articles/ArticleView";
 import { fetcher } from "@utils/Hook/useFetch";
+import isbot from "isbot";
 import React from "react";
 import { SWRConfig } from "swr";
 
@@ -32,11 +33,10 @@ function ViewPage({ id, fallback }: ViewPageProps) {
   );
 }
 
-export const getServerSideProps = async ({ params }: any) => {
+export const getServerSideProps = async ({ req, params }: any) => {
   const id = params.id;
   const url = `posts/api/${id}`;
-  const article = await fetcher(url);
-
+  const article = isbot(req.headers["user-agent"]) ? await fetcher(url) : null;
   return {
     props: {
       id,

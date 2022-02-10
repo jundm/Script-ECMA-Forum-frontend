@@ -3768,6 +3768,11 @@
   dependencies:
     "call-bind" "^1.0.2"
 
+"isbot@^3.4.2":
+  "integrity" "sha512-b59O14840ltLAGq8z+M8VhL+1CdrjbZYQIhQBPacutjl27Ypa2/UksJ1DRzWOz19F5H/2d2pstbdAp7+b0ph+A=="
+  "resolved" "https://registry.npmjs.org/isbot/-/isbot-3.4.2.tgz"
+  "version" "3.4.2"
+
 "isexe@^2.0.0":
   "integrity" "sha1-6PvzdNxVb/iUehDcsFctYz8s+hA="
   "resolved" "https://registry.npmjs.org/isexe/-/isexe-2.0.0.tgz"
@@ -5122,7 +5127,7 @@
     "rc-resize-observer" "^1.0.0"
     "rc-util" "^5.5.1"
 
-"rc-pagination@~3.1.9":
+"rc-pagination@^3.1.15", "rc-pagination@~3.1.9":
   "integrity" "sha512-4L3fot8g4E+PjWEgoVGX0noFCg+8ZFZmeLH4vsnZpB3O2T2zThtakjNxG+YvSaYtyMVT4B+GLayjKrKbXQpdAg=="
   "resolved" "https://registry.npmjs.org/rc-pagination/-/rc-pagination-3.1.15.tgz"
   "version" "3.1.15"
