@@ -19,6 +19,7 @@ function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
   const routeName = router.pathname.split("/");
   const toggleHeader = useAppSelector(globalHeader);
+  const isUserName = useAppSelector(userName);
   let headerState = toggleHeader.payload.global.header;
   const dispatch = useAppDispatch();
   const [isOpen, setIsOpen] = useState(headerState);
@@ -47,6 +48,9 @@ function App({ Component, pageProps }: AppProps) {
       setVerifyToken();
     }
   }, [accessToken]);
+  useEffect(() => {
+    if (isUserName && !refreshToken) router.push("/accounts/login");
+  }, [refreshToken]);
   return (
     <>
       <Head>

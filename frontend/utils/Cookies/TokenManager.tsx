@@ -14,10 +14,10 @@ function setAccessToken(accessToken: string) {
   });
 }
 function setRefreshToken(refreshToken: string) {
-  const expires = new Date(Date.now() + 1000 * 60 * 60 * 24);
+  const expires = new Date(Date.now() + 1000 * 60 * 60 * 23.5);
   cookies.set("refreshToken", refreshToken, {
     path: "/",
-    // expires,
+    expires,
     httpOnly: HTTP_ONLY,
   });
 }

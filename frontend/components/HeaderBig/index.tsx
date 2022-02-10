@@ -36,8 +36,8 @@ interface HeaderProps {
 
 const HeaderBig = (props: HeaderProps) => {
   const dispatch = useAppDispatch();
-  const acccountUser = useAppSelector(userName);
-  const acccountUserName = acccountUser.payload.auth.username;
+  const accountUser = useAppSelector(userName);
+  const accountUserName = accountUser.payload.auth.username;
 
   const toggleHeader = () => {
     props.setIsOpen((isOpen) => !isOpen);
@@ -54,11 +54,11 @@ const HeaderBig = (props: HeaderProps) => {
       <HeaderOutLineBig>
         <WidthDiv>
           <AuthenticationDiv>
-            {acccountUserName ? (
+            {accountUserName ? (
               <>
                 <HeaderLoginDiv>
                   <WapperUser>
-                    <UserNameDiv>{acccountUserName}</UserNameDiv>
+                    <UserNameDiv>{accountUserName}</UserNameDiv>
                     <ProfileDiv>님 {Safari ? "😍" : <Heart />}</ProfileDiv>
                   </WapperUser>
                   <Logout onClick={onLogout}>logout</Logout>
