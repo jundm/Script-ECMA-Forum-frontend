@@ -30,13 +30,11 @@ function ArticleList({ title, category, page }: ArticleListProps) {
       <h1>{title}</h1>
       <ul>
         {data?.results.map((article: any) => (
-          <>
-            <li key={article.id.toString()}>
-              <Link href={`/articles/${category}/${article.id}`}>
-                <a>{article.title}</a>
-              </Link>
-            </li>
-          </>
+          <li key={article.id.toString()}>
+            <Link href={`/articles/${category}/${article.id}`}>
+              <a>{article.title}</a>
+            </Link>
+          </li>
         ))}
       </ul>
       <Pagination

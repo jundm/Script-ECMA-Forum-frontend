@@ -18,6 +18,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         upload_to="accounts/avatar/%Y/%m/%d",
         help_text="개성을 표현할 수 있는 사진을 올려주세요!",
     )
+    follower_set = models.ManyToManyField("self", blank=True)
+    following_set = models.ManyToManyField("self", blank=True)
 
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)  # a admin user; non super-user

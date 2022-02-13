@@ -1,12 +1,33 @@
 from django.contrib.auth import get_user_model
 from drf_yasg.utils import swagger_auto_schema
+from requests import Response
 from rest_framework import serializers, status
+from rest_framework.decorators import api_view
+from rest_framework.generics import get_object_or_404
 from rest_framework_simplejwt.views import (
     TokenBlacklistView,
     TokenObtainPairView,
     TokenRefreshView,
     TokenVerifyView,
 )
+
+
+@api_view(["POST"])
+def user_follow(request):
+    username = request.data["username"]
+    follow_user = get_object_or_404(get_user_model(), username=username, is_active=True)
+    request.user.following_set.add(follow_user)
+    follow_user.follower_set.add(request.user)
+    return Response(status.HTTP_204.NO_CONTENT)
+
+
+@api_view(["POST"])
+def user_unfollow(request):
+    username = request.data["username"]
+    follow_user = get_object_or_404(get_user_model(), username=username, is_active=True)
+    request.user.following_set.remove(follow_user)
+    follow_user.follower_set.remove(request.user)
+    return Response(status.HTTP_204.NO_CONTENT)
 
 
 class TokenObtainPairResponseSerializer(serializers.Serializer):
