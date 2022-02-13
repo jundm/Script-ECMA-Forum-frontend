@@ -41,7 +41,7 @@ function App({ Component, pageProps }: AppProps) {
           dispatch(userName(res.data.username));
           dispatch(name(res.data.username));
         })
-        .catch((e) => console.warn(e.message));
+        .catch((e) => console.error(e.message));
     } else if (!accessToken && !refreshToken) {
       axios.defaults.headers.common.Authorization = "";
     } else if (!accessToken && refreshToken) {

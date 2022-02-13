@@ -21,11 +21,11 @@ interface LoginProps {}
 function Login() {
   const router = useRouter();
   const cookies = new Cookies();
-  const acccountUser = useSelector(userName);
-  const acccountUserName = acccountUser.payload.auth.username;
+  const accountUser = useSelector(userName);
+  const accountUserName = accountUser.payload.auth.username;
   useEffect(() => {
     if (
-      acccountUserName &&
+      accountUserName &&
       cookies.get("accessToken") &&
       cookies.get("refreshToken")
     ) {

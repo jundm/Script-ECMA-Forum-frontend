@@ -27,6 +27,7 @@ class Post(PostModel):
         ("news", "news"),
     )
     category = models.CharField(max_length=12, choices=Choices)
+    hit = models.IntegerField(default=0)
 
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,

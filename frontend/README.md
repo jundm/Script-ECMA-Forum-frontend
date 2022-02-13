@@ -21,3 +21,5 @@ universal-cookie https://www.npmjs.com/package/universal-cookie (react-cookies, 
 axios https://axios-http.com/kr/docs/
 
 formik https://formik.org/docs/overview
+
+spellchecker https://streetsidesoftware.com/vscode-spell-checker/docs/configuration/

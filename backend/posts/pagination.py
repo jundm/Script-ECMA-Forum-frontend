@@ -1,9 +1,6 @@
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 
-# class PostPageNumberPagination(PageNumberPagination):
-#     page_size = 30
-
 DEFAULT_PAGE = 1
 DEFAULT_PAGE_SIZE = 30
 

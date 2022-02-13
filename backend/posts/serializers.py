@@ -2,7 +2,7 @@ import re
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
-from .models import Post, Comment, PostComment
+from .models import Post, Comment,PostComment
 
 
 class AuthorSerializer(serializers.ModelSerializer):
@@ -30,6 +30,7 @@ class PostSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "category",
+            "hit",
             "author",
             "title",
             "content",

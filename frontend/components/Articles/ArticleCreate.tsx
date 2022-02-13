@@ -17,10 +17,9 @@ interface ArticleCreateProps {
 // *validate 일단 사용 안함
 function ArticleCreate({ category }: ArticleCreateProps) {
   const [isLoading, setLoading] = useState(false);
-  const [isDisable, setIsDisable] = useState(false);
-  const acccountUser = useSelector(userName);
-  const acccountUserName = acccountUser.payload.auth.username;
-  const acccountName = acccountUser.payload.auth.name;
+  const accountUser = useSelector(userName);
+  const accountUserName = accountUser.payload.auth.username;
+  const accountName = accountUser.payload.auth.name;
   const router = useRouter();
   const cookies = new Cookies();
 
@@ -36,8 +35,8 @@ function ArticleCreate({ category }: ArticleCreateProps) {
             .post(`${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/`, {
               category,
               author: {
-                username: { acccountUserName },
-                name: { acccountName },
+                username: { accountUserName },
+                name: { accountName },
               },
               ...values,
             })
@@ -60,7 +59,6 @@ function ArticleCreate({ category }: ArticleCreateProps) {
           handleChange,
           handleBlur,
           handleSubmit,
-          isSubmitting,
         }) => (
           <form onSubmit={handleSubmit}>
             <label htmlFor="title">제목</label>
@@ -92,8 +90,6 @@ function ArticleCreate({ category }: ArticleCreateProps) {
               type="primary"
               shape="round"
               loading={isLoading}
-              // disabled={isDisable}
-              // onClick={() => console.log("hi")}
             >
               제출하기
             </Button>

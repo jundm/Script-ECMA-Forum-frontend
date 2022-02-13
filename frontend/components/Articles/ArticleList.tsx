@@ -1,6 +1,6 @@
 import Link from "next/link";
 import React from "react";
-import { Button } from "antd";
+import { Button, Table } from "antd";
 import useFetch from "@utils/Hook/useFetch";
 import Head from "next/head";
 import Pagination from "rc-pagination";
@@ -15,23 +15,28 @@ interface ArticleListProps {
 
 function ArticleList({ title, category, page }: ArticleListProps) {
   const router = useRouter();
-  const { data, error } = useFetch(`posts/api/?category=free&page=${page}`);
+  const { data, error } = useFetch(
+    `posts/api/?category=${category}&page=${page}`
+  );
   if (error) {
     setVerifyToken();
     console.error(error);
   }
   console.log("data", data);
+
   return (
     <div className="container">
       <Head>{category}-ScriptECMAForum</Head>
       <h1>{title}</h1>
       <ul>
         {data?.results.map((article: any) => (
-          <li key={article.id.toString()}>
-            <Link href={`/articles/${category}/${article.id}`}>
-              <a>{article.title}</a>
-            </Link>
-          </li>
+          <>
+            <li key={article.id.toString()}>
+              <Link href={`/articles/${category}/${article.id}`}>
+                <a>{article.title}</a>
+              </Link>
+            </li>
+          </>
         ))}
       </ul>
       <Pagination

@@ -12,7 +12,7 @@ function ArticleView({ id }: ArticleViewProps) {
   if (error) {
     return error.message;
   }
-
+  console.log("data", data);
   return (
     <div>
       <Head>
