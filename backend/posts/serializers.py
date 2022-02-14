@@ -2,7 +2,7 @@ import re
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
-from .models import Post, Comment,PostComment
+from .models import Post, Comment, PostComment, PostLikes
 
 
 class AuthorSerializer(serializers.ModelSerializer):
@@ -24,6 +24,12 @@ class AuthorSerializer(serializers.ModelSerializer):
 class PostSerializer(serializers.ModelSerializer):
     author = AuthorSerializer(read_only=True)
     tag_set = serializers.StringRelatedField(many=True, read_only=True)
+    # like_user_set = serializers.StringRelatedField(many=True, read_only=True)
+    likes = serializers.SerializerMethodField()
+
+    def get_likes(self, post):
+        return post.like_user_set.count()
+        # return like_user_set.objects.filter(post=post).count()
 
     class Meta:
         model = Post
@@ -31,6 +37,8 @@ class PostSerializer(serializers.ModelSerializer):
             "id",
             "category",
             "hit",
+            # "like_user_set",
+            "likes",
             "author",
             "title",
             "content",
@@ -40,9 +48,14 @@ class PostSerializer(serializers.ModelSerializer):
         ]
 
 
+class PostLikeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PostLikes
+        fields = ["user", "post", "created_at", "updated_at"]
+
+
 class PostCommentSerializer(serializers.ModelSerializer):
     author = AuthorSerializer(read_only=True)
-
     tag_set = serializers.StringRelatedField(many=True, read_only=True)
 
     class Meta:

@@ -1,23 +1,38 @@
 import re
 import datetime
+from django.db import transaction
 from django.utils import timezone
+from rest_framework.decorators import action
+from rest_framework.exceptions import ValidationError
 from rest_framework.generics import get_object_or_404
-from rest_framework import status
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework import status, mixins, generics
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.response import Response
-from .models import Post, Comment, PostComment, Tag
-from .serializers import PostSerializer, CommentSerializer,PostCommentSerializer
+from .models import Post, Comment, PostComment, Tag, PostLikes
+from .serializers import (
+    PostSerializer,
+    CommentSerializer,
+    PostCommentSerializer,
+    PostLikeSerializer,
+)
 from .pagination import PostPageNumberPagination
 
+
 class PostViewSet(ModelViewSet):
-    queryset = Post.objects.all().select_related("author")
+    queryset = (
+        Post.objects.all()
+        .select_related("author")
+        .prefetch_related("tag_set", "like_user_set")
+    )
     serializer_class = PostSerializer
 
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ["id", "category"]
-    permission_classes = [IsAuthenticatedOrReadOnly,]
+    permission_classes = [
+        IsAuthenticatedOrReadOnly,
+    ]
     pagination_class = PostPageNumberPagination
 
     def perform_create(self, serializer):
@@ -36,11 +51,14 @@ class PostViewSet(ModelViewSet):
             tag_list.append(tag)
 
         post.tag_set.add(*tag_list)
-    def retrieve(self,request,pk=None,*args,**kwargs):
+
+    def retrieve(self, request, pk=None, *args, **kwargs):
         # 조회수 cookie https://moondol-ai.tistory.com/216
-        instance = get_object_or_404(self.get_queryset(),pk=pk)
+        instance = get_object_or_404(self.get_queryset(), pk=pk)
         # 밤 12시에 쿠키 초기화
-        tomorrow =  datetime.datetime.replace(timezone.datetime.now(), hour=23, minute=59, second=0)
+        tomorrow = datetime.datetime.replace(
+            timezone.datetime.now(), hour=23, minute=59, second=0
+        )
         expires = datetime.datetime.strftime(tomorrow, "%a, %d-%b-%Y %H:%M:%S GMT")
 
         # 쿠키 만들 준비
@@ -48,17 +66,17 @@ class PostViewSet(ModelViewSet):
         response = Response(serializer.data, status=status.HTTP_200_OK)
 
         # 쿠키 읽기 & 생성
-        if request.COOKIES.get('hit') is not None:
+        if request.COOKIES.get("hit") is not None:
             # 쿠키에 hit 값이 이미 있을 경우
-            cookies = request.COOKES.get('hit')
-            cookies_list = cookies.split('|')
+            cookies = request.COOKES.get("hit")
+            cookies_list = cookies.split("|")
             if str(pk) not in cookies_list:
-                response.set_cookie('hit',cookies+f'|{pk}',expries=expires)
+                response.set_cookie("hit", cookies + f"|{pk}", expries=expires)
                 with transaction.atomic():
                     instance.views += 1
                     instance.save()
             else:
-                response.set_cookie('hit',pk, expires=expires)
+                response.set_cookie("hit", pk, expires=expires)
                 instance.views += 1
                 instance.save()
         # views가 추가되면 해당 instance를 serializer에 표시
@@ -66,10 +84,45 @@ class PostViewSet(ModelViewSet):
         response = Response(serializer.data, status=status.HTTP_200_OK)
         return response
 
+    @action(detail=True, methods=["POST"])
+    def like(self, request, pk):
+        post = self.get_object()
+        post.like_user_set.add(self.request.user)
+        print(self.request, "likelike")
+        return Response(status.HTTP_201_CREATED)
+
+    @like.mapping.delete
+    def unlike(self, request, pk):
+        post = self.get_object()
+        post.like_user_set.remove(self.request.user)
+        return Response(status.HTTP_204_NO_CONTENT)
+
+
+class PostLikeCreate(generics.CreateAPIView, mixins.DestroyModelMixin):
+    serializer_class = PostLikeSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        print(user, "uuser,get_queryset")
+        post = get_object_or_404(Post, pk=self.kwargs["post_pk"])
+        print(post, "ppost,get_queryset")
+        return PostLikes.objects.filter(user=user, post=post)
+
+    def perform_create(self, serializer):
+        print("_____________", self.kwargs["pk"])
+        if self.get_queryset().exists():
+            raise ValidationError("no post!")
+        post = Post.objects.filter(pk=self.kwargs["pk"])
+        serializer.save(user=self.request.user, post=post)
+
+
 class PostCommentViewSet(ModelViewSet):
     queryset = PostComment.objects.all()
     serializer_class = PostCommentSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly, ]
+    permission_classes = [
+        IsAuthenticatedOrReadOnly,
+    ]
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
@@ -101,7 +154,9 @@ class PostCommentViewSet(ModelViewSet):
 class CommentViewSet(ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly, ]
+    permission_classes = [
+        IsAuthenticatedOrReadOnly,
+    ]
 
     def get_serializer_context(self):
         context = super().get_serializer_context()

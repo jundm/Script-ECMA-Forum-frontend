@@ -13,6 +13,8 @@ class UserCreateSerializer(UserCreateSerializer):
             "name",
             "username",
             "email",
+            "follower_set",
+            "following_set",
         )
         REQUIRED_FIELDS = ["name"]
 

@@ -1,8 +1,8 @@
 import re
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.translation import gettext as _
-from rest_framework.pagination import PageNumberPagination
 
 
 class PostModel(models.Model):
@@ -35,8 +35,57 @@ class Post(PostModel):
         on_delete=models.CASCADE,
         verbose_name=_("작성자"),
     )
+    like_user_set = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, blank=True, related_name="like_post_set"
+    )
+
     class Meta:
         ordering = ["-id"]
+
+
+class PostLikes(models.Model):
+    user = models.ForeignKey(
+        verbose_name="좋아요(유저)",
+        related_name="User_likes",
+        to=settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        blank=True,
+    )
+    post = models.ForeignKey(
+        verbose_name="좋아요(게시글)",
+        related_name="Post_likes",
+        to=Post,
+        on_delete=models.CASCADE,
+        blank=True,
+    )
+    created_at = models.DateTimeField(_("작성일"), auto_now_add=True)
+    updated_at = models.DateTimeField(_("수정일"), auto_now=True)
+
+    def __str__(self):
+        return f"Like from user {self.user_id}"
+
+
+#
+# class PostDisLikes(models.Model):
+#     user = models.ForeignKey(
+#         verbose_name="안좋아요(유저)",
+#         related_name="User_Dislikes",
+#         to=settings.AUTH_USER_MODEL,
+#         on_delete=models.CASCADE,
+#         blank=True,
+#     )
+#     post = models.ForeignKey(
+#         verbose_name="안좋아요(게시글)",
+#         related_name="Post_Dislikes",
+#         to=Post,
+#         on_delete=models.CASCADE,
+#         blank=True,
+#     )
+#     created_at = models.DateTimeField(_("작성일"), auto_now_add=True)
+#     updated_at = models.DateTimeField(_("수정일"), auto_now=True)
+#
+#     def __str__(self):
+#         return f"DisLike from user {self.user_id}"
 
 
 class PostComment(PostModel):
