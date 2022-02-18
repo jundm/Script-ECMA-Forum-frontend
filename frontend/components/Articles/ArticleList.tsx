@@ -1,57 +1,156 @@
 import Link from "next/link";
 import React from "react";
-import { Button, Table } from "antd";
+import { Button, Table, Tag } from "antd";
 import useFetch from "@utils/Hook/useFetch";
 import Head from "next/head";
-import Pagination from "rc-pagination";
 import { useRouter } from "next/router";
 import { setVerifyToken } from "@utils/Cookies/TokenManager";
+import dayjs from "dayjs";
 
 interface ArticleListProps {
-  title: string;
   category: string;
-  page: any;
+  page: string;
+  title: string;
+  subtitle: string;
+}
+interface ArticleProps {
+  hit: number;
+  id: number;
+  author: {
+    avatar_url: string;
+    name: string;
+    username: string;
+  };
+  content: string;
+  likes: number;
+  tag_set: [];
+  created_at: Date;
+  updated_at: Date;
 }
 
-function ArticleList({ title, category, page }: ArticleListProps) {
+//TODO 태그 색상 렌덤 개발모드여서 리랜더링 되는지 확인하기
+function ArticleList({ title, subtitle, category, page }: ArticleListProps) {
   const router = useRouter();
   const { data, error } = useFetch(
     `posts/api/?category=${category}&page=${page}`
   );
   if (error) {
+    //! 중복이여도 없앨수가 없음 오류안나고 access토큰만 삭제되면 실행이 안됨
     setVerifyToken();
     console.error(error);
   }
-  console.log("data", data);
+
+  const columns = [
+    {
+      title: "제목",
+      dataIndex: "title",
+      key: "title",
+      render: (title: string, row: ArticleProps, index: number) => (
+        <>
+          {row.tag_set.map((tag) => {
+            const colorRandom = [
+              "magenta",
+              "red",
+              "volcano",
+              "orange",
+              "gold",
+              "lime",
+              "green",
+              "cyan",
+              "blue",
+              "geekblue",
+              "purple",
+            ];
+            let color =
+              colorRandom[Math.floor(Math.random() * colorRandom.length)];
+            console.log(color);
+            return (
+              <Tag color={color} key={tag}>
+                <div className="text-[0.6rem]">{tag}</div>
+              </Tag>
+            );
+          })}
+          <br />
+          <Link href={`/articles/${category}/${row.id}`}>
+            <a className="text-base">{title}</a>
+          </Link>
+        </>
+      ),
+    },
+    {
+      title: "작성자",
+      dataIndex: "author",
+      key: "author",
+      width: "110px",
+      render: (author: {
+        avatar_url: string;
+        name: string;
+        username: string;
+      }) => (
+        <div className="flex">
+          <img
+            className="rounded-full ml-[-20px] mr-1 w-5 h-5"
+            src={author.avatar_url}
+            alt="avatar"
+          />
+          {author.username}
+        </div>
+      ),
+    },
+    {
+      title: "작성일",
+      dataIndex: "created_at",
+      key: "created_at",
+      width: "100px",
+      render: (created_at: string) => dayjs(created_at).format("MM-DD"),
+    },
+    {
+      title: "조회",
+      dataIndex: "hit",
+      key: "hit",
+      width: "60px",
+    },
+    {
+      title: "추천",
+      dataIndex: "likes",
+      key: "likes",
+      width: "60px",
+    },
+  ];
+
+  const dataSource = data?.results.map((article: ArticleProps) => article);
 
   return (
-    <div className="container">
+    <div className="container max-w-screen-lg mx-auto">
       <Head>{category}-ScriptECMAForum</Head>
-      <h1>{title}</h1>
-      <ul>
-        {data?.results.map((article: any) => (
-          <li key={article.id.toString()}>
-            <Link href={`/articles/${category}/${article.id}`}>
-              <a>{article.title}</a>
-            </Link>
-          </li>
-        ))}
-      </ul>
-      <Pagination
-        pageSize={30}
-        total={data?.total}
-        current={data?.current_page}
-        onChange={(page) => {
-          router.push(`?page=${page}`);
-        }}
-      />
-      <Link href={`/articles/${category}/create`}>
-        <a>
-          <Button type="primary" shape="round">
-            글쓰기
-          </Button>
-        </a>
-      </Link>
+      <div className="flex justify-between ">
+        <div>
+          <strong className="text-xl">{title}</strong>
+          <p>{subtitle}</p>
+        </div>
+        <Link href={`/articles/${category}/create`}>
+          <a className="mt-6">
+            <Button type="primary" shape="round">
+              글쓰기
+            </Button>
+          </a>
+        </Link>
+      </div>
+      <div className="board_list_wrap">
+        <Table
+          dataSource={dataSource}
+          columns={columns}
+          pagination={{
+            position: ["bottomCenter"],
+            defaultPageSize: 30,
+            total: data?.total,
+            current: data?.current_page,
+            onChange: (page: any) => {
+              router.push(`?page=${page}`);
+            },
+          }}
+        />
+      </div>
     </div>
   );
 }

@@ -20,7 +20,7 @@ function Free({ page, fallback }: FreeProps) {
   return (
     <SWRConfig value={{ fallback }}>
       <div>
-        <ArticleList title="자유 게시판" category="free" page={page} />
+        <ArticleList title="자유 게시판" subtitle="자유롭게 소통하되 매너있게" category="free" page={page} />
       </div>
     </SWRConfig>
   );

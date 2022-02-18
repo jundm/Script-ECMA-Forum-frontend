@@ -3,13 +3,34 @@ from drf_yasg.utils import swagger_auto_schema
 from requests import Response
 from rest_framework import serializers, status
 from rest_framework.decorators import api_view
-from rest_framework.generics import get_object_or_404
+from rest_framework.generics import get_object_or_404, CreateAPIView
 from rest_framework_simplejwt.views import (
     TokenBlacklistView,
     TokenObtainPairView,
     TokenRefreshView,
     TokenVerifyView,
 )
+from accounts.serializers import UsernameUniqueCheckSerializer
+
+# format=None https://www.django-rest-framework.org/tutorial/2-requests-and-responses/#adding-optional-format-suffixes-to-our-urls
+class UsernameUniqueCheck(CreateAPIView):
+    serializer_class = UsernameUniqueCheckSerializer
+
+    def post(self, request, format=None):
+        print(request, "발발")
+        serializer = self.get_serializer(
+            data=request.data, context={"request": request}
+        )
+        if serializer.is_valid():
+            print(serializer.is_valid(), "성공")
+            # return Response(
+            #     data={"detail": ["You can use this ID"]}, status=status.HTTP_200_OK
+            # )
+        else:
+            detail = dict()
+            detail["detail"] = serializer.errors["username"]
+            print(serializer.is_valid(), "실패")
+            # return Response(data=detail, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(["POST"])

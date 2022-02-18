@@ -69,16 +69,18 @@ class PostViewSet(ModelViewSet):
         if request.COOKIES.get("hit") is not None:
             # 쿠키에 hit 값이 이미 있을 경우
             cookies = request.COOKES.get("hit")
+            print("retrieve", cookies)
             cookies_list = cookies.split("|")
             if str(pk) not in cookies_list:
                 response.set_cookie("hit", cookies + f"|{pk}", expries=expires)
                 with transaction.atomic():
-                    instance.views += 1
+                    instance.hit += 1
                     instance.save()
-            else:
-                response.set_cookie("hit", pk, expires=expires)
-                instance.views += 1
-                instance.save()
+        else:
+            response.set_cookie("hit", pk, expires=expires)
+            print("retrieve", response)
+            instance.hit += 1
+            instance.save()
         # views가 추가되면 해당 instance를 serializer에 표시
         serializer = self.get_serializer(instance)
         response = Response(serializer.data, status=status.HTTP_200_OK)
@@ -88,7 +90,6 @@ class PostViewSet(ModelViewSet):
     def like(self, request, pk):
         post = self.get_object()
         post.like_user_set.add(self.request.user)
-        print(self.request, "likelike")
         return Response(status.HTTP_201_CREATED)
 
     @like.mapping.delete
@@ -104,13 +105,10 @@ class PostLikeCreate(generics.CreateAPIView, mixins.DestroyModelMixin):
 
     def get_queryset(self):
         user = self.request.user
-        print(user, "uuser,get_queryset")
         post = get_object_or_404(Post, pk=self.kwargs["post_pk"])
-        print(post, "ppost,get_queryset")
         return PostLikes.objects.filter(user=user, post=post)
 
     def perform_create(self, serializer):
-        print("_____________", self.kwargs["pk"])
         if self.get_queryset().exists():
             raise ValidationError("no post!")
         post = Post.objects.filter(pk=self.kwargs["pk"])

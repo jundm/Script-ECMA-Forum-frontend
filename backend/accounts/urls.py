@@ -14,4 +14,5 @@ urlpatterns = [
     # path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("info/follow/", views.user_follow, name="user_follow"),
     path("info/unfollow/", views.user_unfollow, name="user_unfollow"),
+    path("username/", views.UsernameUniqueCheck.as_view()),
 ]
