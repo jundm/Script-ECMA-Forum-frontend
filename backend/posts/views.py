@@ -106,7 +106,7 @@ class HotPost(generics.ListAPIView):
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
-        timesince = timezone.now() - datetime.timedelta(days=1)
+        timesince = timezone.now() - datetime.timedelta(days=7)
         queryset = queryset.order_by("-like_user_set").filter(created_at__gte=timesince)
 
         page = self.paginate_queryset(queryset)

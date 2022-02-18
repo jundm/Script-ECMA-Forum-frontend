@@ -49,9 +49,28 @@ class PostSerializer(serializers.ModelSerializer):
 
 
 class HotPostSerializer(serializers.ModelSerializer):
+    author = AuthorSerializer(read_only=True)
+    tag_set = serializers.StringRelatedField(many=True, read_only=True)
+    likes = serializers.SerializerMethodField()
+
+    def get_likes(self, post):
+        return post.like_user_set.count()
+
     class Meta:
         model = Post
-        fields = "__all__"
+        fields = [
+            "id",
+            "category",
+            "hit",
+            # "like_user_set",
+            "likes",
+            "author",
+            "title",
+            "content",
+            "tag_set",
+            "created_at",
+            "updated_at",
+        ]
 
 
 # class PostLikeSerializer(serializers.ModelSerializer):
