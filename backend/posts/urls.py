@@ -11,4 +11,4 @@ router.register(r"api/(?P<post_pk>\d+)/postComment", views.PostCommentViewSet)
 router.register(r"api/(?P<post_pk>\d+)/comments", views.CommentViewSet)
 
 
-urlpatterns = [] + router.urls
+urlpatterns = [path("api/hot/", views.HotPost.as_view())] + router.urls

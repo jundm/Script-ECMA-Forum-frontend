@@ -48,10 +48,17 @@ class PostSerializer(serializers.ModelSerializer):
         ]
 
 
-class PostLikeSerializer(serializers.ModelSerializer):
+class HotPostSerializer(serializers.ModelSerializer):
     class Meta:
-        model = PostLikes
-        fields = ["user", "post", "created_at", "updated_at"]
+        model = Post
+        fields = "__all__"
+
+
+# class PostLikeSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = PostLikes
+#         fields = ["user", "post", "created_at", "updated_at"]
+#
 
 
 class PostCommentSerializer(serializers.ModelSerializer):

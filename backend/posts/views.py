@@ -15,7 +15,8 @@ from .serializers import (
     PostSerializer,
     CommentSerializer,
     PostCommentSerializer,
-    PostLikeSerializer,
+    HotPostSerializer,
+    # PostLikeSerializer,
 )
 from .pagination import PostPageNumberPagination
 
@@ -29,7 +30,7 @@ class PostViewSet(ModelViewSet):
     serializer_class = PostSerializer
 
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ["id", "category"]
+    filterset_fields = ["id", "category", "like_user_set"]
     permission_classes = [
         IsAuthenticatedOrReadOnly,
     ]
@@ -99,20 +100,38 @@ class PostViewSet(ModelViewSet):
         return Response(status.HTTP_204_NO_CONTENT)
 
 
-class PostLikeCreate(generics.CreateAPIView, mixins.DestroyModelMixin):
-    serializer_class = PostLikeSerializer
-    permission_classes = [IsAuthenticated]
+class HotPost(generics.ListAPIView):
+    queryset = Post.objects.all()
+    serializer_class = HotPostSerializer
 
-    def get_queryset(self):
-        user = self.request.user
-        post = get_object_or_404(Post, pk=self.kwargs["post_pk"])
-        return PostLikes.objects.filter(user=user, post=post)
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        timesince = timezone.now() - datetime.timedelta(days=1)
+        queryset = queryset.order_by("-like_user_set").filter(created_at__gte=timesince)
 
-    def perform_create(self, serializer):
-        if self.get_queryset().exists():
-            raise ValidationError("no post!")
-        post = Post.objects.filter(pk=self.kwargs["pk"])
-        serializer.save(user=self.request.user, post=post)
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+
+# class PostLikeCreate(generics.CreateAPIView, mixins.DestroyModelMixin):
+#     serializer_class = PostLikeSerializer
+#     permission_classes = [IsAuthenticated]
+#
+#     def get_queryset(self):
+#         user = self.request.user
+#         post = get_object_or_404(Post, pk=self.kwargs["post_pk"])
+#         return PostLikes.objects.filter(user=user, post=post)
+#
+#     def perform_create(self, serializer):
+#         if self.get_queryset().exists():
+#             raise ValidationError("no post!")
+#         post = Post.objects.filter(pk=self.kwargs["pk"])
+#         serializer.save(user=self.request.user, post=post)
 
 
 class PostCommentViewSet(ModelViewSet):
