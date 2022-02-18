@@ -103,11 +103,19 @@ class PostViewSet(ModelViewSet):
 class HotPost(generics.ListAPIView):
     queryset = Post.objects.all()
     serializer_class = HotPostSerializer
+    permission_classes = [
+        IsAuthenticatedOrReadOnly,
+    ]
+    pagination_class = PostPageNumberPagination
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
         timesince = timezone.now() - datetime.timedelta(days=7)
-        queryset = queryset.order_by("-like_user_set").filter(created_at__gte=timesince)
+        queryset = (
+            queryset.order_by("-like_user_set")
+            .filter(created_at__gte=timesince)
+            .exclude(like_user_set__isnull=True)
+        )[0:60]
 
         page = self.paginate_queryset(queryset)
         if page is not None:
