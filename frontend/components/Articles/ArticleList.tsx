@@ -25,9 +25,9 @@ interface ArticleProps {
   content: string;
   likes: number;
   tag_set: [];
-
-  created_at: Date;
-  updated_at: Date;
+  comment: number;
+  created_at: string;
+  updated_at: string;
 }
 
 //TODO 태그 색상 렌덤 개발모드여서 리랜더링 되는지 확인하기
@@ -45,8 +45,8 @@ function ArticleList({
     setVerifyToken();
     console.error(error);
   }
-  // console.log(data, "data");
-  const dataSource = data?.results.map((article: ArticleProps) => article);
+  console.log(data);
+
   const columns = [
     {
       title: "제목",
@@ -123,7 +123,7 @@ function ArticleList({
       width: "60px",
     },
   ];
-
+  const dataSource = data?.results.map((article: ArticleProps) => article);
   return (
     <div className="container max-w-screen-lg mx-auto">
       <Head>{category}-ScriptECMAForum</Head>

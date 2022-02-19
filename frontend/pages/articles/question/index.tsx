@@ -1,5 +1,5 @@
 import ArticleList from "@components/Articles/ArticleList";
-import { fetcher } from "@utils/Hook/useFetch";
+import fetcher from "@utils/Hook/useFetch";
 import isbot from "isbot";
 import React from "react";
 import { SWRConfig } from "swr";

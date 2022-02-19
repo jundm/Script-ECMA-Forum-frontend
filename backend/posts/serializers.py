@@ -47,7 +47,7 @@ class PostSerializer(serializers.ModelSerializer):
             "title",
             "content",
             "tag_set",
-            # "comment",
+            "comment",
             "created_at",
             "updated_at",
         ]

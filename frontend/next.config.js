@@ -46,10 +46,3 @@ module.exports = {
     return config;
   },
 };
-
-module.exports = {
-  images: {
-    domains: ["*"],
-    // formats: ["image/png"],
-  },
-};
