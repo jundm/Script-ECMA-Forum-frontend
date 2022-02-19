@@ -78,7 +78,9 @@ function ArticleList({
           })}
           <br />
           <Link href={`/articles/${category}/${row.id}`}>
-            <a className="text-base">{title}</a>
+            <a className="text-base">
+              {title} {row.comment !== 0 && `[${row.comment}]`}
+            </a>
           </Link>
         </>
       ),
