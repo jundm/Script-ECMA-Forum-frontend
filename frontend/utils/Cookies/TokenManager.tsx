@@ -34,7 +34,6 @@ function setVerifyToken() {
       })
       .then((res) => {
         if (res) {
-          console.log("토큰이 삭제가 잘되서 토큰을 재발급 합니다");
           setAccessToken(res.data.access);
         }
       });
@@ -51,9 +50,6 @@ function setVerifyToken() {
             })
             .then((res) => {
               if (res) {
-                console.log(
-                  "만료시간이 지났지만 토큰삭제가 안되서 재발급 합니다"
-                );
                 setAccessToken(res.data.access);
               }
             });

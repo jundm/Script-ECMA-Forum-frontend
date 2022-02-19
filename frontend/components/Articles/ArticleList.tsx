@@ -44,7 +44,6 @@ function ArticleList({
     setVerifyToken();
     console.error(error);
   }
-  console.log(url);
   const columns = [
     {
       title: "제목",
@@ -68,7 +67,6 @@ function ArticleList({
             ];
             let color =
               colorRandom[Math.floor(Math.random() * colorRandom.length)];
-            console.log(color);
             return (
               <Tag color={color} key={tag}>
                 <div className="text-[0.6rem]">{tag}</div>

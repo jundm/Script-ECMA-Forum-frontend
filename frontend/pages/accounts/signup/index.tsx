@@ -84,7 +84,6 @@ const tailFormItemLayout = {
 };
 
 function SignUp(this: any, {}: SignUpProps) {
-  console.log("회원가입");
   const router = useRouter();
   const cookies = new Cookies();
   const acccountUser = useSelector(userName);
@@ -127,7 +126,6 @@ function SignUp(this: any, {}: SignUpProps) {
         re_password,
       })
       .then((res) => {
-        console.log(res);
         form.resetFields([
           "email",
           "name",
@@ -136,7 +134,7 @@ function SignUp(this: any, {}: SignUpProps) {
           "re_password",
         ]);
       })
-      .catch((e) => console.warn(e.message));
+      .catch((e) => console.error(e.message));
     setIsLoading(false);
   };
 

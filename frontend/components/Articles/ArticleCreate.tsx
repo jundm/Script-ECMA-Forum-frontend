@@ -41,7 +41,6 @@ function ArticleCreate({ category }: ArticleCreateProps) {
               ...values,
             })
             .then((res) => {
-              console.log(res, "글쓰기 성공");
               router.push(`/articles/${category}`);
             })
             .catch((e) => {
