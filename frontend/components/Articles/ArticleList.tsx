@@ -12,6 +12,7 @@ interface ArticleListProps {
   page: string;
   title: string;
   subtitle: string;
+  url: string;
 }
 interface ArticleProps {
   hit: number;
@@ -29,17 +30,21 @@ interface ArticleProps {
 }
 
 //TODO 태그 색상 렌덤 개발모드여서 리랜더링 되는지 확인하기
-function ArticleList({ title, subtitle, category, page }: ArticleListProps) {
+function ArticleList({
+  title,
+  subtitle,
+  category,
+  page,
+  url,
+}: ArticleListProps) {
   const router = useRouter();
-  const { data, error } = useFetch(
-    `posts/api/?category=${category}&page=${page}`
-  );
+  const { data, error } = useFetch(`${url}${page}`);
   if (error) {
     //! 중복이여도 없앨수가 없음 오류안나고 access토큰만 삭제되면 실행이 안됨
     setVerifyToken();
     console.error(error);
   }
-
+  console.log(url);
   const columns = [
     {
       title: "제목",
@@ -128,13 +133,15 @@ function ArticleList({ title, subtitle, category, page }: ArticleListProps) {
           <strong className="text-xl">{title}</strong>
           <p>{subtitle}</p>
         </div>
-        <Link href={`/articles/${category}/create`}>
-          <a className="mt-6">
-            <Button type="primary" shape="round">
-              글쓰기
-            </Button>
-          </a>
-        </Link>
+        {router.pathname !== "/articles/hot" && (
+          <Link href={`/articles/${category}/create`}>
+            <a className="mt-6">
+              <Button type="primary" shape="round">
+                글쓰기
+              </Button>
+            </a>
+          </Link>
+        )}
       </div>
       <div className="board_list_wrap">
         <Table

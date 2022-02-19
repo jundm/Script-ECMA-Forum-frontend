@@ -8,7 +8,7 @@ interface CreateProps {}
 function Create({}: CreateProps) {
   return (
     <div>
-      <ArticleCreate category="free" />
+      <ArticleCreate category="question" />
     </div>
   );
 }
