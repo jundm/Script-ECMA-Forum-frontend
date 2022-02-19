@@ -54,7 +54,7 @@ export const ProfileDiv = styled(HeaderLoginDiv)`
   display: flex;
   margin-left: -5px;
 `;
-export const WapperUser = styled.div`
+export const WrapperUser = styled.div`
   display: flex;
   color: #d5e433;
   cursor: pointer;

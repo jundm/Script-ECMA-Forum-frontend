@@ -1,32 +1,50 @@
-import axios from "axios";
+import ArticleList from "@components/Articles/ArticleList";
+import { fetcher } from "@utils/Hook/useFetch";
+import isbot from "isbot";
 import React from "react";
+import { SWRConfig } from "swr";
 
 interface NewsProps {
-  user: any;
+  fallback: {
+    string: {
+      count: number;
+      next: string | null;
+      previous: string | null;
+      results: [];
+    };
+  };
+  page: string;
 }
 
-function News({ user }: NewsProps) {
-  console.log("user", user);
-  const Title = user && user.title;
+function News({ page, fallback }: NewsProps) {
   return (
-    <div>
-      News
-      <h1>{Title}</h1>
-    </div>
+    <SWRConfig value={{ fallback }}>
+      <div>
+        <ArticleList
+          title="새소식 게시판"
+          subtitle="새로운 소식을 전하러 왔습니다"
+          category="news"
+          page={page}
+          url="posts/api/?category=news&page="
+        />
+      </div>
+    </SWRConfig>
   );
 }
-export async function getServerSideProps() {
-  try {
-    const res = await axios.get("https://jsonplaceholder.typicode.com/todos/1");
-    if (res.status === 200) {
-      const user = res.data;
-      return { props: { user } };
-    }
-    return { props: {} };
-  } catch (error) {
-    console.log(error);
-    return { props: {} };
-  }
-}
+export const getServerSideProps = async ({ query, req }: any) => {
+  const page = query.page || 1;
+  const url = `posts/api/?category=news&page=${page}`;
+  const articleList = isbot(req.headers["user-agent"])
+    ? await fetcher(url)
+    : null;
+  return {
+    props: {
+      page,
+      fallback: {
+        [url]: articleList,
+      },
+    },
+  };
+};
 
 export default News;

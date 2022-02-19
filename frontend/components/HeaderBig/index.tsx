@@ -13,14 +13,14 @@ import {
   UserNameDiv,
   ProfileDiv,
   Logout,
-  WapperUser,
+  WrapperUser,
 } from "./styles";
 import React from "react";
 import Link from "next/link";
 import Smiling from "public/svg/Smiling With Closed Eyes Emoji.svg";
 import Smile from "public/svg/Smile Emoji With Hearts.svg";
 import Blow from "public/svg/Blow Kiss Emoji.svg";
-import Mongkey from "public/svg/Mongkey.svg";
+import Monkey from "public/svg/Monkey.svg";
 import Party from "public/svg/Party Face Emoji.svg";
 import Sunglasses from "public/svg/Sunglasses Emoji.svg";
 import Heart from "public/svg/Heart Eyes Emoji.svg";
@@ -57,10 +57,10 @@ const HeaderBig = (props: HeaderProps) => {
             {accountUserName ? (
               <>
                 <HeaderLoginDiv>
-                  <WapperUser>
+                  <WrapperUser>
                     <UserNameDiv>{accountUserName}</UserNameDiv>
                     <ProfileDiv>님 {Safari ? "😍" : <Heart />}</ProfileDiv>
-                  </WapperUser>
+                  </WrapperUser>
                   <Logout onClick={onLogout}>logout</Logout>
                 </HeaderLoginDiv>
               </>
@@ -105,7 +105,7 @@ const HeaderBig = (props: HeaderProps) => {
           <Link href="/articles/question">
             <a>
               <MenuLi>
-                {Safari ? "🙈" : <Mongkey />}
+                {Safari ? "🙈" : <Monkey />}
                 질문
               </MenuLi>
             </a>

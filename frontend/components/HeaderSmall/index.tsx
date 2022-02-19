@@ -12,7 +12,7 @@ import {
 } from "./styles";
 import Smiling from "public/svg/Smiling With Closed Eyes Emoji.svg";
 import Blow from "public/svg/Blow Kiss Emoji.svg";
-import Mongkey from "public/svg/Mongkey.svg";
+import Monkey from "public/svg/Monkey.svg";
 import Party from "public/svg/Party Face Emoji.svg";
 import Sunglasses from "public/svg/Sunglasses Emoji.svg";
 import Heart from "public/svg/Heart Eyes Emoji.svg";
@@ -24,8 +24,8 @@ interface HeaderProps {
 }
 
 const HeaderSmall = (props: HeaderProps) => {
-  const acccountUser = useSelector(userName);
-  const acccountUserName = acccountUser.payload.auth.username;
+  const accountUser = useSelector(userName);
+  const accountUserName = accountUser.payload.auth.username;
   const toggleHeader = () => {
     props.setIsOpen((isOpen) => !isOpen);
   };
@@ -48,7 +48,7 @@ const HeaderSmall = (props: HeaderProps) => {
           <Link href="/articles/question">
             <a>
               <MenuLi>
-                {Safari ? "🙈" : <Mongkey />}
+                {Safari ? "🙈" : <Monkey />}
                 질문
               </MenuLi>
             </a>
@@ -70,10 +70,10 @@ const HeaderSmall = (props: HeaderProps) => {
             </a>
           </Link>
 
-          {acccountUserName ? (
+          {accountUserName ? (
             <>
               <UserNameDiv>
-                {acccountUserName.slice(0, 2)}
+                {accountUserName.slice(0, 2)}
                 <ProfileDiv>님{Safari ? "😍" : <Heart />}</ProfileDiv>
               </UserNameDiv>
             </>

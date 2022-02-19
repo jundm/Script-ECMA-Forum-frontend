@@ -24,7 +24,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   } else {
     return {
       redirect: {
-        destination: resolvedUrl.slice(0, -6),
+        destination: resolvedUrl.slice(0, -8),
         permanent: false,
       },
     };
