@@ -3,20 +3,18 @@ import datetime
 from django.db import transaction
 from django.utils import timezone
 from rest_framework.decorators import action
-from rest_framework.exceptions import ValidationError
 from rest_framework.generics import get_object_or_404
-from rest_framework import status, mixins, generics
+from rest_framework import status, generics
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.response import Response
-from .models import Post, Comment, PostComment, Tag, PostLikes
+from .models import Post, Comment, PostComment, Tag
 from .serializers import (
     PostSerializer,
     CommentSerializer,
     PostCommentSerializer,
     HotPostSerializer,
-    # PostLikeSerializer,
 )
 from .pagination import PostPageNumberPagination
 
@@ -124,22 +122,6 @@ class HotPost(generics.ListAPIView):
 
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
-
-
-# class PostLikeCreate(generics.CreateAPIView, mixins.DestroyModelMixin):
-#     serializer_class = PostLikeSerializer
-#     permission_classes = [IsAuthenticated]
-#
-#     def get_queryset(self):
-#         user = self.request.user
-#         post = get_object_or_404(Post, pk=self.kwargs["post_pk"])
-#         return PostLikes.objects.filter(user=user, post=post)
-#
-#     def perform_create(self, serializer):
-#         if self.get_queryset().exists():
-#             raise ValidationError("no post!")
-#         post = Post.objects.filter(pk=self.kwargs["pk"])
-#         serializer.save(user=self.request.user, post=post)
 
 
 class PostCommentViewSet(ModelViewSet):

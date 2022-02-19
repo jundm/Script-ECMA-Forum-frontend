@@ -17,8 +17,9 @@ interface ViewPageProps {
     title: string;
     content: string;
     tag_set: string[];
-    created_at: string;
-    updated_at: string;
+
+    created_at: Date;
+    updated_at: Date;
   };
 }
 
@@ -45,4 +46,5 @@ export const getServerSideProps = async ({ req, params }: any) => {
     },
   };
 };
+
 export default ViewPage;

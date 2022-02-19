@@ -25,6 +25,7 @@ interface ArticleProps {
   content: string;
   likes: number;
   tag_set: [];
+
   created_at: Date;
   updated_at: Date;
 }
@@ -44,6 +45,8 @@ function ArticleList({
     setVerifyToken();
     console.error(error);
   }
+  // console.log(data, "data");
+  const dataSource = data?.results.map((article: ArticleProps) => article);
   const columns = [
     {
       title: "제목",
@@ -120,8 +123,6 @@ function ArticleList({
       width: "60px",
     },
   ];
-
-  const dataSource = data?.results.map((article: ArticleProps) => article);
 
   return (
     <div className="container max-w-screen-lg mx-auto">
