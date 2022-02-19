@@ -42,9 +42,11 @@ function App({ Component, pageProps }: AppProps) {
           dispatch(name(res.data.username));
         })
         .catch((e) => console.error(e.message));
-    } else if (!accessToken && !refreshToken) {
+    }
+    if (!accessToken && !refreshToken) {
       axios.defaults.headers.common.Authorization = "";
-    } else if (!accessToken && refreshToken) {
+    }
+    if (!accessToken && refreshToken) {
       setVerifyToken();
     }
   }, [accessToken]);
@@ -68,7 +70,7 @@ function App({ Component, pageProps }: AppProps) {
       ) : (
         <HeaderBig setIsOpen={setIsOpen} isSafari={isSafari} />
       )}
-      <div className="container mx-auto px-4">
+      <div className="container">
         <Component {...pageProps} />
       </div>
     </>

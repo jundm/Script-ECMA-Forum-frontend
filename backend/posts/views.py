@@ -85,6 +85,11 @@ class PostViewSet(ModelViewSet):
         response = Response(serializer.data, status=status.HTTP_200_OK)
         return response
 
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context["request"] = self.request
+        return context
+
     @action(detail=True, methods=["POST"])
     def like(self, request, pk):
         post = self.get_object()

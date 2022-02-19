@@ -40,12 +40,12 @@ function ArticleList({
 }: ArticleListProps) {
   const router = useRouter();
   const { data, error } = useFetch(`${url}${page}`);
+
   if (error) {
     //! 중복이여도 없앨수가 없음 오류안나고 access토큰만 삭제되면 실행이 안됨
     setVerifyToken();
     console.error(error);
   }
-  console.log(data);
 
   const columns = [
     {
@@ -54,34 +54,36 @@ function ArticleList({
       key: "title",
       render: (title: string, row: ArticleProps, index: number) => (
         <>
-          {row.tag_set.map((tag) => {
-            const colorRandom = [
-              "magenta",
-              "red",
-              "volcano",
-              "orange",
-              "gold",
-              "lime",
-              "green",
-              "cyan",
-              "blue",
-              "geekblue",
-              "purple",
-            ];
-            let color =
-              colorRandom[Math.floor(Math.random() * colorRandom.length)];
-            return (
-              <Tag color={color} key={tag}>
-                <div className="text-[0.6rem]">{tag}</div>
-              </Tag>
-            );
-          })}
-          <br />
-          <Link href={`/articles/${category}/${row.id}`}>
-            <a className="text-base">
-              {title} {row.comment !== 0 && `[${row.comment}]`}
-            </a>
-          </Link>
+          {row.tag_set &&
+            row.tag_set.map((tag) => {
+              const colorRandom = [
+                "magenta",
+                "red",
+                "volcano",
+                "orange",
+                "gold",
+                "lime",
+                "green",
+                "cyan",
+                "blue",
+                "geekblue",
+                "purple",
+              ];
+              let color =
+                colorRandom[Math.floor(Math.random() * colorRandom.length)];
+              return (
+                <Tag color={color} key={tag}>
+                  <div className="text-[0.6rem]">{tag}</div>
+                </Tag>
+              );
+            })}
+          <div>
+            <Link href={`/articles/${category}/${row.id}`}>
+              <a className="text-base">
+                {title} {row.comment !== 0 && `[${row.comment}]`}
+              </a>
+            </Link>
+          </div>
         </>
       ),
     },
@@ -127,7 +129,7 @@ function ArticleList({
   ];
   const dataSource = data?.results.map((article: ArticleProps) => article);
   return (
-    <div className="container max-w-screen-lg mx-auto">
+    <div className="container">
       <Head>{category}-ScriptECMAForum</Head>
       <div className="flex justify-between ">
         <div>

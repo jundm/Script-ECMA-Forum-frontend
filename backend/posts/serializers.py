@@ -25,8 +25,8 @@ class PostSerializer(serializers.ModelSerializer):
     author = AuthorSerializer(read_only=True)
     tag_set = serializers.StringRelatedField(many=True, read_only=True)
     comment = serializers.SerializerMethodField()
-    # like_user_set = serializers.StringRelatedField(many=True, read_only=True)
     likes = serializers.SerializerMethodField()
+    isLikes = serializers.SerializerMethodField()
 
     def get_likes(self, post):
         return post.like_user_set.count()
@@ -35,14 +35,20 @@ class PostSerializer(serializers.ModelSerializer):
     def get_comment(self, post):
         return Comment.objects.filter(post=post).count()
 
+    def get_isLikes(self, post):
+        if "reqeust" in self.context:
+            user = self.context["request"].user
+            return post.like_user_set.filter(pk=user.pk).exists()
+        return False
+
     class Meta:
         model = Post
         fields = [
             "id",
             "category",
             "hit",
-            # "like_user_set",
             "likes",
+            "isLikes",
             "author",
             "title",
             "content",
@@ -56,10 +62,14 @@ class PostSerializer(serializers.ModelSerializer):
 class HotPostSerializer(serializers.ModelSerializer):
     author = AuthorSerializer(read_only=True)
     tag_set = serializers.StringRelatedField(many=True, read_only=True)
+    comment = serializers.SerializerMethodField()
     likes = serializers.SerializerMethodField()
 
     def get_likes(self, post):
         return post.like_user_set.count()
+
+    def get_comment(self, post):
+        return Comment.objects.filter(post=post).count()
 
     class Meta:
         model = Post
@@ -69,6 +79,7 @@ class HotPostSerializer(serializers.ModelSerializer):
             "hit",
             # "like_user_set",
             "likes",
+            "comment",
             "author",
             "title",
             "content",
