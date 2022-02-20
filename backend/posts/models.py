@@ -42,9 +42,6 @@ class Post(PostModel):
     class Meta:
         ordering = ["-id"]
 
-    def is_like_user(self, user):
-        return self.like_user_set.filter(pk=user.pk).exists()
-
 
 class PostComment(PostModel):
     answer = models.ForeignKey(Post, on_delete=models.CASCADE, verbose_name=_("원글"))

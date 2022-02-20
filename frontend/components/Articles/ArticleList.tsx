@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React from "react";
+import React, { Fragment } from "react";
 import { Button, Table, Tag } from "antd";
 import useFetch from "@utils/Hook/useFetch";
 import Head from "next/head";
@@ -54,29 +54,29 @@ function ArticleList({
       key: "title",
       render: (title: string, row: ArticleProps, index: number) => (
         <>
-          {row.tag_set &&
-            row.tag_set.map((tag) => {
-              const colorRandom = [
-                "magenta",
-                "red",
-                "volcano",
-                "orange",
-                "gold",
-                "lime",
-                "green",
-                "cyan",
-                "blue",
-                "geekblue",
-                "purple",
-              ];
-              let color =
-                colorRandom[Math.floor(Math.random() * colorRandom.length)];
-              return (
-                <Tag color={color} key={tag}>
-                  <div className="text-[0.6rem]">{tag}</div>
-                </Tag>
-              );
-            })}
+          {/* {row.tag_set.map((tag, index) => {
+            console.log(tag, index, "tag");
+            const colorRandom = [
+              "magenta",
+              "red",
+              "volcano",
+              "orange",
+              "gold",
+              "lime",
+              "green",
+              "cyan",
+              "blue",
+              "geekblue",
+              "purple",
+            ];
+            let color =
+              colorRandom[Math.floor(Math.random() * colorRandom.length)];
+            return (
+              <Tag color={color} key={index}>
+                <div className="text-[0.6rem]">{tag}</div>
+              </Tag>
+            );
+          })} */}
           <div>
             <Link href={`/articles/${category}/${row.id}`}>
               <a className="text-base">
@@ -98,6 +98,7 @@ function ArticleList({
         username: string;
       }) => (
         <div className="flex">
+          {/* eslint-disable */}
           <img
             className="rounded-full ml-[-20px] mr-1 w-5 h-5"
             src={author.avatar_url}
@@ -128,6 +129,27 @@ function ArticleList({
     },
   ];
   const dataSource = data?.results.map((article: ArticleProps) => article);
+  console.log(data?.results);
+  // const dataSource = [
+  //   {
+  //     author: {
+  //       avatar_url: "http://localhost:8000/avatar/image/jjun.png",
+  //       name: "jjun",
+  //       username: "jjun",
+  //     },
+  //     category: "free",
+  //     comment: 0,
+  //     content: "ㅗㅑ",
+  //     created_at: "2022-02-20T21:26:03.096407+09:00",
+  //     hit: 76,
+  //     id: 47,
+  //     isLikes: true,
+  //     likes: 2,
+  //     tag_set: [],
+  //     title: "글을 써보겠습니다",
+  //     updated_at: "2022-02-21T00:47:57.506574+09:00",
+  //   },
+  // ];
   return (
     <div className="container">
       <Head>{category}-ScriptECMAForum</Head>
@@ -148,6 +170,7 @@ function ArticleList({
       </div>
       <div className="board_list_wrap">
         <Table
+          rowKey="id"
           dataSource={dataSource}
           columns={columns}
           pagination={{

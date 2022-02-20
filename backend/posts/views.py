@@ -1,14 +1,13 @@
 import re
 import datetime
 from django.db import transaction
+from django.db.models import Count
 from django.utils import timezone
 from rest_framework.decorators import action
 from rest_framework.generics import get_object_or_404
 from rest_framework import status, generics
 from rest_framework.permissions import (
     IsAuthenticatedOrReadOnly,
-    IsAuthenticated,
-    AllowAny,
 )
 from rest_framework.viewsets import ModelViewSet
 from django_filters.rest_framework import DjangoFilterBackend
@@ -32,7 +31,7 @@ class PostViewSet(ModelViewSet):
     serializer_class = PostSerializer
 
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ["id", "category"]
+    filterset_fields = ["id", "category", "like_user_set"]
     permission_classes = [
         IsAuthenticatedOrReadOnly,
     ]
@@ -122,8 +121,9 @@ class HotPost(generics.ListAPIView):
 
         queryset = (
             queryset.exclude(like_user_set__isnull=True)
+            .annotate(like=Count("like_user_set"))
             .filter(created_at__gte=timesince)
-            .order_by("-like_user_set")
+            .order_by("-like")
         )[0:60]
 
         page = self.paginate_queryset(queryset)
