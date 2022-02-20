@@ -16,13 +16,14 @@ function ArticleView({ id }: ArticleViewProps) {
   const { data, error } = useFetch(`posts/api/${id}`);
   const [isLike, setIsLike] = useState(false);
   const [likes, setLikes] = useState(0);
+  console.log(data);
   if (error) {
     console.error(error.message);
     setVerifyToken();
   }
   useEffect(() => {
     if (data) {
-      setIsLike(data.isLike);
+      setIsLike(data.isLikes);
       setLikes(data.likes);
     }
   }, [data]);

@@ -54,8 +54,7 @@ function ArticleList({
       key: "title",
       render: (title: string, row: ArticleProps, index: number) => (
         <>
-          {/* {row.tag_set.map((tag, index) => {
-            console.log(tag, index, "tag");
+          {row.tag_set.map((tag, index) => {
             const colorRandom = [
               "magenta",
               "red",
@@ -76,7 +75,7 @@ function ArticleList({
                 <div className="text-[0.6rem]">{tag}</div>
               </Tag>
             );
-          })} */}
+          })}
           <div>
             <Link href={`/articles/${category}/${row.id}`}>
               <a className="text-base">
@@ -129,27 +128,7 @@ function ArticleList({
     },
   ];
   const dataSource = data?.results.map((article: ArticleProps) => article);
-  console.log(data?.results);
-  // const dataSource = [
-  //   {
-  //     author: {
-  //       avatar_url: "http://localhost:8000/avatar/image/jjun.png",
-  //       name: "jjun",
-  //       username: "jjun",
-  //     },
-  //     category: "free",
-  //     comment: 0,
-  //     content: "ㅗㅑ",
-  //     created_at: "2022-02-20T21:26:03.096407+09:00",
-  //     hit: 76,
-  //     id: 47,
-  //     isLikes: true,
-  //     likes: 2,
-  //     tag_set: [],
-  //     title: "글을 써보겠습니다",
-  //     updated_at: "2022-02-21T00:47:57.506574+09:00",
-  //   },
-  // ];
+
   return (
     <div className="container">
       <Head>{category}-ScriptECMAForum</Head>
