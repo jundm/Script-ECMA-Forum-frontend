@@ -14,12 +14,18 @@ interface ArticleViewProps {
 
 function ArticleView({ id }: ArticleViewProps) {
   const { data, error } = useFetch(`posts/api/${id}`);
-
+  const [isLike, setIsLike] = useState(false);
+  const [likes, setLikes] = useState(0);
   if (error) {
     console.error(error.message);
     setVerifyToken();
   }
-  console.log("dat", data);
+  useEffect(() => {
+    if (data) {
+      setIsLike(data.isLike);
+      setLikes(data.likes);
+    }
+  }, [data]);
   const actions = [
     <>
       <div className="flex items-center">
@@ -49,37 +55,43 @@ function ArticleView({ id }: ArticleViewProps) {
           {dayjs(data?.created_at).format("MM-DD hh:mm")}
         </div>
         <div className="ml-auto mr-1">조회 {data?.hit}</div>
-        <div>추천 {data?.likes}</div>
+        <div>추천 {likes}</div>
       </div>
       <Divider className="mt-2 mb-7 border-2" />
       <div className=" min-h-[35vh]">
         <p>{nl2br(data?.content)}</p>
       </div>
       <div className="flex items-center justify-center text-[24px]">
-        {data?.isLikes ? (
+        {isLike ? (
           <LikeFilled
             onClick={() => {
+              setIsLike(false);
               axios
                 .delete(
                   `${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/${data?.id}/like/`,
                   { ...data }
                 )
-                .then((response) => {});
+                .then((response) => {
+                  setLikes(likes - 1);
+                });
             }}
           />
         ) : (
           <LikeOutlined
             onClick={() => {
+              setIsLike(true);
               axios
                 .post(
                   `${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/${data?.id}/like/`,
                   { ...data }
                 )
-                .then((response) => {});
+                .then((response) => {
+                  setLikes(likes + 1);
+                });
             }}
           />
         )}
-        {data?.likes}
+        {likes}
       </div>
       <Divider className="border-[1px]" />
       <Comment

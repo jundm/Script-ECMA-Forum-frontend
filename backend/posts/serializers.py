@@ -37,7 +37,6 @@ class PostSerializer(serializers.ModelSerializer):
 
     def get_isLikes(self, post):
         if "request" in self.context:
-            print(self.context["request"].user)
             user = self.context["request"].user
             return post.like_user_set.filter(pk=user.pk).exists()
         else:
