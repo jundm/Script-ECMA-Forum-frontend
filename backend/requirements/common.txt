@@ -4,8 +4,14 @@ djangorestframework
 djangorestframework-simplejwt
 django-allauth
 django-cors-headers
+django-debug-toolbar
+django-filter
+django-extensions
 django-pydenticon
-dj-rest-auth
+djoser
+drf-yasg
 black
 httpie
+ipython
 Pillow
+pycrunch-engine

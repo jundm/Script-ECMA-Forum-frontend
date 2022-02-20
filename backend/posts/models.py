@@ -27,18 +27,23 @@ class Post(PostModel):
     category = models.CharField(max_length=12, choices=Choices)
     hit = models.IntegerField(default=0)
 
+    # 정참조 select_releated
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         related_name="PostAuthor_set",
         on_delete=models.CASCADE,
         verbose_name=_("작성자"),
     )
+    # 역참조 prefetch_related
     like_user_set = models.ManyToManyField(
         settings.AUTH_USER_MODEL, blank=True, related_name="like_post_set"
     )
 
     class Meta:
         ordering = ["-id"]
+
+    def is_like_user(self, user):
+        return self.like_user_set.filter(pk=user.pk).exists()
 
 
 class PostComment(PostModel):

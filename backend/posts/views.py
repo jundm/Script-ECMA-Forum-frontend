@@ -5,7 +5,11 @@ from django.utils import timezone
 from rest_framework.decorators import action
 from rest_framework.generics import get_object_or_404
 from rest_framework import status, generics
-from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
+from rest_framework.permissions import (
+    IsAuthenticatedOrReadOnly,
+    IsAuthenticated,
+    AllowAny,
+)
 from rest_framework.viewsets import ModelViewSet
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.response import Response
@@ -28,7 +32,7 @@ class PostViewSet(ModelViewSet):
     serializer_class = PostSerializer
 
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ["id", "category", "like_user_set"]
+    filterset_fields = ["id", "category"]
     permission_classes = [
         IsAuthenticatedOrReadOnly,
     ]
@@ -88,6 +92,7 @@ class PostViewSet(ModelViewSet):
     def get_serializer_context(self):
         context = super().get_serializer_context()
         context["request"] = self.request
+        # context.update({"request": self.request})
         return context
 
     @action(detail=True, methods=["POST"])
@@ -114,10 +119,11 @@ class HotPost(generics.ListAPIView):
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
         timesince = timezone.now() - datetime.timedelta(days=7)
+
         queryset = (
-            queryset.order_by("-like_user_set")
+            queryset.exclude(like_user_set__isnull=True)
             .filter(created_at__gte=timesince)
-            .exclude(like_user_set__isnull=True)
+            .order_by("-like_user_set")
         )[0:60]
 
         page = self.paginate_queryset(queryset)

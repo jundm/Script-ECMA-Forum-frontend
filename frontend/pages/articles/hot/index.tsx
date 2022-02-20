@@ -22,7 +22,7 @@ function Hot({ page, fallback }: HotProps) {
       <div>
         <ArticleList
           title="인기 게시판"
-          subtitle="한주간의 가장 핫한 소식(추천수가 가장 많은 60개 유통기한은 생성일로 부터 7일)"
+          subtitle="한주간의 가장 핫한 TOP 60"
           category="hot"
           page={page}
           url="posts/api/hot/?page="

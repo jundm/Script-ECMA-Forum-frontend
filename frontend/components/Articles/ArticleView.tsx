@@ -14,17 +14,12 @@ interface ArticleViewProps {
 
 function ArticleView({ id }: ArticleViewProps) {
   const { data, error } = useFetch(`posts/api/${id}`);
-  const [isLike, setIsLike] = useState(false);
-  // const method = isLike ? "post" : "delete";
-  console.log(data?.isLikes, isLike);
+
   if (error) {
     console.error(error.message);
     setVerifyToken();
   }
-  useEffect(() => {
-    if (data) setIsLike(!data.isLike);
-    console.log("use", isLike);
-  }, [isLike]);
+  console.log("dat", data);
   const actions = [
     <>
       <div className="flex items-center">
@@ -61,20 +56,7 @@ function ArticleView({ id }: ArticleViewProps) {
         <p>{nl2br(data?.content)}</p>
       </div>
       <div className="flex items-center justify-center text-[24px]">
-        {isLike ? (
-          <LikeOutlined
-            onClick={() => {
-              axios
-                .post(
-                  `${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/${data?.id}/like/`,
-                  { ...data }
-                )
-                .then((response) => {
-                  setIsLike(true);
-                });
-            }}
-          />
-        ) : (
+        {data?.isLikes ? (
           <LikeFilled
             onClick={() => {
               axios
@@ -82,9 +64,18 @@ function ArticleView({ id }: ArticleViewProps) {
                   `${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/${data?.id}/like/`,
                   { ...data }
                 )
-                .then((response) => {
-                  setIsLike(false);
-                });
+                .then((response) => {});
+            }}
+          />
+        ) : (
+          <LikeOutlined
+            onClick={() => {
+              axios
+                .post(
+                  `${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/${data?.id}/like/`,
+                  { ...data }
+                )
+                .then((response) => {});
             }}
           />
         )}

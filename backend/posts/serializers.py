@@ -36,10 +36,12 @@ class PostSerializer(serializers.ModelSerializer):
         return Comment.objects.filter(post=post).count()
 
     def get_isLikes(self, post):
-        if "reqeust" in self.context:
+        if "request" in self.context:
+            print(self.context["request"].user)
             user = self.context["request"].user
             return post.like_user_set.filter(pk=user.pk).exists()
-        return False
+        else:
+            return False
 
     class Meta:
         model = Post
