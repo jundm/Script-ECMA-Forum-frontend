@@ -2,7 +2,7 @@ import re
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
-from .models import Post, Comment, PostComment
+from .models import Post, Comment, PostComment, CommentReply
 
 
 class AuthorSerializer(serializers.ModelSerializer):
@@ -104,15 +104,63 @@ class PostCommentSerializer(serializers.ModelSerializer):
             "author",
             "title",
             "content",
-            "created_at",
             "likes",
+            "created_at",
             "updated_at",
         ]
 
 
 class CommentSerializer(serializers.ModelSerializer):
     author = AuthorSerializer(read_only=True)
+    likes = serializers.SerializerMethodField()
+    isLikes = serializers.SerializerMethodField()
+
+    def get_likes(self, post):
+        return post.like_user_set.count()
+
+    def get_isLikes(self, post):
+        if "request" in self.context:
+            user = self.context["request"].user
+            return post.like_user_set.filter(pk=user.pk).exists()
+        else:
+            return False
 
     class Meta:
         model = Comment
-        fields = ["id", "author", "content", "created_at"]
+        fields = [
+            "id",
+            "author",
+            "likes",
+            "content",
+            "isLikes",
+            "created_at",
+            "updated_at",
+        ]
+
+
+class CommentReplySerializer(serializers.ModelSerializer):
+    author = AuthorSerializer(read_only=True)
+    likes = serializers.SerializerMethodField()
+    isLikes = serializers.SerializerMethodField()
+
+    def get_likes(self, post):
+        return post.like_user_set.count()
+
+    def get_isLikes(self, post):
+        if "request" in self.context:
+            user = self.context["request"].user
+            return post.like_user_set.filter(pk=user.pk).exists()
+        else:
+            return False
+
+    class Meta:
+        model = CommentReply
+        fields = [
+            "id",
+            "author",
+            "likes",
+            "content",
+            "isLikes",
+            "created_at",
+            "updated_at",
+        ]

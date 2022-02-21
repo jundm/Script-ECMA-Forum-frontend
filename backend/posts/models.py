@@ -91,6 +91,30 @@ class Comment(models.Model):
         return f"{self.author},{self.post},{self.content}"
 
 
+class CommentReply(models.Model):
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="CommentReplyAuthor_set",
+        verbose_name=_("대댓글작성자"),
+    )
+
+    post = models.ForeignKey(Comment, on_delete=models.CASCADE)
+    content = models.TextField(_("내용"), null=False)
+    like_user_set = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, blank=True, related_name="like_comment_reply_set"
+    )
+
+    created_at = models.DateTimeField(_("작성일"), auto_now_add=True)
+    updated_at = models.DateTimeField(_("수정일"), auto_now=True)
+
+    class Meta:
+        ordering = ["-id"]
+
+    def __str__(self):
+        return f"{self.author},{self.post},{self.content}"
+
+
 class Tag(models.Model):
     name = models.CharField(max_length=50, unique=True)
 
