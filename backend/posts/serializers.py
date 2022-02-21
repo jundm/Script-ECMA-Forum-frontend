@@ -93,9 +93,17 @@ class HotPostSerializer(serializers.ModelSerializer):
 class PostCommentSerializer(serializers.ModelSerializer):
     author = AuthorSerializer(read_only=True)
     likes = serializers.SerializerMethodField()
+    isLikes = serializers.SerializerMethodField()
 
     def get_likes(self, post):
         return post.like_user_set.count()
+
+    def get_isLikes(self, post):
+        if "request" in self.context:
+            user = self.context["request"].user
+            return post.like_user_set.filter(pk=user.pk).exists()
+        else:
+            return False
 
     class Meta:
         model = PostComment
@@ -105,6 +113,7 @@ class PostCommentSerializer(serializers.ModelSerializer):
             "title",
             "content",
             "likes",
+            "isLikes",
             "created_at",
             "updated_at",
         ]
