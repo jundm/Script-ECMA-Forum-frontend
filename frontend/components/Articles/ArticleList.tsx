@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import { Button, Table, Tag } from "antd";
 import useFetch from "@utils/Hook/useFetch";
 import Head from "next/head";
@@ -41,11 +41,13 @@ function ArticleList({
   const router = useRouter();
   const { data, error } = useFetch(`${url}${page}`);
 
-  if (error) {
-    //! 중복이여도 없앨수가 없음 오류안나고 access토큰만 삭제되면 실행이 안됨
-    setVerifyToken();
-    console.error(error);
-  }
+  useEffect(() => {
+    if (error) {
+      //! 중복이여도 없앨수가 없음 오류안나고 access토큰만 삭제되면 실행이 안됨
+      setVerifyToken();
+      console.error(error);
+    }
+  }, [error]);
 
   const columns = [
     {
@@ -90,7 +92,7 @@ function ArticleList({
       title: "작성자",
       dataIndex: "author",
       key: "author",
-      width: "90px",
+      width: "90px" + "1%",
       render: (author: {
         avatar_url: string;
         name: string;
@@ -99,7 +101,7 @@ function ArticleList({
         <div className="flex">
           {/* eslint-disable */}
           <img
-            className="rounded-full ml-[-20px] mr-1 w-5 h-5"
+            className="rounded-full ml-[-10px] mr-1 w-5 h-5"
             src={author.avatar_url}
             alt="avatar"
           />

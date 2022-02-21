@@ -35,10 +35,13 @@ function ArticleView({ id }: ArticleViewProps) {
   const [isLike, setIsLike] = useState(false);
   const [likes, setLikes] = useState(0);
   const [answer, setAnswer] = useState(false);
-  if (error) {
-    console.error(error.message);
-    setVerifyToken();
-  }
+  useEffect(() => {
+    if (error) {
+      //! 중복이여도 없앨수가 없음 오류안나고 access토큰만 삭제되면 실행이 안됨
+      setVerifyToken();
+      console.error(error.mess);
+    }
+  }, [error]);
   useEffect(() => {
     if (data) {
       setIsLike(data.isLikes);
@@ -113,14 +116,16 @@ function ArticleView({ id }: ArticleViewProps) {
           />
         )}
         {likes}
-        <Button
-          className="ml-4"
-          icon={<EditOutlined className="text-xl" />}
-          size="middle"
-          onClick={() => setAnswer(!answer)}
-        >
-          나도 답변하기
-        </Button>
+        {data?.category === "question" && (
+          <Button
+            className="ml-4"
+            icon={<EditOutlined className="text-xl" />}
+            size="middle"
+            onClick={() => setAnswer(!answer)}
+          >
+            답변하기
+          </Button>
+        )}
       </div>
       {answer && (
         <ArticleAnswerCreate
@@ -150,7 +155,6 @@ function ArticleView({ id }: ArticleViewProps) {
         datetime={<span>{dayjs(data?.created_at).format("MM-DD hh:mm")}</span>}
       >
         <Comment
-          actions={actions}
           author={<a>Han Solo</a>}
           avatar={
             <Avatar src="https://joeschmoe.io/api/v1/random" alt="Han Solo" />

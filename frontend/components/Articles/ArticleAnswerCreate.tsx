@@ -50,7 +50,8 @@ function ArticleAnswerCreate({
             )
             .then((res) => {
               setAnswer((answer) => !answer);
-              router.push(`/articles/${category}/${id}`);
+              router.push(`/articles/${category}/`);
+              // router.push(`/articles/${category}/${id}`);
             })
             .catch((e) => {
               setLoading(false);
