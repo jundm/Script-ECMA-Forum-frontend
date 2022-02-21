@@ -136,7 +136,11 @@ class HotPost(generics.ListAPIView):
 
 
 class PostCommentViewSet(ModelViewSet):
-    queryset = PostComment.objects.all()
+    queryset = (
+        PostComment.objects.all()
+        .select_related("author", "answer")
+        .prefetch_related("like_user_set")
+    )
     serializer_class = PostCommentSerializer
     permission_classes = [
         IsAuthenticatedOrReadOnly,
@@ -149,24 +153,25 @@ class PostCommentViewSet(ModelViewSet):
 
     def get_queryset(self):
         qs = super().get_queryset()
-        qs = qs.filter(post__pk=self.kwargs["post_pk"])
+        qs = qs.filter(answer__pk=self.kwargs["post_pk"])
         return qs
 
     def perform_create(self, serializer):
         answer = get_object_or_404(Post, pk=self.kwargs["post_pk"])
         serializer.save(author=self.request.user, answer=answer)
-        post = serializer.instance
+        return super().perform_create(serializer)
 
-        tag_name_set = self.request.data.get("content")
-        re_tag = re.findall(r"#([a-zA-Z\dㄱ-힣]+)", tag_name_set)
+    @action(detail=True, methods=["POST"])
+    def like(self, request, post_pk, pk):
+        post = self.get_object()
+        post.like_user_set.add(self.request.user)
+        return Response(status.HTTP_201_CREATED)
 
-        tag_list = []
-        for word in re_tag:
-            tag_name = word.strip()
-            tag, __ = Tag.objects.get_or_create(name=tag_name)
-            tag_list.append(tag)
-
-        post.tag_set.add(*tag_list)
+    @like.mapping.delete
+    def unlike(self, request, post_pk, pk):
+        post = self.get_object()
+        post.like_user_set.remove(self.request.user)
+        return Response(status.HTTP_204_NO_CONTENT)
 
 
 class CommentViewSet(ModelViewSet):

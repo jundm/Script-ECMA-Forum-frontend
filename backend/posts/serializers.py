@@ -92,7 +92,10 @@ class HotPostSerializer(serializers.ModelSerializer):
 
 class PostCommentSerializer(serializers.ModelSerializer):
     author = AuthorSerializer(read_only=True)
-    tag_set = serializers.StringRelatedField(many=True, read_only=True)
+    likes = serializers.SerializerMethodField()
+
+    def get_likes(self, post):
+        return post.like_user_set.count()
 
     class Meta:
         model = PostComment
@@ -101,8 +104,8 @@ class PostCommentSerializer(serializers.ModelSerializer):
             "author",
             "title",
             "content",
-            "tag_set",
             "created_at",
+            "likes",
             "updated_at",
         ]
 

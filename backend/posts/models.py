@@ -6,7 +6,6 @@ from django.utils.translation import gettext as _
 class PostModel(models.Model):
     title = models.CharField(_("제목"), max_length=100, null=False)
     content = models.TextField(_("내용"), null=False)
-    tag_set = models.ManyToManyField("Tag", blank=True, verbose_name=_("태그"))
     created_at = models.DateTimeField(_("작성일"), auto_now_add=True)
     updated_at = models.DateTimeField(_("수정일"), auto_now=True)
 
@@ -25,6 +24,7 @@ class Post(PostModel):
         ("news", "news"),
     )
     category = models.CharField(max_length=12, choices=Choices)
+    tag_set = models.ManyToManyField("Tag", blank=True, verbose_name=_("태그"))
     hit = models.IntegerField(default=0)
 
     # 정참조 select_releated
@@ -44,12 +44,20 @@ class Post(PostModel):
 
 
 class PostComment(PostModel):
-    answer = models.ForeignKey(Post, on_delete=models.CASCADE, verbose_name=_("원글"))
+    answer = models.ForeignKey(
+        Post,
+        on_delete=models.CASCADE,
+        verbose_name=_("원글"),
+        related_name="PostAnswer_set",
+    )
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         related_name="PostCommentAuthor_set",
         on_delete=models.CASCADE,
         verbose_name=_("답변작성자"),
+    )
+    like_user_set = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, blank=True, related_name="like_post_comment_set"
     )
 
     class Meta:

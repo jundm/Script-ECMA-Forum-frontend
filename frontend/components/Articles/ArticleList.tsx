@@ -90,7 +90,7 @@ function ArticleList({
       title: "작성자",
       dataIndex: "author",
       key: "author",
-      width: "110px",
+      width: "90px",
       render: (author: {
         avatar_url: string;
         name: string;
@@ -111,7 +111,7 @@ function ArticleList({
       title: "작성일",
       dataIndex: "created_at",
       key: "created_at",
-      width: "100px",
+      width: "80px",
       render: (created_at: string) => dayjs(created_at).format("MM-DD"),
     },
     {
