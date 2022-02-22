@@ -14,7 +14,6 @@ interface ArticleCreateProps {
   category: string;
 }
 
-// *validate 일단 사용 안함
 function ArticleCreate({ category }: ArticleCreateProps) {
   const [isLoading, setLoading] = useState(false);
   const accountUser = useSelector(userName);
@@ -64,6 +63,7 @@ function ArticleCreate({ category }: ArticleCreateProps) {
             <Input
               placeholder="제목을 입력해 주세요"
               allowClear
+              showCount
               id="title"
               name="title"
               value={values.title}
@@ -73,7 +73,7 @@ function ArticleCreate({ category }: ArticleCreateProps) {
             />
             <label htmlFor="content">내용</label>
             <TextArea
-              placeholder="내용을 입력해 주세요{태그넣기 ex)#응슷곰}"
+              placeholder="내용을 입력해 주세요"
               allowClear
               showCount
               id="content"

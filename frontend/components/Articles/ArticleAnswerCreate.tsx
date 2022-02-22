@@ -7,6 +7,8 @@ import { userName } from "@utils/Toolkit/Slice/userSlice";
 import { setVerifyToken } from "@utils/Cookies/TokenManager";
 import { useRouter } from "next/router";
 import Cookies from "universal-cookie";
+import { useSWRConfig } from "swr";
+import useFetch from "@utils/Hook/useFetch";
 
 const { TextArea } = Input;
 
@@ -14,6 +16,24 @@ interface ArticleAnswerCreateProps {
   category: string;
   id: number;
   setAnswer: (arg: (answer: boolean) => boolean) => void;
+  answered: {
+    author: {
+      avatar_url: string;
+      name: string;
+      username: string;
+    };
+    category: string;
+    comment: number;
+    content: string;
+    hit: number;
+    id: number;
+    isLikes: boolean;
+    likes: number;
+    tag_set: [];
+    title: string;
+    created_at: string;
+    updated_at: string;
+  };
 }
 
 // *validate 일단 사용 안함
@@ -21,13 +41,20 @@ function ArticleAnswerCreate({
   category,
   id,
   setAnswer,
-}: ArticleAnswerCreateProps) {
+}: // answered,
+ArticleAnswerCreateProps) {
   const [isLoading, setLoading] = useState(false);
   const accountUser = useSelector(userName);
   const accountUserName = accountUser.payload.auth.username;
   const accountName = accountUser.payload.auth.name;
   const router = useRouter();
   const cookies = new Cookies();
+  // const { mutate } = useSWRConfig();
+  const {
+    data: answered,
+    error: answeredError,
+    mutate,
+  } = useFetch(`posts/api/${id}/postComment`);
 
   return (
     <div className="container">
@@ -35,29 +62,51 @@ function ArticleAnswerCreate({
         initialValues={{ title: "", content: "" }}
         validate={(values) => {}}
         onSubmit={(values) => {
-          setLoading(true);
-          setVerifyToken();
-          const createArticle = axios
-            .post(
-              `${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/${id}/postComment/`,
-              {
-                author: {
-                  username: accountUserName,
-                  name: accountName,
-                },
-                ...values,
-              }
-            )
-            .then((res) => {
-              setAnswer((answer) => !answer);
-              router.push(`/articles/${category}/`);
-              // router.push(`/articles/${category}/${id}`);
-            })
-            .catch((e) => {
-              setLoading(false);
-            });
+          // setLoading(true);
+          // setVerifyToken();
+
+          // if (cookies.get("accessToken")) {
+          //   const NewAnswer = {
+          //     author: {
+          //       username: accountUserName,
+          //       name: accountName,
+          //     },
+          //     ...values,
+          //   };
+          //   mutate(NewAnswer, false);
+          //   // axios
+          //   //   .post(
+          //   //     `${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/${id}/postComment/`,
+          //   //     { NewAnswer }
+          //   //   )
+          //   //   .then((res) => {
+          //   //     setAnswer((answer) => !answer);
+          //   //     // router.push(`/articles/${category}/${id}`);
+          //   //   })
+          //   //   .catch((e) => {
+          //   //     setLoading(false);
+          //   //   });
+          //   // mutate(`posts/api/${id}/postComment/`);
+          // }
           if (cookies.get("accessToken")) {
-            createArticle;
+            const createArticle = axios
+              .post(
+                `${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/${id}/postComment/`,
+                {
+                  author: {
+                    username: accountUserName,
+                    name: accountName,
+                  },
+                  ...values,
+                }
+              )
+              .then((res) => {
+                setAnswer((answer) => !answer);
+                // router.push(`/articles/${category}/${id}`);
+              })
+              .catch((e) => {
+                setLoading(false);
+              });
           }
         }}
       >

@@ -45,7 +45,7 @@ class PostViewSet(ModelViewSet):
         post = serializer.instance
 
         tag_name_set = self.request.data.get("content")
-        re_tag = re.findall(r"#([a-zA-Z\dㄱ-힣]{0,20})", tag_name_set)
+        re_tag = re.findall(r"#([a-zA-Z\dㄱ-힣]{0,10})", tag_name_set)
 
         tag_list = []
         for word in re_tag:

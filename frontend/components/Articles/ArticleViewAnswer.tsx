@@ -6,7 +6,7 @@ import axios from "axios";
 import dayjs from "dayjs";
 import nl2br from "react-nl2br";
 
-interface ArticleCreateAnswerProps {
+interface ArticleViewAnswerProps {
   id: number;
   answer: {
     id: number;
@@ -23,8 +23,8 @@ interface ArticleCreateAnswerProps {
     updated_at: string;
   };
 }
-
-function ArticleCreateAnswer({ id, answer }: ArticleCreateAnswerProps) {
+//* 답변 게시물
+function ArticleViewAnswer({ id, answer }: ArticleViewAnswerProps) {
   const [isLike, setIsLike] = useState(false);
   const [likes, setLikes] = useState(0);
   useEffect(() => {
@@ -91,4 +91,4 @@ function ArticleCreateAnswer({ id, answer }: ArticleCreateAnswerProps) {
   );
 }
 
-export default ArticleCreateAnswer;
+export default ArticleViewAnswer;

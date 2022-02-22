@@ -8,7 +8,7 @@ import { LikeOutlined, LikeFilled, EditOutlined } from "@ant-design/icons";
 import { setVerifyToken } from "@utils/Cookies/TokenManager";
 import axios from "axios";
 import ArticleAnswerCreate from "./ArticleAnswerCreate";
-import ArticleCreateAnswer from "./ArticleCreateAnswer";
+import ArticleViewAnswer from "./ArticleViewAnswer";
 
 interface ArticleViewProps {
   id: number;
@@ -28,26 +28,20 @@ interface AnswerProps {
   updated_at: string;
 }
 function ArticleView({ id }: ArticleViewProps) {
-  const { data, error } = useFetch(`posts/api/${id}`);
-  const { data: answered, error: answeredError } = useFetch(
-    `posts/api/${id}/postComment`
-  );
-  const [isLike, setIsLike] = useState(false);
-  const [likes, setLikes] = useState(0);
+  const { data, error, mutate } = useFetch(`posts/api/${id}`);
+  const {
+    data: answered,
+    error: answeredError,
+    mutate: answerMutate,
+  } = useFetch(`posts/api/${id}/postComment`);
   const [answer, setAnswer] = useState(false);
   useEffect(() => {
     if (error) {
       //! 중복이여도 없앨수가 없음 오류안나고 access토큰만 삭제되면 실행이 안됨
       setVerifyToken();
-      console.error(error.mess);
+      console.error(error.message);
     }
   }, [error]);
-  useEffect(() => {
-    if (data) {
-      setIsLike(data.isLikes);
-      setLikes(data.likes);
-    }
-  }, [data]);
 
   const actions = [
     <>
@@ -79,43 +73,36 @@ function ArticleView({ id }: ArticleViewProps) {
           {dayjs(data?.created_at).format("MM-DD hh:mm")}
         </div>
         <div className="ml-auto mr-1">조회 {data?.hit}</div>
-        <div>추천 {likes}</div>
+        <div>추천 {data?.likes}</div>
       </div>
       <Divider className="mt-2 mb-7 border-2" />
       <div className=" min-h-[35vh]">
         <p>{nl2br(data?.content)}</p>
       </div>
       <div className="flex items-center justify-center text-[24px]">
-        {isLike ? (
+        {data?.isLikes ? (
           <LikeFilled
-            onClick={() => {
-              setIsLike(false);
-              axios
-                .delete(
-                  `${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/${data?.id}/like/`,
-                  { ...data }
-                )
-                .then((response) => {
-                  setLikes(likes - 1);
-                });
+            onClick={async () => {
+              mutate({ ...data }, false);
+              await axios.delete(
+                `${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/${data?.id}/like/`
+              );
+              mutate({ ...data });
             }}
           />
         ) : (
           <LikeOutlined
-            onClick={() => {
-              setIsLike(true);
-              axios
-                .post(
-                  `${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/${data?.id}/like/`,
-                  { ...data }
-                )
-                .then((response) => {
-                  setLikes(likes + 1);
-                });
+            onClick={async () => {
+              mutate({ ...data }, false);
+              await axios.post(
+                `${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/${data?.id}/like/`,
+                { ...data }
+              );
+              mutate({ ...data });
             }}
           />
         )}
-        {likes}
+        {data?.likes}
         {data?.category === "question" && (
           <Button
             className="ml-4"
@@ -132,11 +119,13 @@ function ArticleView({ id }: ArticleViewProps) {
           category={data?.category}
           id={data?.id}
           setAnswer={setAnswer}
+          // data={data}
+          answered={answered}
         />
       )}
 
-      {answered?.results.map((answer: AnswerProps, index: number) => {
-        return <ArticleCreateAnswer key={index} id={id} answer={answer} />;
+      {answered?.results?.map((answer: AnswerProps, index: number) => {
+        return <ArticleViewAnswer key={index} id={id} answer={answer} />;
       })}
 
       <Divider className="border-[1px]" />
