@@ -7,106 +7,79 @@ import { userName } from "@utils/Toolkit/Slice/userSlice";
 import { setVerifyToken } from "@utils/Cookies/TokenManager";
 import { useRouter } from "next/router";
 import Cookies from "universal-cookie";
-import { useSWRConfig } from "swr";
+import { KeyedMutator, SWRResponse, useSWRConfig } from "swr";
 import useFetch from "@utils/Hook/useFetch";
 
 const { TextArea } = Input;
 
-interface ArticleAnswerCreateProps {
+//TODO answerMutate 타입 어떻게 넣지?
+interface AnswerProps {
+  author: {
+    avatar_url: string;
+    name: string;
+    username: string;
+  };
   category: string;
+  comment: number;
+  content: string;
+  hit: number;
+  id: number;
+  isLikes: boolean;
+  likes: number;
+  tag_set: [];
+  title: string;
+  created_at: string;
+  updated_at: string;
+}
+interface ArticleAnswerCreateProps {
+  answerMutate: (value: AnswerProps, check?: boolean) => void;
+  // SWRResponse<any, any>.mutate: KeyedMutator<any>
   id: number;
   setAnswer: (arg: (answer: boolean) => boolean) => void;
-  answered: {
-    author: {
-      avatar_url: string;
-      name: string;
-      username: string;
-    };
-    category: string;
-    comment: number;
-    content: string;
-    hit: number;
-    id: number;
-    isLikes: boolean;
-    likes: number;
-    tag_set: [];
-    title: string;
-    created_at: string;
-    updated_at: string;
-  };
+  answered: AnswerProps;
 }
-
 // *validate 일단 사용 안함
 function ArticleAnswerCreate({
-  category,
   id,
   setAnswer,
-}: // answered,
-ArticleAnswerCreateProps) {
+  answerMutate,
+  answered,
+}: ArticleAnswerCreateProps) {
   const [isLoading, setLoading] = useState(false);
   const accountUser = useSelector(userName);
   const accountUserName = accountUser.payload.auth.username;
   const accountName = accountUser.payload.auth.name;
   const router = useRouter();
   const cookies = new Cookies();
-  // const { mutate } = useSWRConfig();
-  const {
-    data: answered,
-    error: answeredError,
-    mutate,
-  } = useFetch(`posts/api/${id}/postComment`);
-
   return (
     <div className="container">
       <Formik
         initialValues={{ title: "", content: "" }}
         validate={(values) => {}}
-        onSubmit={(values) => {
-          // setLoading(true);
-          // setVerifyToken();
-
-          // if (cookies.get("accessToken")) {
-          //   const NewAnswer = {
-          //     author: {
-          //       username: accountUserName,
-          //       name: accountName,
-          //     },
-          //     ...values,
-          //   };
-          //   mutate(NewAnswer, false);
-          //   // axios
-          //   //   .post(
-          //   //     `${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/${id}/postComment/`,
-          //   //     { NewAnswer }
-          //   //   )
-          //   //   .then((res) => {
-          //   //     setAnswer((answer) => !answer);
-          //   //     // router.push(`/articles/${category}/${id}`);
-          //   //   })
-          //   //   .catch((e) => {
-          //   //     setLoading(false);
-          //   //   });
-          //   // mutate(`posts/api/${id}/postComment/`);
-          // }
-          if (cookies.get("accessToken")) {
-            const createArticle = axios
-              .post(
+        onSubmit={async (values) => {
+          setLoading(true);
+          setVerifyToken();
+          try {
+            if (cookies.get("accessToken")) {
+              const NewAnswer = {
+                author: {
+                  username: accountUserName,
+                  name: accountName,
+                },
+                ...values,
+              };
+              // answerMutate(NewAnswer, false);
+              answerMutate({ ...answered }, false);
+              await axios.post(
                 `${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/${id}/postComment/`,
-                {
-                  author: {
-                    username: accountUserName,
-                    name: accountName,
-                  },
-                  ...values,
-                }
-              )
-              .then((res) => {
-                setAnswer((answer) => !answer);
-                // router.push(`/articles/${category}/${id}`);
-              })
-              .catch((e) => {
-                setLoading(false);
-              });
+                NewAnswer
+              );
+              // answerMutate();
+              answerMutate({ ...answered });
+              setAnswer((answer) => !answer);
+            }
+          } catch (e) {
+            setLoading(false);
           }
         }}
       >

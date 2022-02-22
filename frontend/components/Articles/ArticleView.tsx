@@ -116,11 +116,10 @@ function ArticleView({ id }: ArticleViewProps) {
       </div>
       {answer && (
         <ArticleAnswerCreate
-          category={data?.category}
           id={data?.id}
           setAnswer={setAnswer}
-          // data={data}
           answered={answered}
+          answerMutate={answerMutate}
         />
       )}
 
