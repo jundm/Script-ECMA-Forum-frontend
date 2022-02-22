@@ -22,17 +22,14 @@ interface ArticleViewAnswerProps {
     created_at: string;
     updated_at: string;
   };
+  answerMutate: any;
 }
 //* 답변 게시물
-function ArticleViewAnswer({ id, answer }: ArticleViewAnswerProps) {
-  const [isLike, setIsLike] = useState(false);
-  const [likes, setLikes] = useState(0);
-  useEffect(() => {
-    if (answer) {
-      setIsLike(answer.isLikes);
-      setLikes(answer.likes);
-    }
-  }, [answer]);
+function ArticleViewAnswer({
+  id,
+  answer,
+  answerMutate,
+}: ArticleViewAnswerProps) {
   return (
     <>
       <Divider className="mt-2 mb-7 border-2" />
@@ -51,41 +48,57 @@ function ArticleViewAnswer({ id, answer }: ArticleViewAnswerProps) {
         <div className=" mr-1">
           {dayjs(answer?.created_at).format("MM-DD hh:mm")}
         </div>
-        <div>추천 {likes}</div>
+        <div>추천 {answer.likes}</div>
       </div>
       <div className=" min-h-[35vh]">
         <p>{nl2br(answer?.content)}</p>
       </div>
       <div className="flex items-center justify-center text-[24px]">
-        {isLike ? (
+        {answer.isLikes ? (
           <LikeFilled
-            onClick={() => {
-              setIsLike(false);
-              axios
-                .delete(
-                  `${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/${id}/postComment/${answer?.id}/like/`
-                )
-                .then((response) => {
-                  setLikes(likes - 1);
-                });
+            onClick={async () => {
+              answerMutate((likes: any) => {
+                console.log(likes.results);
+              });
+              // answerMutate(
+              //   {
+              //     ...answer,
+              //     isLikes: false,
+              //     likes: answer.likes - 1,
+              //   },
+              //   false
+              // );
+              await axios.delete(
+                `${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/${id}/postComment/${answer?.id}/like/`
+              );
             }}
           />
         ) : (
           <LikeOutlined
-            onClick={() => {
-              setIsLike(true);
-              axios
-                .post(
-                  `${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/${id}/postComment/${answer?.id}/like/`,
-                  { ...answer }
-                )
-                .then((response) => {
-                  setLikes(likes + 1);
-                });
+            onClick={async () => {
+              answerMutate(async (likes: any) => {
+                console.log(likes.results);
+                return {
+                  ...likes.results,
+                  
+                }
+              });
+              // answerMutate(
+              //   {
+              //     ...answer,
+              //     isLikes: true,
+              //     likes: answer.likes + 1,
+              //   },
+              //   false
+              // );
+              await axios.post(
+                `${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/${id}/postComment/${answer?.id}/like/`,
+                { ...answer }
+              );
             }}
           />
         )}
-        {likes}
+        {answer.likes}
       </div>
     </>
   );

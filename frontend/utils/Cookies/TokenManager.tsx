@@ -35,6 +35,7 @@ function setVerifyToken() {
       .then((res) => {
         if (res) {
           setAccessToken(res.data.access);
+          console.log("토큰삭제-재발급");
         }
       });
   } else if (cookies.get("accessToken")) {
@@ -51,6 +52,7 @@ function setVerifyToken() {
             .then((res) => {
               if (res) {
                 setAccessToken(res.data.access);
+                console.log("토큰미삭제-재발급");
               }
             });
         }

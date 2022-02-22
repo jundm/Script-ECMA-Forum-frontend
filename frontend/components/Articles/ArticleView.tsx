@@ -28,12 +28,12 @@ interface AnswerProps {
   updated_at: string;
 }
 function ArticleView({ id }: ArticleViewProps) {
-  const { data, error, mutate } = useFetch(`posts/api/${id}`);
+  const { data, error, mutate } = useFetch(`posts/api/${id}/`);
   const {
     data: answered,
     error: answeredError,
     mutate: answerMutate,
-  } = useFetch(`posts/api/${id}/postComment`);
+  } = useFetch(`posts/api/${id}/postComment/`);
   const [answer, setAnswer] = useState(false);
   useEffect(() => {
     if (error) {
@@ -41,7 +41,7 @@ function ArticleView({ id }: ArticleViewProps) {
       setVerifyToken();
       console.error(error.message);
     }
-  }, [error]);
+  }, [error, data]);
 
   const actions = [
     <>
@@ -53,7 +53,6 @@ function ArticleView({ id }: ArticleViewProps) {
       </div>
     </>,
   ];
-
   return (
     <div className="">
       <Head>
@@ -83,22 +82,20 @@ function ArticleView({ id }: ArticleViewProps) {
         {data?.isLikes ? (
           <LikeFilled
             onClick={async () => {
-              mutate({ ...data }, false);
+              mutate({ ...data, isLikes: false, likes: data.likes - 1 }, false);
               await axios.delete(
                 `${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/${data?.id}/like/`
               );
-              mutate({ ...data });
             }}
           />
         ) : (
           <LikeOutlined
             onClick={async () => {
-              mutate({ ...data }, false);
+              mutate({ ...data, isLikes: true, likes: data.likes + 1 }, false);
               await axios.post(
                 `${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/${data?.id}/like/`,
                 { ...data }
               );
-              mutate({ ...data });
             }}
           />
         )}
@@ -124,7 +121,14 @@ function ArticleView({ id }: ArticleViewProps) {
       )}
 
       {answered?.results?.map((answer: AnswerProps, index: number) => {
-        return <ArticleViewAnswer key={index} id={id} answer={answer} />;
+        return (
+          <ArticleViewAnswer
+            key={index}
+            id={id}
+            answer={answer}
+            answerMutate={answerMutate}
+          />
+        );
       })}
 
       <Divider className="border-[1px]" />

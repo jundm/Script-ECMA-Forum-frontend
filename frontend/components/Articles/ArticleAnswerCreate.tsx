@@ -31,8 +31,16 @@ interface AnswerProps {
   created_at: string;
   updated_at: string;
 }
+interface NewAnswerProps {
+  author: {
+    username: string;
+    name: string;
+  };
+  title: string;
+  content: string;
+}
 interface ArticleAnswerCreateProps {
-  answerMutate: (value: AnswerProps, check?: boolean) => void;
+  answerMutate: (value: NewAnswerProps, check?: boolean) => void;
   // SWRResponse<any, any>.mutate: KeyedMutator<any>
   id: number;
   setAnswer: (arg: (answer: boolean) => boolean) => void;
@@ -68,14 +76,12 @@ function ArticleAnswerCreate({
                 },
                 ...values,
               };
-              // answerMutate(NewAnswer, false);
-              answerMutate({ ...answered }, false);
+              answerMutate(NewAnswer, false);
               await axios.post(
                 `${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/${id}/postComment/`,
                 NewAnswer
               );
-              // answerMutate();
-              answerMutate({ ...answered });
+              answerMutate(NewAnswer);
               setAnswer((answer) => !answer);
             }
           } catch (e) {
