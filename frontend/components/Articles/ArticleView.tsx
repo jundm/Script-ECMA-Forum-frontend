@@ -9,6 +9,7 @@ import { setVerifyToken } from "@utils/Cookies/TokenManager";
 import axios from "axios";
 import ArticleAnswerCreate from "./ArticleAnswerCreate";
 import ArticleViewAnswer from "./ArticleViewAnswer";
+import { Div } from "@components/HeaderBig/styles";
 
 interface ArticleViewProps {
   id: number;
@@ -37,9 +38,8 @@ function ArticleView({ id }: ArticleViewProps) {
   const [answer, setAnswer] = useState(false);
   useEffect(() => {
     if (error) {
-      //! 중복이여도 없앨수가 없음 오류안나고 access토큰만 삭제되면 실행이 안됨
       setVerifyToken();
-      console.error(error.message);
+      // console.error(error.message);
     }
   }, [error, data]);
 
@@ -120,16 +120,19 @@ function ArticleView({ id }: ArticleViewProps) {
         />
       )}
 
-      {answered?.results?.map((answer: AnswerProps, index: number) => {
-        return (
-          <ArticleViewAnswer
-            key={index}
-            id={id}
-            answer={answer}
-            answerMutate={answerMutate}
-          />
-        );
-      })}
+      {answered?.results?.map(
+        (answer: AnswerProps, index: number, children: any) => {
+          return (
+            <ArticleViewAnswer
+              key={index}
+              index={index}
+              id={id}
+              answer={answer}
+              answerMutate={answerMutate}
+            />
+          );
+        }
+      )}
 
       <Divider className="border-[1px]" />
       <Comment

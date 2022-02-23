@@ -43,11 +43,10 @@ function ArticleList({
 
   useEffect(() => {
     if (error) {
-      //! 중복이여도 없앨수가 없음 오류안나고 access토큰만 삭제되면 실행이 안됨
       setVerifyToken();
-      console.error(error.message);
+      // console.error(error.message);
     }
-  }, [error]);
+  }, [error, data]);
 
   const columns = [
     {

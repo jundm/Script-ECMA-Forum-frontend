@@ -23,3 +23,6 @@ axios https://axios-http.com/kr/docs/
 formik https://formik.org/docs/overview
 
 spellchecker https://streetsidesoftware.com/vscode-spell-checker/docs/configuration/
+
+남은기능
+404,내정보,댓글,대댓글
