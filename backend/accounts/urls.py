@@ -10,7 +10,9 @@ app_name = "accounts"
 
 
 urlpatterns = [
-    # path("signup/", views.UserCreateView.as_view()),
-    path("token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
-    path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+    # path("token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
+    # path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+    path("info/follow/", views.user_follow, name="user_follow"),
+    path("info/unfollow/", views.user_unfollow, name="user_unfollow"),
+    path("username/", views.UsernameUniqueCheck.as_view()),
 ]

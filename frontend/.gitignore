@@ -1,5 +1,6 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-.vscode
+.idea
+.vscdoe
 # dependencies
 /node_modules
 /.pnp
@@ -25,15 +26,14 @@ yarn-debug.log*
 yarn-error.log*
 
 # local env files
+# development,production 관리를 위한 업로드
+.env
 .env.local
 .env.development.local
+.env.development
 .env.test.local
 .env.production.local
+.env.production
 
 # vercel
 .vercel
-
-# typescript
-*.tsbuildinfo
-
-.env*

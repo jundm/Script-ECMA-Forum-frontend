@@ -11,13 +11,15 @@ from accounts.managers import CustomUserManager
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_("이메일 주소"), max_length=50, unique=True)
     name = models.CharField(_("실명"), max_length=30)
-    username = models.CharField(_("닉네임"), max_length=30, unique=True)
+    username = models.CharField(_("닉네임"), max_length=30, unique=True, blank=True)
     avatar = models.ImageField(
         _("프로필 사진"),
         blank=True,
         upload_to="accounts/avatar/%Y/%m/%d",
         help_text="개성을 표현할 수 있는 사진을 올려주세요!",
     )
+    follower_set = models.ManyToManyField("self", blank=True)
+    following_set = models.ManyToManyField("self", blank=True)
 
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)  # a admin user; non super-user
@@ -27,7 +29,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     updated_on = models.DateTimeField(auto_now=True)
 
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ["username", "name"]
+    REQUIRED_FIELDS = ["name", "username"]
 
     objects = CustomUserManager()
 
@@ -55,6 +57,3 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
             return self.avatar.url
         else:
             return resolve_url("pydenticon_image", self.username)
-
-
-# 깃허브 테스트중입니다
