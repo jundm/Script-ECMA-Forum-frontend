@@ -91,7 +91,7 @@ function ArticleList({
       title: "작성자",
       dataIndex: "author",
       key: "author",
-      width: "90px" + "1%",
+      width: "100px",
       render: (author: {
         avatar_url: string;
         name: string;
