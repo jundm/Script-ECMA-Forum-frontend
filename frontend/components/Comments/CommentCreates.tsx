@@ -8,6 +8,7 @@ import { setVerifyToken } from "@utils/Cookies/TokenManager";
 import { useRouter } from "next/router";
 import Cookies from "universal-cookie";
 
+const { TextArea } = Input;
 interface NewAnswerProps {
   author: {
     username: string;
@@ -70,7 +71,7 @@ function CommentCreate({ id, answerMutate }: ArticleAnswerCreateProps) {
           handleSubmit,
         }) => (
           <form onSubmit={handleSubmit}>
-            <Input
+            <TextArea
               placeholder="댓글을 입력해주세요"
               allowClear
               showCount
