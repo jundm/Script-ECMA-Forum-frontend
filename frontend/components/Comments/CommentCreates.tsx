@@ -14,7 +14,6 @@ interface NewAnswerProps {
     username: string;
     name: string;
   };
-  title: string;
   content: string;
 }
 interface ArticleAnswerCreateProps {
@@ -29,12 +28,14 @@ function CommentCreate({ id, answerMutate }: ArticleAnswerCreateProps) {
   const accountName = accountUser.payload.auth.name;
   const router = useRouter();
   const cookies = new Cookies();
+
   return (
     <div className="container">
       <Formik
-        initialValues={{ title: "", content: "" }}
+        initialValues={{ content: "" }}
         validate={(values) => {}}
         onSubmit={async (values) => {
+          console.log(values, "values");
           try {
             setLoading(true);
             setVerifyToken();
@@ -54,6 +55,7 @@ function CommentCreate({ id, answerMutate }: ArticleAnswerCreateProps) {
                 )
                 .then(() => {
                   setLoading(false);
+                  values.content = "";
                 });
               answerMutate(NewAnswer);
             }
@@ -72,7 +74,7 @@ function CommentCreate({ id, answerMutate }: ArticleAnswerCreateProps) {
         }) => (
           <form onSubmit={handleSubmit}>
             <TextArea
-              placeholder="댓글을 입력해주세요"
+              placeholder="댓글을 입력해주세요(Shift+Enter)"
               allowClear
               showCount
               id="content"
@@ -80,6 +82,12 @@ function CommentCreate({ id, answerMutate }: ArticleAnswerCreateProps) {
               value={values.content}
               onChange={handleChange}
               onBlur={handleBlur}
+              onKeyPress={(e) => {
+                if (e.shiftKey) {
+                  e.preventDefault();
+                  handleSubmit();
+                }
+              }}
             />
             <Button
               className="mt-2"
