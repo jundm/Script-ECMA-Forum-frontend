@@ -10,6 +10,8 @@ import axios from "axios";
 import ArticleAnswerCreate from "./ArticleAnswerCreate";
 import ArticleViewAnswer from "./ArticleViewAnswer";
 import { Div } from "@components/HeaderBig/styles";
+import ArticleComment from "@components/Comments/ArticleComment";
+import CommentCreates from "@components/Comments/CommentCreates";
 
 interface ArticleViewProps {
   id: number;
@@ -43,16 +45,6 @@ function ArticleView({ id }: ArticleViewProps) {
     }
   }, [error, data]);
 
-  const actions = [
-    <>
-      <div className="flex items-center">
-        <LikeOutlined />
-        <span key="comment-nested-reply-to" className="ml-1">
-          Reply to
-        </span>
-      </div>
-    </>,
-  ];
   return (
     <div className="">
       <Head>
@@ -135,38 +127,11 @@ function ArticleView({ id }: ArticleViewProps) {
       )}
 
       <Divider className="border-[1px]" />
-      <Comment
-        actions={actions}
-        author={<a>Han Solo</a>}
-        avatar={
-          <Avatar src="https://joeschmoe.io/api/v1/random" alt="Han Solo" />
-        }
-        content={
-          <p>
-            We supply a series of design principles, practical patterns and high
-            quality design resources (Sketch and Axure).
-          </p>
-        }
-        datetime={<span>{dayjs(data?.created_at).format("MM-DD hh:mm")}</span>}
-      >
-        <Comment
-          author={<a>Han Solo</a>}
-          avatar={
-            <Avatar src="https://joeschmoe.io/api/v1/random" alt="Han Solo" />
-          }
-          content={
-            <p>
-              We supply a series of design principles, practical patterns and
-              high quality design resources (Sketch and Axure), to help people
-              create their product prototypes beautifully and efficiently.
-            </p>
-          }
-          datetime={
-            <span>{dayjs(data?.created_at).format("MM-DD hh:mm")}</span>
-          }
-        />
-      </Comment>
-      <Divider className="border-[1px]" />
+      <ArticleComment />
+      <CommentCreates
+        id={data?.id}
+        answerMutate={answerMutate}
+      />
     </div>
   );
 }

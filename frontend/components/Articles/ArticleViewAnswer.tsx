@@ -5,7 +5,6 @@ import { LikeOutlined, LikeFilled, EditOutlined } from "@ant-design/icons";
 import axios from "axios";
 import dayjs from "dayjs";
 import nl2br from "react-nl2br";
-import { useSWRConfig } from "swr";
 
 interface ArticleViewAnswerProps {
   index: number;
@@ -36,7 +35,6 @@ function ArticleViewAnswer({
   const { data, mutate } = useFetch(
     `posts/api/${id}/postComment/${answer?.id}/`
   );
-  const { mutate: exMutate } = useSWRConfig();
   return (
     <>
       <Divider className="mt-2 mb-7 border-2" />

@@ -8,27 +8,6 @@ import { setVerifyToken } from "@utils/Cookies/TokenManager";
 import { useRouter } from "next/router";
 import Cookies from "universal-cookie";
 
-const { TextArea } = Input;
-
-//TODO answerMutate 타입 어떻게 넣지?
-interface AnswerProps {
-  author: {
-    avatar_url: string;
-    name: string;
-    username: string;
-  };
-  category: string;
-  comment: number;
-  content: string;
-  hit: number;
-  id: number;
-  isLikes: boolean;
-  likes: number;
-  tag_set: [];
-  title: string;
-  created_at: string;
-  updated_at: string;
-}
 interface NewAnswerProps {
   author: {
     username: string;
@@ -40,16 +19,9 @@ interface NewAnswerProps {
 interface ArticleAnswerCreateProps {
   answerMutate: (value: NewAnswerProps, check?: boolean) => void;
   id: number;
-  setAnswer: (arg: (answer: boolean) => boolean) => void;
-  answered: AnswerProps;
 }
 // *validate 일단 사용 안함
-function ArticleAnswerCreate({
-  id,
-  setAnswer,
-  answerMutate,
-  answered,
-}: ArticleAnswerCreateProps) {
+function CommentCreate({ id, answerMutate }: ArticleAnswerCreateProps) {
   const [isLoading, setLoading] = useState(false);
   const accountUser = useSelector(userName);
   const accountUserName = accountUser.payload.auth.username;
@@ -74,12 +46,15 @@ function ArticleAnswerCreate({
                 ...values,
               };
               answerMutate(NewAnswer, false);
-              await axios.post(
-                `${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/${id}/postComment/`,
-                NewAnswer
-              );
+              await axios
+                .post(
+                  `${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/${id}/comments/`,
+                  NewAnswer
+                )
+                .then(() => {
+                  setLoading(false);
+                });
               answerMutate(NewAnswer);
-              setAnswer((answer) => !answer);
             }
           } catch (e) {
             setLoading(false);
@@ -95,20 +70,8 @@ function ArticleAnswerCreate({
           handleSubmit,
         }) => (
           <form onSubmit={handleSubmit}>
-            <label htmlFor="title">제목</label>
             <Input
-              placeholder="제목을 입력해 주세요"
-              allowClear
-              id="title"
-              name="title"
-              value={values.title}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              style={{ marginBottom: "20px" }}
-            />
-            <label htmlFor="content">내용</label>
-            <TextArea
-              placeholder="답변을 입력해주세요"
+              placeholder="댓글을 입력해주세요"
               allowClear
               showCount
               id="content"
@@ -116,16 +79,15 @@ function ArticleAnswerCreate({
               value={values.content}
               onChange={handleChange}
               onBlur={handleBlur}
-              autoSize={{ minRows: 5, maxRows: 5 }}
             />
-            <br />
             <Button
+              className="mt-2"
               htmlType="submit"
               type="primary"
               shape="round"
               loading={isLoading}
             >
-              답변하기
+              댓글달기
             </Button>
           </form>
         )}
@@ -134,4 +96,4 @@ function ArticleAnswerCreate({
   );
 }
 
-export default ArticleAnswerCreate;
+export default CommentCreate;
