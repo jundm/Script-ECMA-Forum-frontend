@@ -10,7 +10,6 @@ import Cookies from "universal-cookie";
 
 const { TextArea } = Input;
 
-//TODO answerMutate 타입 어떻게 넣지?
 interface AnswerProps {
   author: {
     avatar_url: string;
@@ -63,9 +62,9 @@ function ArticleAnswerCreate({
         validate={(values) => {}}
         onSubmit={async (values) => {
           try {
-            setLoading(true);
-            setVerifyToken();
-            if (cookies.get("accessToken")) {
+            if (cookies.get("accessToken") && values.content !== "") {
+              setLoading(true);
+              setVerifyToken();
               const NewAnswer = {
                 author: {
                   username: accountUserName,
@@ -75,11 +74,13 @@ function ArticleAnswerCreate({
               };
               answerMutate(NewAnswer, false);
               await axios.post(
-                `${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/${id}/postComment/`,
+                `${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/${router.query.id}/postComment/`,
                 NewAnswer
               );
               answerMutate(NewAnswer);
               setAnswer((answer) => !answer);
+            } else {
+              setLoading(false);
             }
           } catch (e) {
             setLoading(false);

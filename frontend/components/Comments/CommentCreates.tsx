@@ -7,6 +7,7 @@ import { userName } from "@utils/Toolkit/Slice/userSlice";
 import { setVerifyToken } from "@utils/Cookies/TokenManager";
 import { useRouter } from "next/router";
 import Cookies from "universal-cookie";
+import { useSWRConfig } from "swr";
 
 const { TextArea } = Input;
 interface NewAnswerProps {
@@ -16,18 +17,16 @@ interface NewAnswerProps {
   };
   content: string;
 }
-interface ArticleAnswerCreateProps {
-  answerMutate: (value: NewAnswerProps, check?: boolean) => void;
-  id: number;
-}
+interface ArticleAnswerCreateProps {}
 // *validate 일단 사용 안함
-function CommentCreate({ id, answerMutate }: ArticleAnswerCreateProps) {
+function CommentCreate({}: ArticleAnswerCreateProps) {
   const [isLoading, setLoading] = useState(false);
   const accountUser = useSelector(userName);
   const accountUserName = accountUser.payload.auth.username;
   const accountName = accountUser.payload.auth.name;
   const router = useRouter();
   const cookies = new Cookies();
+  const { mutate } = useSWRConfig();
 
   return (
     <div className="container">
@@ -35,11 +34,10 @@ function CommentCreate({ id, answerMutate }: ArticleAnswerCreateProps) {
         initialValues={{ content: "" }}
         validate={(values) => {}}
         onSubmit={async (values) => {
-          console.log(values, "values");
           try {
-            setLoading(true);
-            setVerifyToken();
-            if (cookies.get("accessToken")) {
+            if (cookies.get("accessToken") && values.content !== "") {
+              setLoading(true);
+              setVerifyToken();
               const NewAnswer = {
                 author: {
                   username: accountUserName,
@@ -47,17 +45,23 @@ function CommentCreate({ id, answerMutate }: ArticleAnswerCreateProps) {
                 },
                 ...values,
               };
-              answerMutate(NewAnswer, false);
+              mutate(
+                `posts/api/${router.query.id}/comments/`,
+                [, NewAnswer],
+                false
+              );
               await axios
                 .post(
-                  `${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/${id}/comments/`,
+                  `${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/${router.query.id}/comments/`,
                   NewAnswer
                 )
                 .then(() => {
                   setLoading(false);
                   values.content = "";
                 });
-              answerMutate(NewAnswer);
+              mutate(`posts/api/${router.query.id}/comments/`, NewAnswer);
+            } else {
+              setLoading(false);
             }
           } catch (e) {
             setLoading(false);

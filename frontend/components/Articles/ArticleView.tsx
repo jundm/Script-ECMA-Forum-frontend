@@ -3,13 +3,12 @@ import Head from "next/head";
 import React, { Fragment, useEffect, useState } from "react";
 import nl2br from "react-nl2br";
 import dayjs from "dayjs";
-import { Avatar, Comment, Divider, Button } from "antd";
+import { Divider, Button } from "antd";
 import { LikeOutlined, LikeFilled, EditOutlined } from "@ant-design/icons";
 import { setVerifyToken } from "@utils/Cookies/TokenManager";
 import axios from "axios";
 import ArticleAnswerCreate from "./ArticleAnswerCreate";
 import ArticleViewAnswer from "./ArticleViewAnswer";
-import { Div } from "@components/HeaderBig/styles";
 import ArticleComment from "@components/Comments/ArticleComment";
 import CommentCreates from "@components/Comments/CommentCreates";
 
@@ -83,6 +82,10 @@ function ArticleView({ id }: ArticleViewProps) {
         ) : (
           <LikeOutlined
             onClick={async () => {
+              console.log(
+                { ...data, isLikes: true, likes: data.likes + 1 },
+                "aa"
+              );
               mutate({ ...data, isLikes: true, likes: data.likes + 1 }, false);
               await axios.post(
                 `${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/${data?.id}/like/`,
@@ -112,26 +115,14 @@ function ArticleView({ id }: ArticleViewProps) {
         />
       )}
 
-      {answered?.results?.map(
-        (answer: AnswerProps, index: number, children: any) => {
-          return (
-            <ArticleViewAnswer
-              key={index}
-              index={index}
-              id={id}
-              answer={answer}
-              answerMutate={answerMutate}
-            />
-          );
-        }
-      )}
-
-      <Divider className="border-[1px]" />
-      <ArticleComment />
-      <CommentCreates
-        id={data?.id}
+      <ArticleViewAnswer
+        id={id}
+        answered={answered}
         answerMutate={answerMutate}
       />
+      <Divider className="border-[1px]" />
+      <ArticleComment />
+      <CommentCreates />
     </div>
   );
 }
