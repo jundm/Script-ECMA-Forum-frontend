@@ -1,16 +1,15 @@
-import useFetch from "@utils/Hook/useFetch";
 import { Avatar, Comment } from "antd";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { LikeOutlined, LikeFilled, EditOutlined } from "@ant-design/icons";
 import React from "react";
+import useFetch from "@utils/Hook/useFetch";
 
 interface ArticleReplyComponentProps {
   id: number;
 }
 
 function ArticleReplyComponent({ id }: ArticleReplyComponentProps) {
-  const router = useRouter();
   const { data, error, mutate } = useFetch(`posts/api/${id}/commentsReply/`);
   return (
     <>
@@ -36,7 +35,7 @@ function ArticleReplyComponent({ id }: ArticleReplyComponentProps) {
             content={<p>{reply.content}</p>}
             datetime={
               <span>
-                {dayjs(data?.created_at).format("MM-DD hh:mm")} 추천:
+                {dayjs(reply.created_at).format("MM-DD hh:mm")} 추천:
                 {reply.likes}
               </span>
             }

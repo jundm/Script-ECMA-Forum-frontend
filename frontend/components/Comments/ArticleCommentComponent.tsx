@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import dayjs from "dayjs";
 import CommentCreate from "./CommentCreates";
 import ArticleReplyComponent from "./ArticleReplyComponent";
+import useFetch from "@utils/Hook/useFetch";
 
 interface ArticleCommentComponentProps {
   key: number;
@@ -29,7 +30,7 @@ function ArticleCommentComponent({
   const [replyCreate, setReplyCreate] = useState(false);
 
   return (
-    <div>
+    <>
       <Comment
         key={key}
         actions={[
@@ -69,9 +70,10 @@ function ArticleCommentComponent({
             setReplyCreate={setReplyCreate}
           />
         )}
+
         <ArticleReplyComponent id={comments.id} />
       </Comment>
-    </div>
+    </>
   );
 }
 

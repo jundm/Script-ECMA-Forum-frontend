@@ -28,16 +28,6 @@ function ArticleComment({}: ArticleCommentProps) {
     `posts/api/${router.query.id}/comments/`
   );
 
-  const actions = [
-    <>
-      <div className="flex items-center">
-        <LikeOutlined />
-        <span key="comment-nested-reply-to" className="ml-1" onClick={() => {}}>
-          Reply to
-        </span>
-      </div>
-    </>,
-  ];
   return (
     <>
       {data?.results?.map((comments: CommentProps, key: number) => {
