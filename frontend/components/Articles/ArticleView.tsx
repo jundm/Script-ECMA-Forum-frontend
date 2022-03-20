@@ -11,6 +11,7 @@ import ArticleAnswerCreate from "./ArticleAnswerCreate";
 import ArticleViewAnswer from "./ArticleViewAnswer";
 import ArticleComment from "@components/Comments/ArticleComment";
 import CommentCreates from "@components/Comments/CommentCreates";
+import { useRouter } from "next/router";
 
 interface ArticleViewProps {
   id: number;
@@ -30,6 +31,7 @@ interface AnswerProps {
   updated_at: string;
 }
 function ArticleView({ id }: ArticleViewProps) {
+  const router = useRouter();
   const { data, error, mutate } = useFetch(`posts/api/${id}/`);
   const {
     data: answered,
@@ -122,7 +124,7 @@ function ArticleView({ id }: ArticleViewProps) {
       />
       <Divider className="border-[1px]" />
       <ArticleComment />
-      <CommentCreates />
+      <CommentCreates api={`posts/api/${router.query.id}/comments/`}/>
     </div>
   );
 }

@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 import React, { useState } from "react";
 import useFetch from "@utils/Hook/useFetch";
 import { useRouter } from "next/router";
+import ArticleCommentComponent from "./ArticleCommentComponent";
 
 interface ArticleCommentProps {}
 
@@ -22,7 +23,6 @@ interface CommentProps {
 }
 
 function ArticleComment({}: ArticleCommentProps) {
-  const [reply, setReply] = useState(false);
   const router = useRouter();
   const { data, error, mutate } = useFetch(
     `posts/api/${router.query.id}/comments/`
@@ -41,57 +41,7 @@ function ArticleComment({}: ArticleCommentProps) {
   return (
     <>
       {data?.results?.map((comments: CommentProps, key: number) => {
-        return (
-          <Comment
-            key={key}
-            actions={[
-              <>
-                <div className="flex items-center">
-                  <LikeOutlined />
-                  <span key={key} className="ml-1" onClick={() => {}}>
-                    Reply to
-                  </span>
-                </div>
-              </>,
-            ]}
-            author={<a>{comments.author.username}</a>}
-            avatar={
-              <Avatar
-                src={comments.author.avatar_url}
-                alt={comments.author.username}
-              />
-            }
-            content={<p>{comments.content}</p>}
-            datetime={
-              <span>
-                {dayjs(comments.updated_at).format("MM-DD hh:mm")} 추천:
-                {comments.likes}
-              </span>
-            }
-          >
-            <Comment
-              author={<a>Han Solo</a>}
-              avatar={
-                <Avatar
-                  src="https://joeschmoe.io/api/v1/random"
-                  alt="Han Solo"
-                />
-              }
-              content={
-                <p>
-                  We supply a series of design principles, practical patterns
-                  and high quality design resources (Sketch and Axure), to help
-                  people create their product prototypes beautifully and
-                  efficiently.
-                </p>
-              }
-              datetime={
-                <span>02-24 10:12</span>
-                // <span>{dayjs(data?.created_at).format("MM-DD hh:mm")}</span>
-              }
-            />
-          </Comment>
-        );
+        return <ArticleCommentComponent key={key} comments={comments} />;
       })}
     </>
   );

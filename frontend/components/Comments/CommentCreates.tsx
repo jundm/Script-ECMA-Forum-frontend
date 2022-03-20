@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import { Button, Input } from "antd";
 import { Formik } from "formik";
 import axios from "axios";
@@ -17,9 +17,12 @@ interface NewAnswerProps {
   };
   content: string;
 }
-interface ArticleAnswerCreateProps {}
+interface ArticleAnswerCreateProps {
+  api: string;
+  setReplyCreate?: Dispatch<SetStateAction<boolean>>;
+}
 // *validate 일단 사용 안함
-function CommentCreate({}: ArticleAnswerCreateProps) {
+function CommentCreate({ api, setReplyCreate }: ArticleAnswerCreateProps) {
   const [isLoading, setLoading] = useState(false);
   const accountUser = useSelector(userName);
   const accountUserName = accountUser.payload.auth.username;
@@ -45,21 +48,18 @@ function CommentCreate({}: ArticleAnswerCreateProps) {
                 },
                 ...values,
               };
-              mutate(
-                `posts/api/${router.query.id}/comments/`,
-                [, NewAnswer],
-                false
-              );
+              mutate(api, [, NewAnswer], false);
               await axios
                 .post(
-                  `${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/${router.query.id}/comments/`,
+                  `${process.env.NEXT_PUBLIC_ENV_BASE_URL}${api}`,
                   NewAnswer
                 )
                 .then(() => {
                   setLoading(false);
+                  setReplyCreate && setReplyCreate(false);
                   values.content = "";
                 });
-              mutate(`posts/api/${router.query.id}/comments/`, NewAnswer);
+              mutate(api, NewAnswer);
             } else {
               setLoading(false);
             }
