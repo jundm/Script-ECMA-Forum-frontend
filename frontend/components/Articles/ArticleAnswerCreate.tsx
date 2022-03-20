@@ -37,10 +37,12 @@ interface NewAnswerProps {
   content: string;
 }
 interface ArticleAnswerCreateProps {
-  answerMutate: (value: NewAnswerProps, check?: boolean) => void;
+  // answerMutate: (value: NewAnswerProps, check?: boolean) => void;
+  answerMutate: any;
   id: number;
   setAnswer: (arg: (answer: boolean) => boolean) => void;
-  answered: AnswerProps;
+  answered: any;
+  // answered: AnswerProps;
 }
 // *validate 일단 사용 안함
 function ArticleAnswerCreate({
@@ -55,6 +57,7 @@ function ArticleAnswerCreate({
   const accountName = accountUser.payload.auth.name;
   const router = useRouter();
   const cookies = new Cookies();
+  console.log(answered, "answered");
   return (
     <div className="container">
       <Formik
@@ -72,12 +75,32 @@ function ArticleAnswerCreate({
                 },
                 ...values,
               };
-              answerMutate(NewAnswer, false);
+              answerMutate(
+                {
+                  ...answered,
+                  results: [
+                    {
+                      id: answered.results[0].id + 1,
+                      author: {
+                        username: accountUserName,
+                        name: accountName,
+                        avatar_url: `${process.env.NEXT_PUBLIC_ENV_BASE_URL}avatar/image/${accountUserName}.png`,
+                      },
+                      likes: 0,
+                      created_at: Date.now(),
+                      updated_at: Date.now(),
+                      ...values,
+                    },
+                    ...answered.results,
+                  ],
+                },
+                false
+              );
               await axios.post(
                 `${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/${router.query.id}/postComment/`,
                 NewAnswer
               );
-              answerMutate(NewAnswer);
+              answerMutate();
               setAnswer((answer) => !answer);
             } else {
               setLoading(false);

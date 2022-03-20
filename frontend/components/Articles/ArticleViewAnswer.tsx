@@ -38,7 +38,6 @@ function ArticleViewAnswer({
   return (
     <>
       {answered?.results?.map((answer: AnswerProps, key: number) => {
-        console.log(answer, "answer");
         return (
           <Fragment key={key}>
             <Divider className="mt-2 mb-7 border-2" />
