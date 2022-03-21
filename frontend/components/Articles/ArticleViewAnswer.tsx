@@ -49,7 +49,7 @@ function ArticleViewAnswer({
                 src={answer.author.avatar_url}
                 alt="avatar"
               />
-              <div className="mr-1">{answer.author?.username}</div>
+              <div className="mr-1">{answer.author.username}</div>
               <div className="mr-1 ">
                 <Divider type="vertical" className="border-[1px]" />
               </div>

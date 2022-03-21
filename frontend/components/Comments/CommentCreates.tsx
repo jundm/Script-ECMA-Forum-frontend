@@ -30,10 +30,7 @@ function CommentCreate({ api, setReplyCreate }: ArticleAnswerCreateProps) {
   const accountName = accountUser.payload.auth.name;
   const router = useRouter();
   const cookies = new Cookies();
-  // const { mutate } = useSWRConfig();
   const { data, error, mutate } = useFetch(api);
-  console.log(data?.results, "api data");
-  console.log(api, "api");
   return (
     <div className="container">
       <Formik
@@ -82,7 +79,7 @@ function CommentCreate({ api, setReplyCreate }: ArticleAnswerCreateProps) {
                   setReplyCreate && setReplyCreate(false);
                   values.content = "";
                 });
-              mutate();
+              // mutate();
             } else {
               setLoading(false);
             }

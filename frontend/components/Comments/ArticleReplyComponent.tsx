@@ -2,8 +2,9 @@ import { Avatar, Comment } from "antd";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { LikeOutlined, LikeFilled, EditOutlined } from "@ant-design/icons";
-import React from "react";
+import React, { useEffect } from "react";
 import useFetch from "@utils/Hook/useFetch";
+import { setVerifyToken } from "@utils/Cookies/TokenManager";
 
 interface ArticleReplyComponentProps {
   id: number;
@@ -11,6 +12,12 @@ interface ArticleReplyComponentProps {
 
 function ArticleReplyComponent({ id }: ArticleReplyComponentProps) {
   const { data, error, mutate } = useFetch(`posts/api/${id}/commentsReply/`);
+  useEffect(() => {
+    if (error) {
+      setVerifyToken();
+      // console.error(error.message);
+    }
+  }, [error, data]);
   return (
     <>
       {data?.results?.map((reply: any, key: number) => {

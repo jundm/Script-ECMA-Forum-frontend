@@ -80,7 +80,7 @@ function ArticleAnswerCreate({
                   ...answered,
                   results: [
                     {
-                      id: answered.results[0].id + 1,
+                      id: answered.results.id + 1,
                       author: {
                         username: accountUserName,
                         name: accountName,
@@ -100,7 +100,6 @@ function ArticleAnswerCreate({
                 `${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/${router.query.id}/postComment/`,
                 NewAnswer
               );
-              answerMutate();
               setAnswer((answer) => !answer);
             } else {
               setLoading(false);

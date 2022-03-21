@@ -123,8 +123,8 @@ function ArticleView({ id }: ArticleViewProps) {
         answerMutate={answerMutate}
       />
       <Divider className="border-[1px]" />
+      <CommentCreates api={`posts/api/${router.query.id}/comments/`} />
       <ArticleComment />
-      <CommentCreates api={`posts/api/${router.query.id}/comments/`}/>
     </div>
   );
 }
