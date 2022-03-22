@@ -84,10 +84,6 @@ function ArticleView({ id }: ArticleViewProps) {
         ) : (
           <LikeOutlined
             onClick={async () => {
-              console.log(
-                { ...data, isLikes: true, likes: data.likes + 1 },
-                "aa"
-              );
               mutate({ ...data, isLikes: true, likes: data.likes + 1 }, false);
               await axios.post(
                 `${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/${data?.id}/like/`,

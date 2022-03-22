@@ -71,12 +71,10 @@ const HeaderSmall = (props: HeaderProps) => {
           </Link>
 
           {accountUserName ? (
-            <>
-              <UserNameDiv>
-                {accountUserName.slice(0, 2)}
-                <ProfileDiv>님{Safari ? "😍" : <Heart />}</ProfileDiv>
-              </UserNameDiv>
-            </>
+            <UserNameDiv>
+              {accountUserName.slice(0, 10)}
+              <ProfileDiv>님{Safari ? "😍" : <Heart />}</ProfileDiv>
+            </UserNameDiv>
           ) : (
             <>
               <Link href="/accounts/login">

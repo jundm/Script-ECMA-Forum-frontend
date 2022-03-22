@@ -57,7 +57,6 @@ function ArticleAnswerCreate({
   const accountName = accountUser.payload.auth.name;
   const router = useRouter();
   const cookies = new Cookies();
-  console.log(answered, "answered");
   return (
     <div className="container">
       <Formik

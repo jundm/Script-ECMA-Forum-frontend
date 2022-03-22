@@ -18,6 +18,7 @@ import Cookies from "universal-cookie";
 import { useSelector } from "react-redux";
 import { userName } from "@utils/Toolkit/Slice/userSlice";
 import { GetServerSideProps } from "next";
+import SignUpTerm from "@components/SignUpTerm";
 
 //TODO 추가예정=[validator, add form, email인증]
 interface SignUpProps {}
@@ -137,7 +138,7 @@ function SignUp(this: any, {}: SignUpProps) {
       .catch((e) => console.error(e.message));
     setIsLoading(false);
   };
-
+  //! 모바일 번호
   // const prefixSelector = (
   //   <Form.Item name="prefix" noStyle>
   //     <Select style={{ width: 70 }}>
@@ -376,7 +377,7 @@ function SignUp(this: any, {}: SignUpProps) {
             </Col>
           </Row>
         </Form.Item> */}
-
+          <SignUpTerm />
           <Form.Item
             name="agreement"
             valuePropName="checked"
@@ -390,9 +391,7 @@ function SignUp(this: any, {}: SignUpProps) {
             ]}
             {...tailFormItemLayout}
           >
-            <Checkbox>
-              <a href="">약관에 동의합니다.</a>
-            </Checkbox>
+            <Checkbox>약관에 동의합니다.</Checkbox>
           </Form.Item>
           <Form.Item {...tailFormItemLayout}>
             <Button type="primary" htmlType="submit" disabled={isLoading}>

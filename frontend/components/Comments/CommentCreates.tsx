@@ -79,7 +79,7 @@ function CommentCreate({ api, setReplyCreate }: ArticleAnswerCreateProps) {
                   setReplyCreate && setReplyCreate(false);
                   values.content = "";
                 });
-              // mutate();
+              mutate();
             } else {
               setLoading(false);
             }
