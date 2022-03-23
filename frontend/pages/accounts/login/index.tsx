@@ -1,28 +1,28 @@
 import React, { useEffect, useState } from "react";
-import { Button, Card, Checkbox, Form, Input } from "antd";
+import { Button, Card, Form, Input } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import axios from "axios";
-import {
-  setAccessToken,
-  setLogoutToken,
-  setRefreshToken,
-} from "@utils/Cookies/TokenManager";
+import { setAccessToken, setRefreshToken } from "@utils/Cookies/TokenManager";
 import Link from "next/link";
 import { GetServerSideProps } from "next";
 import Cookies from "universal-cookie";
-import { userName, name } from "@utils/Toolkit/Slice/userSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { userName } from "@utils/Toolkit/Slice/userSlice";
 import { useRouter } from "next/router";
+import { globalRemember, globalEmail } from "@utils/Toolkit/Slice/globalSlice";
+import { useAppDispatch, useAppSelector } from "@utils/Toolkit/hook";
 
 interface LoginProps {}
 
-//TODO Remember me 적용
-//TODO 효과적인 HOC 찾아보기
 function Login() {
   const router = useRouter();
   const cookies = new Cookies();
-  const accountUser = useSelector(userName);
+  const accountUser = useAppSelector(userName);
   const accountUserName = accountUser.payload.auth.username;
+  let rememberUser = useAppSelector(globalRemember);
+  let rememberUserEmail = rememberUser.payload.global.remember;
+  let rememberEmail = useAppSelector(globalEmail);
+  let rememberEmailInput = rememberEmail.payload.global.userEmail;
+
   useEffect(() => {
     if (
       accountUserName &&
@@ -32,12 +32,12 @@ function Login() {
       router.back();
     }
   });
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const loginWidth = 300;
   const [form] = Form.useForm();
   const [isLoading, setIsLoading] = useState(false);
   const [inputs, setInputs] = useState({
-    email: "",
+    email: rememberEmailInput,
     password: "",
   });
   const { email, password } = inputs;
@@ -58,23 +58,34 @@ function Login() {
 
   const onFinish = (values: any) => {
     setIsLoading(true);
+    console.log(email, "email");
     axios
       .post(process.env.NEXT_PUBLIC_ENV_BASE_URL + "jwt/create/", {
         email,
         password,
       })
       .then((res) => {
+        router.push("/");
         const access = res.data.access;
         const refresh = res.data.refresh;
         setAccessToken(access);
         setRefreshToken(refresh);
-        router.push("/");
+        if (rememberUserEmail === true) {
+          dispatch(globalEmail(email));
+        }
       })
       .catch((e) => console.warn(e.message));
     setIsLoading(false);
     form.resetFields(["email", "password"]);
   };
-
+  const onClickChecked = () => {
+    dispatch(globalRemember(!rememberUserEmail));
+  };
+  useEffect(() => {
+    if (rememberUserEmail === false) {
+      dispatch(globalEmail(""));
+    }
+  }, [rememberUserEmail]);
   return (
     <Card
       title="Login"
@@ -84,7 +95,7 @@ function Login() {
       <Form
         name="normal_login"
         className="login-form w-96"
-        initialValues={{ remember: true }}
+        initialValues={{ email: rememberEmailInput }}
         onFinish={onFinish}
         style={{ margin: "auto" }}
         form={form}
@@ -126,15 +137,22 @@ function Login() {
           />
         </Form.Item>
         <Form.Item>
-          <Form.Item name="remember" valuePropName="checked" noStyle>
-            <Checkbox>Remember me</Checkbox>
-          </Form.Item>
-
-          <Link href="">
-            <a className="login-form-forgot" onClick={setLogoutToken}>
-              비밀번호를 잊으셨나요?(토큰삭제)
+          <div onClick={onClickChecked}>
+            <input
+              className="mr-1"
+              type="checkbox"
+              name=""
+              id=""
+              checked={rememberUserEmail}
+            />
+            Remember me
+          </div>
+          {/* //TODO */}
+          {/* <Link href="">
+            <a className="login-form-forgot" onClick={() => {}}>
+              비밀번호를 잊으셨나요?
             </a>
-          </Link>
+          </Link> */}
         </Form.Item>
 
         <Form.Item>

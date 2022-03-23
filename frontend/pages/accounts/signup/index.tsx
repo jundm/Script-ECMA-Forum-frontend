@@ -87,11 +87,11 @@ const tailFormItemLayout = {
 function SignUp(this: any, {}: SignUpProps) {
   const router = useRouter();
   const cookies = new Cookies();
-  const acccountUser = useSelector(userName);
-  const acccountUserName = acccountUser.payload.auth.username;
+  const accountUser = useSelector(userName);
+  const accountUserName = accountUser.payload.auth.username;
   useEffect(() => {
     if (
-      acccountUserName &&
+      accountUserName &&
       cookies.get("accessToken") &&
       cookies.get("refreshToken")
     ) {
@@ -100,6 +100,8 @@ function SignUp(this: any, {}: SignUpProps) {
   });
   const [form] = Form.useForm();
   const [isLoading, setIsLoading] = useState(false);
+  const [isCheck, setIsCheck] = useState(false);
+  console.log(isCheck);
   const [inputs, setInputs] = useState({
     name: "",
     username: "",
@@ -134,8 +136,15 @@ function SignUp(this: any, {}: SignUpProps) {
           "password",
           "re_password",
         ]);
+        router.push("/accounts/login");
       })
-      .catch((e) => console.error(e.message));
+      .catch((e) => {
+        if (e.message === "Request failed with status code 400") {
+          alert("이메일 혹은 닉네임이 중복되었습니다.");
+        } else {
+          alert(e.message);
+        }
+      });
     setIsLoading(false);
   };
   //! 모바일 번호
@@ -194,6 +203,7 @@ function SignUp(this: any, {}: SignUpProps) {
           <Form.Item
             name="email"
             label="이메일"
+            tooltip="중복체크 기능이 아직 없습니다. 본인 메일로 가입해주세요."
             rules={[
               {
                 type: "email",
@@ -260,7 +270,7 @@ function SignUp(this: any, {}: SignUpProps) {
           <Form.Item
             name="name"
             label="실명"
-            tooltip="주민등록상 실제 이름을 기입합니다."
+            tooltip="사용자의 이름을 기입합니다."
             rules={[
               {
                 required: true,
@@ -386,7 +396,7 @@ function SignUp(this: any, {}: SignUpProps) {
                 validator: (_, value) =>
                   value
                     ? Promise.resolve()
-                    : Promise.reject(new Error("Should accept agreement")),
+                    : Promise.reject(new Error("약관에 동의 해주세요")),
               },
             ]}
             {...tailFormItemLayout}
