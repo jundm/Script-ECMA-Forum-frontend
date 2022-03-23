@@ -4,7 +4,6 @@ import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { setAccessToken, setRefreshToken } from "@utils/Cookies/TokenManager";
 import Link from "next/link";
-import { GetServerSideProps } from "next";
 import Cookies from "universal-cookie";
 import { userName } from "@utils/Toolkit/Slice/userSlice";
 import { useRouter } from "next/router";
@@ -174,22 +173,5 @@ function Login() {
     </Card>
   );
 }
-// export const getServerSideProps: GetServerSideProps = async (context) => {
-//   const cookieReq = context.req ? context.req.headers.cookie : null;
-//   const cookies = new Cookies(cookieReq);
-//   const accessToken = cookies.get("accessToken");
-//   if (accessToken) {
-//     return {
-//       redirect: {
-//         destination: "/",
-//         permanent: false,
-//       },
-//     };
-//   } else {
-//     return {
-//       props: {},
-//     };
-//   }
-// };
 
 export default Login;
