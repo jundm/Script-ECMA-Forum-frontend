@@ -89,7 +89,6 @@ function ArticleViewAnswer({
                           ),
                         });
                       }, false);
-
                       await axios.delete(
                         `${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/${id}/postComment/${answer.id}/like/`
                       );

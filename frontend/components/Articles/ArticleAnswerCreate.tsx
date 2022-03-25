@@ -99,6 +99,7 @@ function ArticleAnswerCreate({
                 `${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/${router.query.id}/postComment/`,
                 NewAnswer
               );
+              answerMutate();
               setAnswer((answer) => !answer);
             } else {
               setLoading(false);

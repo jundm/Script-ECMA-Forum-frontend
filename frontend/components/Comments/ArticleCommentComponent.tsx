@@ -4,11 +4,11 @@ import { LikeOutlined, LikeFilled } from "@ant-design/icons";
 import { Avatar, Comment } from "antd";
 import { useRouter } from "next/router";
 import dayjs from "dayjs";
-import CommentCreate from "./CommentCreates";
 import ArticleReplyComponent from "./ArticleReplyComponent";
 import { KeyedMutator } from "swr";
 import Cookies from "universal-cookie";
 import { parseJwt, setVerifyToken } from "@utils/Cookies/TokenManager";
+import CommentCreates from "./CommentCreates";
 
 interface ArticleCommentComponentProps {
   comments: CommentProps;
@@ -130,29 +130,29 @@ function ArticleCommentComponent({
             </div>
           </>,
         ]}
-        author={<a>{comments?.author.username}</a>}
+        author={<a>{comments.author.username}</a>}
         avatar={
           <Avatar
-            src={comments?.author.avatar_url}
-            alt={comments?.author.username}
+            src={comments.author.avatar_url}
+            alt={comments.author.username}
           />
         }
-        content={<p>{comments?.content}</p>}
+        content={<p>{comments.content}</p>}
         datetime={
           <span>
-            {dayjs(comments?.updated_at).format("MM-DD hh:mm")} 추천:
-            {comments?.likes}
+            {dayjs(comments.updated_at).format("MM-DD hh:mm")} 추천:
+            {comments.likes}
           </span>
         }
       >
         {replyCreate && (
-          <CommentCreate
-            api={`posts/api/${comments?.id}/commentsReply/`}
+          <CommentCreates
+            api={`posts/api/${comments.id}/commentsReply/`}
             setReplyCreate={setReplyCreate}
           />
         )}
 
-        <ArticleReplyComponent id={comments?.id} />
+        <ArticleReplyComponent id={comments.id} />
       </Comment>
     </>
   );

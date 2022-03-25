@@ -25,9 +25,7 @@ function ArticleComment({}: ArticleCommentProps) {
   const { data, error, mutate } = useFetch(
     `posts/api/${router.query.id}/comments/`
   );
-  if (error) {
-    console.error(error.message);
-  }
+
   return (
     <>
       {data?.results?.map((comments: CommentProps, key: number) => {

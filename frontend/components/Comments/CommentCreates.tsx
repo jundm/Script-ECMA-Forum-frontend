@@ -23,7 +23,7 @@ interface ArticleAnswerCreateProps {
   setReplyCreate?: Dispatch<SetStateAction<boolean>>;
 }
 // *validate 일단 사용 안함
-function CommentCreate({ api, setReplyCreate }: ArticleAnswerCreateProps) {
+function ReplyCreate({ api, setReplyCreate }: ArticleAnswerCreateProps) {
   const [isLoading, setLoading] = useState(false);
   const accountUser = useSelector(userName);
   const accountUserName = accountUser.payload.auth.username;
@@ -56,13 +56,14 @@ function CommentCreate({ api, setReplyCreate }: ArticleAnswerCreateProps) {
                   ...data,
                   results: [
                     {
-                      id: data.results.id + 1,
+                      id: data.results[0].id + 1,
                       author: {
                         username: accountUserName,
                         name: accountName,
                         avatar_url: `${process.env.NEXT_PUBLIC_ENV_BASE_URL}avatar/image/${accountUserName}.png`,
                       },
                       likes: 0,
+                      isLikes: false,
                       created_at: Date.now(),
                       updated_at: Date.now(),
                       ...values,
@@ -133,4 +134,4 @@ function CommentCreate({ api, setReplyCreate }: ArticleAnswerCreateProps) {
   );
 }
 
-export default CommentCreate;
+export default ReplyCreate;

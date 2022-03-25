@@ -26,6 +26,9 @@ export const fetcher = function (url: string) {
 
 export default function useFetch(url: string) {
   return useSWR(url, fetcher, {
+    revalidateOnFocus: false,
+    revalidateOnReconnect: true,
+    dedupingInterval: 2000,
     onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
       if (retryCount >= 10) return;
       if (

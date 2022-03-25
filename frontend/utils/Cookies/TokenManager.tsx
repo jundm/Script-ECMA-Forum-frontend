@@ -23,7 +23,7 @@ function parseJwt(token: string) {
 }
 
 function setAccessToken(accessToken: string) {
-  const expires = new Date(Date.now() + 1000 * 60 * 1);
+  const expires = new Date(Date.now() + 1000 * 60 * 30);
   axios.defaults.headers.common.Authorization = `JWT ${accessToken}`;
   cookies.set("accessToken", accessToken, {
     path: "/",
@@ -32,7 +32,7 @@ function setAccessToken(accessToken: string) {
   });
 }
 function setRefreshToken(refreshToken: string) {
-  const expires = new Date(Date.now() + 1000 * 60 * 60 * 23.5);
+  const expires = new Date(Date.now() + 1000 * 60 * 60 * 24);
   cookies.set("refreshToken", refreshToken, {
     path: "/",
     expires,
@@ -73,7 +73,7 @@ function setVerifyToken(expireAccessTokenTime?: number) {
   }
   if (!expireAccessTokenTime) return;
   // 사용중에 마감시간에 임박하면 재발급
-  if (currentTime + 1000 * 60 * 5 > expireAccessTokenTime) {
+  if (currentTime + 1000 * 60 * 5 >= expireAccessTokenTime) {
     NewAccessToken;
     console.log("마감임박-재발급");
   }
