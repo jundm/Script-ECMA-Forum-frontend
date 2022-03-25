@@ -39,5 +39,6 @@ export const globalSlice = createSlice({
     },
   },
 });
-export const { globalHeader, globalRemember,globalEmail } = globalSlice.actions;
+export const { globalHeader, globalRemember, globalEmail } =
+  globalSlice.actions;
 export default globalSlice.reducer;

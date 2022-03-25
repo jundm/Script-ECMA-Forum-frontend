@@ -25,12 +25,9 @@ function ArticleComment({}: ArticleCommentProps) {
   const { data, error, mutate } = useFetch(
     `posts/api/${router.query.id}/comments/`
   );
-  useEffect(() => {
-    if (error) {
-      setVerifyToken();
-      // console.error(error.message);
-    }
-  }, [error, data]);
+  if (error) {
+    console.error(error.message);
+  }
   return (
     <>
       {data?.results?.map((comments: CommentProps, key: number) => {

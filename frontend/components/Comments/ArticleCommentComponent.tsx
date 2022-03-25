@@ -7,6 +7,8 @@ import dayjs from "dayjs";
 import CommentCreate from "./CommentCreates";
 import ArticleReplyComponent from "./ArticleReplyComponent";
 import { KeyedMutator } from "swr";
+import Cookies from "universal-cookie";
+import { parseJwt, setVerifyToken } from "@utils/Cookies/TokenManager";
 
 interface ArticleCommentComponentProps {
   comments: CommentProps;
@@ -38,6 +40,11 @@ function ArticleCommentComponent({
 }: ArticleCommentComponentProps) {
   const router = useRouter();
   const [replyCreate, setReplyCreate] = useState(false);
+  const cookies = new Cookies();
+  const accessToken = cookies.get("accessToken");
+  const refreshToken = cookies.get("refreshToken");
+  const expiredToken = parseJwt(accessToken);
+
   return (
     <>
       <Comment
@@ -48,25 +55,30 @@ function ArticleCommentComponent({
                 <div
                   className="cursor-pointer flex items-center"
                   onClick={async () => {
-                    mutate((likes: DataCommentProps) => {
-                      return {
-                        ...likes,
-                        results: [
-                          ...likes.results.map((result: CommentProps) =>
-                            result.id === comments.id
-                              ? {
-                                  ...result,
-                                  isLikes: false,
-                                  likes: result.likes - 1,
-                                }
-                              : result
-                          ),
-                        ],
-                      };
-                    }, false);
-                    await axios.delete(
-                      `${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/${router.query.id}/comments/${comments.id}/like/`
-                    );
+                    if (refreshToken) {
+                      setVerifyToken(expiredToken);
+                      mutate((likes: DataCommentProps) => {
+                        return {
+                          ...likes,
+                          results: [
+                            ...likes.results.map((result: CommentProps) =>
+                              result.id === comments.id
+                                ? {
+                                    ...result,
+                                    isLikes: false,
+                                    likes: result.likes - 1,
+                                  }
+                                : result
+                            ),
+                          ],
+                        };
+                      }, false);
+                      await axios.delete(
+                        `${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/${router.query.id}/comments/${comments.id}/like/`
+                      );
+                    } else {
+                      alert("로그인이 필요합니다");
+                    }
                   }}
                 >
                   <LikeFilled className="mr-1" />
@@ -76,25 +88,30 @@ function ArticleCommentComponent({
                 <div
                   className="cursor-pointer flex items-center"
                   onClick={async () => {
-                    mutate((likes: DataCommentProps) => {
-                      return {
-                        ...likes,
-                        results: [
-                          ...likes.results.map((result: CommentProps) =>
-                            result.id === comments.id
-                              ? {
-                                  ...result,
-                                  isLikes: true,
-                                  likes: result.likes + 1,
-                                }
-                              : result
-                          ),
-                        ],
-                      };
-                    }, false);
-                    await axios.post(
-                      `${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/${router.query.id}/comments/${comments.id}/like/`
-                    );
+                    if (refreshToken) {
+                      setVerifyToken(expiredToken);
+                      mutate((likes: DataCommentProps) => {
+                        return {
+                          ...likes,
+                          results: [
+                            ...likes.results.map((result: CommentProps) =>
+                              result.id === comments.id
+                                ? {
+                                    ...result,
+                                    isLikes: true,
+                                    likes: result.likes + 1,
+                                  }
+                                : result
+                            ),
+                          ],
+                        };
+                      }, false);
+                      await axios.post(
+                        `${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/${router.query.id}/comments/${comments.id}/like/`
+                      );
+                    } else {
+                      alert("로그인이 필요합니다");
+                    }
                   }}
                 >
                   <LikeOutlined className="mr-1" />

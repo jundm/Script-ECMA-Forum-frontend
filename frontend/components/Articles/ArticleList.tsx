@@ -40,14 +40,10 @@ function ArticleList({
 }: ArticleListProps) {
   const router = useRouter();
   const { data, error } = useFetch(`${url}${page}`);
-
-  useEffect(() => {
-    if (error) {
-      setVerifyToken();
-      // console.error(error.message);
-    }
-  }, [error, data]);
-
+  // if (error) {
+  //   // console.error(error.message);
+  //   setVerifyToken();
+  // }
   const columns = [
     {
       title: "제목",

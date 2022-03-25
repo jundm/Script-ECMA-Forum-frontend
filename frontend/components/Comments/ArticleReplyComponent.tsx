@@ -3,8 +3,9 @@ import dayjs from "dayjs";
 import { LikeOutlined, LikeFilled, EditOutlined } from "@ant-design/icons";
 import React, { useEffect } from "react";
 import useFetch from "@utils/Hook/useFetch";
-import { setVerifyToken } from "@utils/Cookies/TokenManager";
+import { parseJwt, setVerifyToken } from "@utils/Cookies/TokenManager";
 import axios from "axios";
+import Cookies from "universal-cookie";
 
 interface ArticleReplyComponentProps {
   id: number;
@@ -30,12 +31,10 @@ interface DataCommentProps {
 }
 function ArticleReplyComponent({ id }: ArticleReplyComponentProps) {
   const { data, error, mutate } = useFetch(`posts/api/${id}/commentsReply/`);
-  useEffect(() => {
-    if (error) {
-      setVerifyToken();
-      // console.error(error.message);
-    }
-  }, [error, data]);
+  const cookies = new Cookies();
+  const accessToken = cookies.get("accessToken");
+  const refreshToken = cookies.get("refreshToken");
+  const expiredToken = parseJwt(accessToken);
   return (
     <>
       {data?.results?.map((reply: CommentProps, key: number) => {
@@ -50,25 +49,30 @@ function ArticleReplyComponent({ id }: ArticleReplyComponentProps) {
                     <div
                       className="cursor-pointer flex items-center"
                       onClick={async () => {
-                        mutate((likes: DataCommentProps) => {
-                          return {
-                            ...likes,
-                            results: [
-                              ...likes.results.map((result: CommentProps) =>
-                                result.id === reply.id
-                                  ? {
-                                      ...result,
-                                      isLikes: false,
-                                      likes: result.likes - 1,
-                                    }
-                                  : result
-                              ),
-                            ],
-                          };
-                        }, false);
-                        await axios.delete(
-                          `${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/${id}/commentsReply/${reply.id}/like/`
-                        );
+                        if (refreshToken) {
+                          setVerifyToken(expiredToken);
+                          mutate((likes: DataCommentProps) => {
+                            return {
+                              ...likes,
+                              results: [
+                                ...likes.results.map((result: CommentProps) =>
+                                  result.id === reply.id
+                                    ? {
+                                        ...result,
+                                        isLikes: false,
+                                        likes: result.likes - 1,
+                                      }
+                                    : result
+                                ),
+                              ],
+                            };
+                          }, false);
+                          await axios.delete(
+                            `${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/${id}/commentsReply/${reply.id}/like/`
+                          );
+                        } else {
+                          alert("로그인이 필요합니다");
+                        }
                       }}
                     >
                       <LikeFilled className="mr-1" />
@@ -78,25 +82,30 @@ function ArticleReplyComponent({ id }: ArticleReplyComponentProps) {
                     <div
                       className="cursor-pointer flex items-center"
                       onClick={async () => {
-                        mutate((likes: DataCommentProps) => {
-                          return {
-                            ...likes,
-                            results: [
-                              ...likes.results.map((result: CommentProps) =>
-                                result.id === reply.id
-                                  ? {
-                                      ...result,
-                                      isLikes: true,
-                                      likes: result.likes + 1,
-                                    }
-                                  : result
-                              ),
-                            ],
-                          };
-                        }, false);
-                        await axios.post(
-                          `${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/${id}/commentsReply/${reply.id}/like/`
-                        );
+                        if (refreshToken) {
+                          setVerifyToken(expiredToken);
+                          mutate((likes: DataCommentProps) => {
+                            return {
+                              ...likes,
+                              results: [
+                                ...likes.results.map((result: CommentProps) =>
+                                  result.id === reply.id
+                                    ? {
+                                        ...result,
+                                        isLikes: true,
+                                        likes: result.likes + 1,
+                                      }
+                                    : result
+                                ),
+                              ],
+                            };
+                          }, false);
+                          await axios.post(
+                            `${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/${id}/commentsReply/${reply.id}/like/`
+                          );
+                        } else {
+                          alert("로그인이 필요합니다");
+                        }
                       }}
                     >
                       <LikeOutlined className="mr-1" />

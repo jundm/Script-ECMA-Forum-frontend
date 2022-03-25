@@ -4,6 +4,8 @@ import { LikeOutlined, LikeFilled } from "@ant-design/icons";
 import axios from "axios";
 import dayjs from "dayjs";
 import nl2br from "react-nl2br";
+import Cookies from "universal-cookie";
+import { parseJwt, setVerifyToken } from "@utils/Cookies/TokenManager";
 
 interface AnswerProps {
   id: number;
@@ -35,6 +37,11 @@ function ArticleViewAnswer({
   answered,
   id,
 }: ArticleViewAnswerProps) {
+  const cookies = new Cookies();
+  const accessToken = cookies.get("accessToken");
+  const refreshToken = cookies.get("refreshToken");
+  const expiredToken = parseJwt(accessToken);
+
   return (
     <>
       {answered?.results?.map((answer: AnswerProps, key: number) => {
@@ -65,51 +72,61 @@ function ArticleViewAnswer({
               {answer?.isLikes ? (
                 <LikeFilled
                   onClick={async () => {
-                    answerMutate(async (likes: any) => {
-                      const MyLike = likes.results.filter(
-                        (like: any) => like.id === answer.id
-                      );
-                      return Object.assign({}, likes, {
-                        results: likes.results.map((result: any) =>
-                          result.id === answer.id
-                            ? Object.assign({}, result, {
-                                isLikes: false,
-                                likes: MyLike[0].likes - 1,
-                              })
-                            : result
-                        ),
-                      });
-                    }, false);
+                    if (refreshToken) {
+                      setVerifyToken(expiredToken);
+                      answerMutate(async (likes: any) => {
+                        const MyLike = likes.results.filter(
+                          (like: any) => like.id === answer.id
+                        );
+                        return Object.assign({}, likes, {
+                          results: likes.results.map((result: any) =>
+                            result.id === answer.id
+                              ? Object.assign({}, result, {
+                                  isLikes: false,
+                                  likes: MyLike[0].likes - 1,
+                                })
+                              : result
+                          ),
+                        });
+                      }, false);
 
-                    await axios.delete(
-                      `${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/${id}/postComment/${answer.id}/like/`
-                    );
+                      await axios.delete(
+                        `${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/${id}/postComment/${answer.id}/like/`
+                      );
+                    } else {
+                      alert("로그인이 필요합니다");
+                    }
                   }}
                 />
               ) : (
                 <LikeOutlined
                   onClick={async () => {
-                    answerMutate((likes: any) => {
-                      const MyLike = likes.results.filter(
-                        (like: any) => like.id === answer.id
+                    if (refreshToken) {
+                      setVerifyToken(expiredToken);
+                      answerMutate((likes: any) => {
+                        const MyLike = likes.results.filter(
+                          (like: any) => like.id === answer.id
+                        );
+
+                        return Object.assign({}, likes, {
+                          results: likes.results.map((result: any) =>
+                            result.id === answer.id
+                              ? Object.assign({}, result, {
+                                  isLikes: true,
+                                  likes: MyLike[0].likes + 1,
+                                })
+                              : result
+                          ),
+                        });
+                      }, false);
+
+                      await axios.post(
+                        `${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/${id}/postComment/${answer.id}/like/`,
+                        { ...answer }
                       );
-
-                      return Object.assign({}, likes, {
-                        results: likes.results.map((result: any) =>
-                          result.id === answer.id
-                            ? Object.assign({}, result, {
-                                isLikes: true,
-                                likes: MyLike[0].likes + 1,
-                              })
-                            : result
-                        ),
-                      });
-                    }, false);
-
-                    await axios.post(
-                      `${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/${id}/postComment/${answer.id}/like/`,
-                      { ...answer }
-                    );
+                    } else {
+                      alert("로그인이 필요합니다");
+                    }
                   }}
                 />
               )}

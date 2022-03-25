@@ -99,8 +99,6 @@ function SignUp(this: any, {}: SignUpProps) {
   });
   const [form] = Form.useForm();
   const [isLoading, setIsLoading] = useState(false);
-  const [isCheck, setIsCheck] = useState(false);
-  console.log(isCheck);
   const [inputs, setInputs] = useState({
     name: "",
     username: "",

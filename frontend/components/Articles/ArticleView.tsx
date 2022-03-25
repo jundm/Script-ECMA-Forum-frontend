@@ -1,17 +1,18 @@
 import useFetch from "@utils/Hook/useFetch";
 import Head from "next/head";
-import React, { Fragment, useEffect, useState } from "react";
+import React, { useState } from "react";
 import nl2br from "react-nl2br";
 import dayjs from "dayjs";
 import { Divider, Button } from "antd";
 import { LikeOutlined, LikeFilled, EditOutlined } from "@ant-design/icons";
-import { setVerifyToken } from "@utils/Cookies/TokenManager";
+import { parseJwt, setVerifyToken } from "@utils/Cookies/TokenManager";
 import axios from "axios";
 import ArticleAnswerCreate from "./ArticleAnswerCreate";
 import ArticleViewAnswer from "./ArticleViewAnswer";
 import ArticleComment from "@components/Comments/ArticleComment";
 import CommentCreates from "@components/Comments/CommentCreates";
 import { useRouter } from "next/router";
+import Cookies from "universal-cookie";
 
 interface ArticleViewProps {
   id: number;
@@ -39,12 +40,10 @@ function ArticleView({ id }: ArticleViewProps) {
     mutate: answerMutate,
   } = useFetch(`posts/api/${id}/postComment/`);
   const [answer, setAnswer] = useState(false);
-  useEffect(() => {
-    if (error) {
-      setVerifyToken();
-      // console.error(error.message);
-    }
-  }, [error, data]);
+  const cookies = new Cookies();
+  const accessToken = cookies.get("accessToken");
+  const refreshToken = cookies.get("refreshToken");
+  const expiredToken = parseJwt(accessToken);
 
   return (
     <div className="">
@@ -75,20 +74,36 @@ function ArticleView({ id }: ArticleViewProps) {
         {data?.isLikes ? (
           <LikeFilled
             onClick={async () => {
-              mutate({ ...data, isLikes: false, likes: data.likes - 1 }, false);
-              await axios.delete(
-                `${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/${data?.id}/like/`
-              );
+              if (refreshToken) {
+                setVerifyToken(expiredToken);
+                mutate(
+                  { ...data, isLikes: false, likes: data.likes - 1 },
+                  false
+                );
+                await axios.delete(
+                  `${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/${data?.id}/like/`
+                );
+              } else {
+                alert("로그인이 필요합니다");
+              }
             }}
           />
         ) : (
           <LikeOutlined
             onClick={async () => {
-              mutate({ ...data, isLikes: true, likes: data.likes + 1 }, false);
-              await axios.post(
-                `${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/${data?.id}/like/`,
-                { ...data }
-              );
+              if (refreshToken) {
+                setVerifyToken(expiredToken);
+                mutate(
+                  { ...data, isLikes: true, likes: data.likes + 1 },
+                  false
+                );
+                await axios.post(
+                  `${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/${data?.id}/like/`,
+                  { ...data }
+                );
+              } else {
+                alert("로그인이 필요합니다");
+              }
             }}
           />
         )}

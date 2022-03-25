@@ -13,7 +13,7 @@ import axios from "axios";
 import { useAppSelector, useAppDispatch } from "@utils/Toolkit/hook";
 import { name, userName } from "@utils/Toolkit/Slice/userSlice";
 import { useRouter } from "next/router";
-import { setVerifyToken } from "@utils/Cookies/TokenManager";
+import { parseJwt, setVerifyToken } from "@utils/Cookies/TokenManager";
 
 function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -32,6 +32,8 @@ function App({ Component, pageProps }: AppProps) {
   const cookies = new Cookies();
   const accessToken = cookies.get("accessToken");
   const refreshToken = cookies.get("refreshToken");
+  const expiredToken = parseJwt(accessToken);
+
   useEffect(() => {
     if (accessToken && refreshToken) {
       axios.defaults.headers.common.Authorization = `JWT ${accessToken}`;
@@ -41,20 +43,20 @@ function App({ Component, pageProps }: AppProps) {
           dispatch(userName(res.data.username));
           dispatch(name(res.data.username));
         })
-        .catch
-        // (e) => console.error(e.message)
-        ();
+        .catch((e) => console.error(e.message));
     }
     if (!accessToken && !refreshToken) {
       axios.defaults.headers.common.Authorization = "";
     }
     if (!accessToken && refreshToken) {
-      setVerifyToken();
+      setVerifyToken(expiredToken);
     }
   }, [accessToken]);
   useEffect(() => {
-    if (isUserName && !refreshToken) router.push("/accounts/login");
+    if (isUserName.payload.auth.username && !refreshToken)
+      router.push("/accounts/login");
   }, [refreshToken]);
+
   return (
     <>
       <Head>

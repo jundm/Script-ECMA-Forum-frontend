@@ -57,7 +57,6 @@ function Login() {
 
   const onFinish = (values: any) => {
     setIsLoading(true);
-    console.log(email, "email");
     axios
       .post(process.env.NEXT_PUBLIC_ENV_BASE_URL + "jwt/create/", {
         email,

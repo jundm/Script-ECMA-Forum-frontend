@@ -4,7 +4,7 @@ import { Formik } from "formik";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { userName } from "@utils/Toolkit/Slice/userSlice";
-import { setVerifyToken } from "@utils/Cookies/TokenManager";
+import { parseJwt, setVerifyToken } from "@utils/Cookies/TokenManager";
 import { useRouter } from "next/router";
 import Cookies from "universal-cookie";
 import { useSWRConfig } from "swr";
@@ -30,7 +30,10 @@ function CommentCreate({ api, setReplyCreate }: ArticleAnswerCreateProps) {
   const accountName = accountUser.payload.auth.name;
   const router = useRouter();
   const cookies = new Cookies();
+  const accessToken = cookies.get("accessToken");
   const { data, error, mutate } = useFetch(api);
+  const expiredToken = parseJwt(accessToken);
+  const refreshToken = cookies.get("refreshToken");
   return (
     <div className="container">
       <Formik
@@ -38,9 +41,9 @@ function CommentCreate({ api, setReplyCreate }: ArticleAnswerCreateProps) {
         validate={(values) => {}}
         onSubmit={async (values) => {
           try {
-            if (cookies.get("accessToken") && values.content !== "") {
+            if (refreshToken && values.content !== "") {
               setLoading(true);
-              setVerifyToken();
+              setVerifyToken(expiredToken);
               const NewAnswer = {
                 author: {
                   username: accountUserName,
@@ -82,6 +85,7 @@ function CommentCreate({ api, setReplyCreate }: ArticleAnswerCreateProps) {
               mutate();
             } else {
               setLoading(false);
+              alert("로그인이 필요합니다");
             }
           } catch (e) {
             setLoading(false);
