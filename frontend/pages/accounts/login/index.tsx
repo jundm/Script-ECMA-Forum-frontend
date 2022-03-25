@@ -135,13 +135,14 @@ function Login() {
           />
         </Form.Item>
         <Form.Item>
-          <div onClick={onClickChecked}>
+          <div onClick={onClickChecked} className="cursor-pointer">
             <input
               className="mr-1"
               type="checkbox"
               name=""
               id=""
               checked={rememberUserEmail}
+              readOnly
             />
             Remember me
           </div>
