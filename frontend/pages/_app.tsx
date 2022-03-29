@@ -14,6 +14,7 @@ import { useAppSelector, useAppDispatch } from "@utils/Toolkit/hook";
 import { name, userName } from "@utils/Toolkit/Slice/userSlice";
 import { useRouter } from "next/router";
 import { parseJwt, setVerifyToken } from "@utils/Cookies/TokenManager";
+import Footer from "@components/Footer";
 
 function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -77,6 +78,7 @@ function App({ Component, pageProps }: AppProps) {
       <div className="container">
         <Component {...pageProps} />
       </div>
+      <Footer />
     </>
   );
 }
