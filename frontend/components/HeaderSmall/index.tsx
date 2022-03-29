@@ -8,7 +8,6 @@ import {
   WidthDiv,
   LoginSignUp,
   ProfileDiv,
-  UserNameDiv,
 } from "./styles";
 import Smiling from "public/svg/Smiling With Closed Eyes Emoji.svg";
 import Blow from "public/svg/Blow Kiss Emoji.svg";
@@ -71,10 +70,10 @@ const HeaderSmall = (props: HeaderProps) => {
           </Link>
 
           {accountUserName ? (
-            <UserNameDiv>
+            <MenuLi>
               {accountUserName.slice(0, 10)}
               <ProfileDiv>님{Safari ? "😍" : <Heart />}</ProfileDiv>
-            </UserNameDiv>
+            </MenuLi>
           ) : (
             <>
               <Link href="/accounts/login">
