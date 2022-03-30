@@ -64,16 +64,16 @@ function Login() {
         password,
       })
       .then((res) => {
-        router.push("/");
         const access = res.data.access;
         const refresh = res.data.refresh;
         setAccessToken(access);
         setRefreshToken(refresh);
+        router.push("/");
         if (rememberUserEmail === true) {
           dispatch(globalEmail(email));
         }
       })
-      .catch((e) => console.warn(e.message));
+      .catch((e) => alert("이메일 혹은 비밀번호가 잘못 되었습니다"));
     setIsLoading(false);
     form.resetFields(["email", "password"]);
   };

@@ -11,7 +11,7 @@ import Cookies from "universal-cookie";
 import { detect } from "detect-browser";
 import axios from "axios";
 import { useAppSelector, useAppDispatch } from "@utils/Toolkit/hook";
-import { name, userName } from "@utils/Toolkit/Slice/userSlice";
+import { email, name, userName } from "@utils/Toolkit/Slice/userSlice";
 import { useRouter } from "next/router";
 import { parseJwt, setVerifyToken } from "@utils/Cookies/TokenManager";
 import Footer from "@components/Footer";
@@ -42,7 +42,8 @@ function App({ Component, pageProps }: AppProps) {
         .get(process.env.NEXT_PUBLIC_ENV_BASE_URL + "users/me/")
         .then((res) => {
           dispatch(userName(res.data.username));
-          dispatch(name(res.data.username));
+          dispatch(name(res.data.name));
+          dispatch(email(res.data.email));
         })
         .catch((e) => console.error(e.message));
     }

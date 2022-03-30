@@ -70,10 +70,12 @@ const HeaderSmall = (props: HeaderProps) => {
           </Link>
 
           {accountUserName ? (
+            <Link href="/accounts/userinfo">
             <MenuLi>
               {accountUserName.slice(0, 10)}
               <ProfileDiv>님{Safari ? "😍" : <Heart />}</ProfileDiv>
             </MenuLi>
+            </Link>
           ) : (
             <>
               <Link href="/accounts/login">
