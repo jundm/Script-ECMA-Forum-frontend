@@ -22,8 +22,8 @@ module.exports = (phase, { defaultConfig }) => {
 
   const env = {
     RESTURL_BACKEND: (() => {
-      if (isDev) return "http://localhost:8000/";
-      if (isProd) return "https://backend.blabla:8000/";
+      if (isDev) return "http://localhost:9000/";
+      if (isProd) return "http://localhost:9000/";
       if (isStaging) return "http://localhost:11639/";
       return "RESTURL_BACKEND:not (isDev,isProd && !isStaging,isProd && isStaging)";
     })(),

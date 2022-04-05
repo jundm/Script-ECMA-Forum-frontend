@@ -35,12 +35,6 @@ function Login() {
   const loginWidth = 300;
   const [form] = Form.useForm();
   const [isLoading, setIsLoading] = useState(false);
-  const [inputs, setInputs] = useState({
-    email: rememberEmailInput,
-    password: "",
-  });
-
-  const { email, password } = inputs;
   //*@param: email async-validator message remove {https://github.com/yiminghe/async-validator/issues/92}
   const warn = console.warn;
   console.warn = (...args: any[]) => {
@@ -48,6 +42,12 @@ function Login() {
       return;
     warn(...args);
   };
+  const [inputs, setInputs] = useState({
+    email: rememberEmailInput,
+    password: "",
+  });
+
+  const { email, password } = inputs;
   const onChange = (e: any) => {
     const { name, value } = e.target;
     setInputs({
