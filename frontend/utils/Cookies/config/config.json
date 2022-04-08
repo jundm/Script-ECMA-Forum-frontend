@@ -1,10 +1,10 @@
 {
   "development": {
-    "BACKEND_URL": "http://localhost:8000/",
+    "BACKEND_URL": "http://localhost:9000/",
     "HTTP_ONLY": false
   },
   "production": {
-    "BACKEND_URL": "...",
+    "BACKEND_URL": "http://localhost:9000/",
     "HTTP_ONLY": true
   }
 }

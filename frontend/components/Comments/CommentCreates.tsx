@@ -1,72 +1,49 @@
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import { Button, Input } from "antd";
 import { Formik } from "formik";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { userName } from "@utils/Toolkit/Slice/userSlice";
-import { setVerifyToken } from "@utils/Cookies/TokenManager";
+import { parseJwt, setVerifyToken } from "@utils/Cookies/TokenManager";
 import { useRouter } from "next/router";
 import Cookies from "universal-cookie";
+import { useSWRConfig } from "swr";
+import useFetch from "@utils/Hook/useFetch";
 
 const { TextArea } = Input;
-
-interface AnswerProps {
-  author: {
-    avatar_url: string;
-    name: string;
-    username: string;
-  };
-  category: string;
-  comment: number;
-  content: string;
-  hit: number;
-  id: number;
-  isLikes: boolean;
-  likes: number;
-  tag_set: [];
-  title: string;
-  created_at: string;
-  updated_at: string;
-}
 interface NewAnswerProps {
   author: {
     username: string;
     name: string;
   };
-  title: string;
   content: string;
 }
 interface ArticleAnswerCreateProps {
-  // answerMutate: (value: NewAnswerProps, check?: boolean) => void;
-  answerMutate: any;
-  id: number;
-  setAnswer: (arg: (answer: boolean) => boolean) => void;
-  answered: any;
-  // answered: AnswerProps;
+  api: string;
+  setReplyCreate?: Dispatch<SetStateAction<boolean>>;
 }
 // *validate 일단 사용 안함
-function ArticleAnswerCreate({
-  id,
-  setAnswer,
-  answerMutate,
-  answered,
-}: ArticleAnswerCreateProps) {
+function ReplyCreate({ api, setReplyCreate }: ArticleAnswerCreateProps) {
   const [isLoading, setLoading] = useState(false);
   const accountUser = useSelector(userName);
   const accountUserName = accountUser.payload.auth.username;
   const accountName = accountUser.payload.auth.name;
   const router = useRouter();
   const cookies = new Cookies();
+  const accessToken = cookies.get("accessToken");
+  const { data, error, mutate } = useFetch(api);
+  const expiredToken = parseJwt(accessToken);
+  const refreshToken = cookies.get("refreshToken");
   return (
     <div className="container">
       <Formik
-        initialValues={{ title: "", content: "" }}
+        initialValues={{ content: "" }}
         validate={(values) => {}}
         onSubmit={async (values) => {
           try {
-            if (cookies.get("accessToken") && values.content !== "") {
+            if (refreshToken && values.content !== "") {
               setLoading(true);
-              setVerifyToken();
+              setVerifyToken(expiredToken);
               const NewAnswer = {
                 author: {
                   username: accountUserName,
@@ -74,35 +51,42 @@ function ArticleAnswerCreate({
                 },
                 ...values,
               };
-              answerMutate(
+              mutate(
                 {
-                  ...answered,
+                  ...data,
                   results: [
                     {
-                      id: answered.results.id + 1,
+                      id: data.results[0].id + 1,
                       author: {
                         username: accountUserName,
                         name: accountName,
                         avatar_url: `${process.env.NEXT_PUBLIC_ENV_BASE_URL}avatar/image/${accountUserName}.png`,
                       },
                       likes: 0,
+                      isLikes: false,
                       created_at: Date.now(),
                       updated_at: Date.now(),
                       ...values,
                     },
-                    ...answered.results,
+                    ...data.results,
                   ],
                 },
                 false
               );
-              await axios.post(
-                `${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/${router.query.id}/postComment/`,
-                NewAnswer
-              );
-              answerMutate();
-              setAnswer((answer) => !answer);
+              await axios
+                .post(
+                  `${process.env.NEXT_PUBLIC_ENV_BASE_URL}${api}`,
+                  NewAnswer
+                )
+                .then(() => {
+                  setLoading(false);
+                  setReplyCreate && setReplyCreate(false);
+                  values.content = "";
+                });
+              mutate();
             } else {
               setLoading(false);
+              alert("로그인이 필요합니다");
             }
           } catch (e) {
             setLoading(false);
@@ -118,20 +102,8 @@ function ArticleAnswerCreate({
           handleSubmit,
         }) => (
           <form onSubmit={handleSubmit}>
-            <label htmlFor="title">제목</label>
-            <Input
-              placeholder="제목을 입력해 주세요"
-              allowClear
-              id="title"
-              name="title"
-              value={values.title}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              style={{ marginBottom: "20px" }}
-            />
-            <label htmlFor="content">내용</label>
             <TextArea
-              placeholder="답변을 입력해주세요"
+              placeholder="댓글을 입력해주세요(Shift+Enter)"
               allowClear
               showCount
               id="content"
@@ -139,16 +111,21 @@ function ArticleAnswerCreate({
               value={values.content}
               onChange={handleChange}
               onBlur={handleBlur}
-              autoSize={{ minRows: 5, maxRows: 5 }}
+              onKeyPress={(e) => {
+                if (e.shiftKey) {
+                  e.preventDefault();
+                  handleSubmit();
+                }
+              }}
             />
-            <br />
             <Button
+              className="mt-2"
               htmlType="submit"
               type="primary"
               shape="round"
               loading={isLoading}
             >
-              답변하기
+              댓글달기
             </Button>
           </form>
         )}
@@ -157,4 +134,4 @@ function ArticleAnswerCreate({
   );
 }
 
-export default ArticleAnswerCreate;
+export default ReplyCreate;

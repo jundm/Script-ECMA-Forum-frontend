@@ -40,14 +40,10 @@ function ArticleList({
 }: ArticleListProps) {
   const router = useRouter();
   const { data, error } = useFetch(`${url}${page}`);
-
-  useEffect(() => {
-    if (error) {
-      setVerifyToken();
-      // console.error(error.message);
-    }
-  }, [error, data]);
-
+  // if (error) {
+  //   // console.error(error.message);
+  //   setVerifyToken();
+  // }
   const columns = [
     {
       title: "제목",
@@ -91,7 +87,7 @@ function ArticleList({
       title: "작성자",
       dataIndex: "author",
       key: "author",
-      width: "90px" + "1%",
+      width: "100px",
       render: (author: {
         avatar_url: string;
         name: string;

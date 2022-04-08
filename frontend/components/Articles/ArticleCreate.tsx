@@ -4,7 +4,7 @@ import { Formik } from "formik";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { userName } from "@utils/Toolkit/Slice/userSlice";
-import { setVerifyToken } from "@utils/Cookies/TokenManager";
+import { parseJwt, setVerifyToken } from "@utils/Cookies/TokenManager";
 import { useRouter } from "next/router";
 import Cookies from "universal-cookie";
 
@@ -21,6 +21,9 @@ function ArticleCreate({ category }: ArticleCreateProps) {
   const accountName = accountUser.payload.auth.name;
   const router = useRouter();
   const cookies = new Cookies();
+  const accessToken = cookies.get("accessToken");
+  const refreshToken = cookies.get("refreshToken");
+  const expiredToken = parseJwt(accessToken);
 
   return (
     <div className="container">
@@ -28,25 +31,29 @@ function ArticleCreate({ category }: ArticleCreateProps) {
         initialValues={{ title: "", content: "" }}
         validate={(values) => {}}
         onSubmit={(values) => {
-          setLoading(true);
-          setVerifyToken();
-          const createArticle = axios
-            .post(`${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/`, {
-              category,
-              author: {
-                username: { accountUserName },
-                name: { accountName },
-              },
-              ...values,
-            })
-            .then((res) => {
-              router.push(`/articles/${category}`);
-            })
-            .catch((e) => {
-              setLoading(false);
-            });
-          if (cookies.get("accessToken")) {
-            createArticle;
+          if (refreshToken) {
+            setLoading(true);
+            setVerifyToken(expiredToken);
+            const createArticle = axios
+              .post(`${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/`, {
+                category,
+                author: {
+                  username: { accountUserName },
+                  name: { accountName },
+                },
+                ...values,
+              })
+              .then((res) => {
+                router.push(`/articles/${category}`);
+              })
+              .catch((e) => {
+                setLoading(false);
+              });
+            if (accessToken) {
+              createArticle;
+            }
+          } else {
+            alert("로그인이 필요합니다");
           }
         }}
       >

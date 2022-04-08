@@ -17,7 +17,7 @@ import { useRouter } from "next/router";
 import Cookies from "universal-cookie";
 import { useSelector } from "react-redux";
 import { userName } from "@utils/Toolkit/Slice/userSlice";
-import { GetServerSideProps } from "next";
+import SignUpTerm from "@components/SignUpTerm";
 
 //TODO 추가예정=[validator, add form, email인증]
 interface SignUpProps {}
@@ -86,11 +86,11 @@ const tailFormItemLayout = {
 function SignUp(this: any, {}: SignUpProps) {
   const router = useRouter();
   const cookies = new Cookies();
-  const acccountUser = useSelector(userName);
-  const acccountUserName = acccountUser.payload.auth.username;
+  const accountUser = useSelector(userName);
+  const accountUserName = accountUser.payload.auth.username;
   useEffect(() => {
     if (
-      acccountUserName &&
+      accountUserName &&
       cookies.get("accessToken") &&
       cookies.get("refreshToken")
     ) {
@@ -133,11 +133,18 @@ function SignUp(this: any, {}: SignUpProps) {
           "password",
           "re_password",
         ]);
+        router.push("/accounts/login");
       })
-      .catch((e) => console.error(e.message));
+      .catch((e) => {
+        if (e.message === "Request failed with status code 400") {
+          alert("이메일 혹은 닉네임이 중복되었습니다.");
+        } else {
+          alert(e.message);
+        }
+      });
     setIsLoading(false);
   };
-
+  //! 모바일 번호
   // const prefixSelector = (
   //   <Form.Item name="prefix" noStyle>
   //     <Select style={{ width: 70 }}>
@@ -193,6 +200,7 @@ function SignUp(this: any, {}: SignUpProps) {
           <Form.Item
             name="email"
             label="이메일"
+            tooltip="중복체크 기능이 아직 없습니다. 본인 메일로 가입해주세요."
             rules={[
               {
                 type: "email",
@@ -259,7 +267,7 @@ function SignUp(this: any, {}: SignUpProps) {
           <Form.Item
             name="name"
             label="실명"
-            tooltip="주민등록상 실제 이름을 기입합니다."
+            tooltip="사용자의 이름을 기입합니다."
             rules={[
               {
                 required: true,
@@ -376,7 +384,7 @@ function SignUp(this: any, {}: SignUpProps) {
             </Col>
           </Row>
         </Form.Item> */}
-
+          <SignUpTerm />
           <Form.Item
             name="agreement"
             valuePropName="checked"
@@ -385,14 +393,12 @@ function SignUp(this: any, {}: SignUpProps) {
                 validator: (_, value) =>
                   value
                     ? Promise.resolve()
-                    : Promise.reject(new Error("Should accept agreement")),
+                    : Promise.reject(new Error("약관에 동의 해주세요")),
               },
             ]}
             {...tailFormItemLayout}
           >
-            <Checkbox>
-              <a href="">약관에 동의합니다.</a>
-            </Checkbox>
+            <Checkbox>약관에 동의합니다.</Checkbox>
           </Form.Item>
           <Form.Item {...tailFormItemLayout}>
             <Button type="primary" htmlType="submit" disabled={isLoading}>
@@ -405,21 +411,4 @@ function SignUp(this: any, {}: SignUpProps) {
   );
 }
 
-// export const getServerSideProps: GetServerSideProps = async (context) => {
-//   const cookieReq = context.req ? context.req.headers.cookie : null;
-//   const cookies = new Cookies(cookieReq);
-//   const accessToken = cookies.get("accessToken");
-//   if (accessToken) {
-//     return {
-//       redirect: {
-//         destination: "/",
-//         permanent: false,
-//       },
-//     };
-//   } else {
-//     return {
-//       props: {},
-//     };
-//   }
-// };
 export default SignUp;

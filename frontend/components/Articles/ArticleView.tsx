@@ -1,15 +1,18 @@
 import useFetch from "@utils/Hook/useFetch";
 import Head from "next/head";
-import React, { Fragment, useEffect, useState } from "react";
+import React, { useState } from "react";
 import nl2br from "react-nl2br";
 import dayjs from "dayjs";
-import { Avatar, Comment, Divider, Button } from "antd";
+import { Divider, Button } from "antd";
 import { LikeOutlined, LikeFilled, EditOutlined } from "@ant-design/icons";
-import { setVerifyToken } from "@utils/Cookies/TokenManager";
+import { parseJwt, setVerifyToken } from "@utils/Cookies/TokenManager";
 import axios from "axios";
 import ArticleAnswerCreate from "./ArticleAnswerCreate";
 import ArticleViewAnswer from "./ArticleViewAnswer";
-import { Div } from "@components/HeaderBig/styles";
+import ArticleComment from "@components/Comments/ArticleComment";
+import CommentCreates from "@components/Comments/CommentCreates";
+import { useRouter } from "next/router";
+import Cookies from "universal-cookie";
 
 interface ArticleViewProps {
   id: number;
@@ -29,6 +32,7 @@ interface AnswerProps {
   updated_at: string;
 }
 function ArticleView({ id }: ArticleViewProps) {
+  const router = useRouter();
   const { data, error, mutate } = useFetch(`posts/api/${id}/`);
   const {
     data: answered,
@@ -36,23 +40,11 @@ function ArticleView({ id }: ArticleViewProps) {
     mutate: answerMutate,
   } = useFetch(`posts/api/${id}/postComment/`);
   const [answer, setAnswer] = useState(false);
-  useEffect(() => {
-    if (error) {
-      setVerifyToken();
-      // console.error(error.message);
-    }
-  }, [error, data]);
+  const cookies = new Cookies();
+  const accessToken = cookies.get("accessToken");
+  const refreshToken = cookies.get("refreshToken");
+  const expiredToken = parseJwt(accessToken);
 
-  const actions = [
-    <>
-      <div className="flex items-center">
-        <LikeOutlined />
-        <span key="comment-nested-reply-to" className="ml-1">
-          Reply to
-        </span>
-      </div>
-    </>,
-  ];
   return (
     <div className="">
       <Head>
@@ -82,20 +74,36 @@ function ArticleView({ id }: ArticleViewProps) {
         {data?.isLikes ? (
           <LikeFilled
             onClick={async () => {
-              mutate({ ...data, isLikes: false, likes: data.likes - 1 }, false);
-              await axios.delete(
-                `${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/${data?.id}/like/`
-              );
+              if (refreshToken) {
+                setVerifyToken(expiredToken);
+                mutate(
+                  { ...data, isLikes: false, likes: data.likes - 1 },
+                  false
+                );
+                await axios.delete(
+                  `${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/${data?.id}/like/`
+                );
+              } else {
+                alert("로그인이 필요합니다");
+              }
             }}
           />
         ) : (
           <LikeOutlined
             onClick={async () => {
-              mutate({ ...data, isLikes: true, likes: data.likes + 1 }, false);
-              await axios.post(
-                `${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/${data?.id}/like/`,
-                { ...data }
-              );
+              if (refreshToken) {
+                setVerifyToken(expiredToken);
+                mutate(
+                  { ...data, isLikes: true, likes: data.likes + 1 },
+                  false
+                );
+                await axios.post(
+                  `${process.env.NEXT_PUBLIC_ENV_BASE_URL}posts/api/${data?.id}/like/`,
+                  { ...data }
+                );
+              } else {
+                alert("로그인이 필요합니다");
+              }
             }}
           />
         )}
@@ -120,53 +128,14 @@ function ArticleView({ id }: ArticleViewProps) {
         />
       )}
 
-      {answered?.results?.map(
-        (answer: AnswerProps, index: number, children: any) => {
-          return (
-            <ArticleViewAnswer
-              key={index}
-              index={index}
-              id={id}
-              answer={answer}
-              answerMutate={answerMutate}
-            />
-          );
-        }
-      )}
-
+      <ArticleViewAnswer
+        id={id}
+        answered={answered}
+        answerMutate={answerMutate}
+      />
       <Divider className="border-[1px]" />
-      <Comment
-        actions={actions}
-        author={<a>Han Solo</a>}
-        avatar={
-          <Avatar src="https://joeschmoe.io/api/v1/random" alt="Han Solo" />
-        }
-        content={
-          <p>
-            We supply a series of design principles, practical patterns and high
-            quality design resources (Sketch and Axure).
-          </p>
-        }
-        datetime={<span>{dayjs(data?.created_at).format("MM-DD hh:mm")}</span>}
-      >
-        <Comment
-          author={<a>Han Solo</a>}
-          avatar={
-            <Avatar src="https://joeschmoe.io/api/v1/random" alt="Han Solo" />
-          }
-          content={
-            <p>
-              We supply a series of design principles, practical patterns and
-              high quality design resources (Sketch and Axure), to help people
-              create their product prototypes beautifully and efficiently.
-            </p>
-          }
-          datetime={
-            <span>{dayjs(data?.created_at).format("MM-DD hh:mm")}</span>
-          }
-        />
-      </Comment>
-      <Divider className="border-[1px]" />
+      <CommentCreates api={`posts/api/${router.query.id}/comments/`} />
+      <ArticleComment />
     </div>
   );
 }

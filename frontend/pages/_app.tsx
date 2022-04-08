@@ -11,9 +11,10 @@ import Cookies from "universal-cookie";
 import { detect } from "detect-browser";
 import axios from "axios";
 import { useAppSelector, useAppDispatch } from "@utils/Toolkit/hook";
-import { name, userName } from "@utils/Toolkit/Slice/userSlice";
+import { email, name, userName } from "@utils/Toolkit/Slice/userSlice";
 import { useRouter } from "next/router";
-import { setVerifyToken } from "@utils/Cookies/TokenManager";
+import { parseJwt, setVerifyToken } from "@utils/Cookies/TokenManager";
+import Footer from "@components/Footer";
 
 function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -32,6 +33,8 @@ function App({ Component, pageProps }: AppProps) {
   const cookies = new Cookies();
   const accessToken = cookies.get("accessToken");
   const refreshToken = cookies.get("refreshToken");
+  const expiredToken = parseJwt(accessToken);
+
   useEffect(() => {
     if (accessToken && refreshToken) {
       axios.defaults.headers.common.Authorization = `JWT ${accessToken}`;
@@ -39,7 +42,8 @@ function App({ Component, pageProps }: AppProps) {
         .get(process.env.NEXT_PUBLIC_ENV_BASE_URL + "users/me/")
         .then((res) => {
           dispatch(userName(res.data.username));
-          dispatch(name(res.data.username));
+          dispatch(name(res.data.name));
+          dispatch(email(res.data.email));
         })
         .catch((e) => console.error(e.message));
     }
@@ -47,12 +51,14 @@ function App({ Component, pageProps }: AppProps) {
       axios.defaults.headers.common.Authorization = "";
     }
     if (!accessToken && refreshToken) {
-      setVerifyToken();
+      setVerifyToken(expiredToken);
     }
   }, [accessToken]);
   useEffect(() => {
-    if (isUserName && !refreshToken) router.push("/accounts/login");
+    if (isUserName.payload.auth.username && !refreshToken)
+      router.push("/accounts/login");
   }, [refreshToken]);
+
   return (
     <>
       <Head>
@@ -73,6 +79,7 @@ function App({ Component, pageProps }: AppProps) {
       <div className="container">
         <Component {...pageProps} />
       </div>
+      <Footer />
     </>
   );
 }

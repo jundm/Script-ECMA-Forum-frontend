@@ -57,10 +57,12 @@ const HeaderBig = (props: HeaderProps) => {
             {accountUserName ? (
               <>
                 <HeaderLoginDiv>
-                  <WrapperUser>
-                    <UserNameDiv>{accountUserName}</UserNameDiv>
-                    <ProfileDiv>님 {Safari ? "😍" : <Heart />}</ProfileDiv>
-                  </WrapperUser>
+                  <Link href="/accounts/userinfo">
+                    <WrapperUser>
+                      <UserNameDiv>{accountUserName}</UserNameDiv>
+                      <ProfileDiv>님 {Safari ? "😍" : <Heart />}</ProfileDiv>
+                    </WrapperUser>
+                  </Link>
                   <Logout onClick={onLogout}>logout</Logout>
                 </HeaderLoginDiv>
               </>

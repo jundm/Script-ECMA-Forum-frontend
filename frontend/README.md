@@ -25,4 +25,8 @@ formik https://formik.org/docs/overview
 spellchecker https://streetsidesoftware.com/vscode-spell-checker/docs/configuration/
 
 남은기능
-404,내정보,댓글,대댓글
+404,내정보,댓글,대댓글,유저 프로필,
+id중복검사, ip기준 hitcount,소켓쓰는 알림
+소셜로그인, 소셜공유, 검색(구글이용), 메세지,
+등등 기능들 더있갰지만 
+내정보,댓글,대댓글까지 구현하고 배포할 예정
