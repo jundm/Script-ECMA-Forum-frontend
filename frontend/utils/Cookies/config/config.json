@@ -4,7 +4,7 @@
     "HTTP_ONLY": false
   },
   "production": {
-    "BACKEND_URL": "http://localhost:9000/",
+    "BACKEND_URL": "http://13.209.33.37:9000/",
     "HTTP_ONLY": true
   }
 }
