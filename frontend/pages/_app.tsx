@@ -62,6 +62,7 @@ function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
+        <meta httpEquiv="Content-Security-Policy" content="upgrade-insecure-requests"/>
         <meta charSet="utf-8" />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <title>{routeName[routeName.length - 1]}-ScriptECMAForum</title>
