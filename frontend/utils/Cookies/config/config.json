@@ -4,7 +4,7 @@
     "HTTP_ONLY": false
   },
   "production": {
-    "BACKEND_URL": "http://backend.sef.today:9000/",
+    "BACKEND_URL": "https://backend.sef.today:443/",
     "HTTP_ONLY": true
   }
 }
