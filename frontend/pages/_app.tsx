@@ -17,7 +17,6 @@ import { parseJwt, setVerifyToken } from "@utils/Cookies/TokenManager";
 import Footer from "@components/Footer";
 
 function App({ Component, pageProps }: AppProps) {
-  axios.defaults.withCredentials = true;
   const router = useRouter();
   const routeName = router.pathname.split("/");
   const toggleHeader = useAppSelector(globalHeader);
