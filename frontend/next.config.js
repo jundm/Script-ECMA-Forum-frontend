@@ -46,14 +46,3 @@ module.exports = {
     return config;
   },
 };
-
-module.exports = {
-  async rewrites() {
-    return [
-      {
-        source: "/:path*",
-        destination: "https://backend.sef.today/:path*", // Proxy to Backend
-      },
-    ];
-  },
-};
