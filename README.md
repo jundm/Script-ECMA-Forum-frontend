@@ -1,6 +1,6 @@
 # 프론트엔드 개발자를 위한 커뮤니티
 
-Portfolio: [배포된 사이트 보기](https://www.sef.today/)
+Portfolio: [배포된 사이트 보기](https://script-ecma-forum-frontend.vercel.app)
 
 **데이터 연동에 대한 이슈가 있어 개발서버에서만 돌아갑니다. 취업후 손보겠습니다.**
 
